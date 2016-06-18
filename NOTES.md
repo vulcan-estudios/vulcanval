@@ -18,7 +18,7 @@
 - input type to exclude: submit, button
 - textarea
 - select
-- * with special attributes
+- * with attribute (data-vv-name="")
 
 ### Attributes
 
@@ -38,6 +38,11 @@
   - data-vv-intern - Don't display messages neither error styles
   - data-vv-display="" - Element to show messages
   - data-vv-autostart - Autostart validation at instance time, is set to true if field has initial value
+  - data-vv-val-VALIDATOR
+    - data-vv-val-isEmail
+    - data-vv-val-isBefore="2016-06-18"
+    - data-vv-val-isFloat="min: 7.4, max: 24.9"
+    - ...
 - *
   - data-vv-fieldset - Determine a fieldset
   - data-vv-name="" - Determine name of custom entries
@@ -74,10 +79,11 @@ const details = vulcanval.inspectMap(data, { instance configuration }, callback(
 Scoped by form, fieldset and field
 
 - vv-change
+- vv-modify
 - vv-valid ($field, Object details { name, value, isValid, msg })
 - vv-invalid ($field, Object details { name, value, isValid, msg })
 
-### Custom states
+### Custom states (as attributes in form, fieldset and field)
 
 - data-vv-isValid: undefined | Boolean
 - data-vv-modified: undefined | Boolean
@@ -90,6 +96,7 @@ Scoped by form, fieldset and field
 
 ### Global configuration
 
+```js
 const vulcanval = jQuery.vulcanval = require('vulcanval');
 
 vulcanval = {
@@ -104,6 +111,7 @@ vulcanval = {
       display: ''
     }
   },
+  displayAllErrorsOnValidate: true,
   msg: {  // or string
     en: 'Default error message.',
     es: 'Mensaje de error por defecto.'
@@ -134,9 +142,11 @@ vulcanval = {
     }
   }
 };
+```
 
 ### Instance configuration
 
+```js
 $('#form').vulcanval({
   locale: 'en',
   fieldsets: {
@@ -159,7 +169,6 @@ $('#form').vulcanval({
     condition () {
       return Boolean;
     },
-
     validators: {
       isEmail:    attr: type="email" ? true : undefined,
       isNumeric:  attr: type="number" ? true : undefined,
@@ -192,7 +201,7 @@ $('#form').vulcanval({
     silent: false,  // attr: data-vv-silent
     intern: false,  // attr: data-vv-intern
     display: '$el' | $(el) | el | function () { return el },  // attr: data-vv-display
-    value ($field, vv) {
+    value ($field) {
       return value;
     }
   }, {
@@ -216,8 +225,16 @@ $('#form').vulcanval({
   intern: false,  // attr: data-vv-intern
 });
 
+$('#customTag .items').on('click', function (e) {
+  $('#customTag .items').removeClass('selected');
+  $(this).addClass('selected');
+  $('#customTag').trigger('vv-change');
+});
+```
+
 ### HTML structure
 
+```html
 <form class="vv-form">
   <fieldset class="vv-fieldset">
     <label class="vv-label [vv-label-error]" />
@@ -225,6 +242,7 @@ $('#form').vulcanval({
     <div class="vv-display [vv-display-error]" />
   </fieldset>
 </form>
+```
 
 ### Optional
 
