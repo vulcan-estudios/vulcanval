@@ -3,6 +3,19 @@ const utils = require('../../src/js/utils');
 
 const assert = chai.assert;
 
+describe('walkObject', function () {
+
+  it('walk properties in object', function () {
+    const records = [];
+    const obj = {a:1,b:true,c:-10.75,d:false,e:undefined,f:null};
+    utils.walkObject(obj, function (item, index) {
+      records.push(item);
+    });
+    assert.sameMembers(records, [1,true,-10.75,false,undefined,null]);
+    assert.lengthOf(records, 6);
+  });
+});
+
 describe('util everyInObject', function () {
 
   var example = {
