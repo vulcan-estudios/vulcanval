@@ -1,3 +1,6 @@
+const extend = require('extend');
+const utils = require('./utils');
+
 const settings = {
 
   /**
@@ -85,7 +88,11 @@ const settings = {
    * List of custom validators.
    * @type {Object}
    */
-  validators: {},
+  validators: {
+    isEqual (value, opts) {
+      return value === this.get(opts);
+    }
+  },
 
   /**
    * Default messages locale.
@@ -94,16 +101,101 @@ const settings = {
   locale: 'en',
 
   /**
-   * Validators messages.
+   * Validators messages. If a validator does not have a message for a locale,
+   * it will be search in the `defaults` "locale".
    * @type {Object}
    */
-  msgs: {},
+  msgs: {
+    defaults: {}
+  },
+
+  /**
+   * Get a message template according to locale.
+   * @private
+   * @param  {String} id - Validator identifier.
+   * @return {String}
+   */
+  getMsgTemplate (id) {
+
+    var parts;
+    var subid;
+    var format;
+
+    if (id.indexOf('.') > 0) {
+      parts = id.split('.');
+      id = parts[0];
+      subid = parts[1];
+    }
+
+    if (subid && this.msgs[this.locale][id][subid]) {
+      return this.msgs[this.locale][id][subid];
+    }
+    else if (subid && this.msgs.defaults[id][subid]) {
+      return this.msgs.defaults[id][subid];
+    }
+    else if (this.msgs[this.locale][id]) {
+      return this.msgs[this.locale][id];
+    }
+    else if (this.msgs.defaults[id]) {
+      return this.msgs.defaults[id];
+    }
+    else if (this.msgs[this.locale].general) {
+      return this.msgs[this.locale].general;
+    }
+    else {
+      return this.msgs.defaults.general;
+    }
+  },
 
   /**
    * The form fields to configure.
    * @type {Array}
    */
-  fields: []
+  fields: [],
+
+  /**
+   * Extend settings.
+   * @private
+   * @param  {Object} custom - Extend this settings with this paramter.
+   * @return {Object} - Extended settings.
+   */
+  extend (custom) {
+
+    const locales = [];
+    utils.walkObject(this.msgs, function (msgs, locale) {
+      if (locale !== 'defaults') locales.push(locale);
+    });
+
+    // Interpolate messages by validator to messages by locale.
+    if (custom.msgs) {
+      const msgs = custom.msgs;
+      const newMsgs = {};
+
+      utils.walkObject(msgs, function (messages, validatorName) {
+        if (typeof messages === 'object') {
+          utils.walkObject(messages, function (message, locale) {
+            if (!newMsgs[locale]) newMsgs[locale] = {};
+            newMsgs[locale][validatorName] = message;
+          });
+        } else {
+
+          // A default message will be set as the only one to search.
+          if (!newMsgs.defaults) newMsgs.defaults = {};
+          newMsgs.defaults[validatorName] = messages;
+
+          // Locale messages will be set to empty.
+          locales.forEach(function (locale) {
+            if (!newMsgs[locale]) newMsgs[locale] = {};
+            newMsgs[locale][validatorName] = null;
+          });
+        }
+      });
+
+      custom.msgs = newMsgs;
+    }
+
+    return extend(true, {}, this, custom);
+  }
 };
 
 module.exports = settings;

@@ -39,28 +39,25 @@ module.exports = function (conf) {
   }
 
   // condition
-  if (field.rules.condition && !field.rules.condition.call(context)) {
+  if (field.rules.onlyIf && !field.rules.onlyIf.call(context, field.value)) {
     return true;
   }
 
   // Get a message according to error and error parameters.
-  const getMsg = (custom, str, opts, params) => {
+  const getMsg = (custom, id, opts) => {
 
-    str = str ? str : '';
+    id = id ? id : 'general';
 
-    const msgs = settings.msgs[settings.locale];
     const value = field.value;
     const option = typeof opts === 'string' || typeof opts === 'number' ? opts : '';
-    params = extend(params, { value, option });
-    if (custom) {
-      return utils.format(str ? str : msgs.general, params);
-    }
+    const options = typeof opts === 'object' ? opts : null;
+    const params = extend({}, { value, option }, options);
 
-    const ids = str.split('.');
-    if (ids.length > 1) {
-      return utils.format(msgs[ids[0]][ids[1]] ? msgs[ids[0]][ids[1]] : msgs.general, params);
+    // If it is custom, the message can be by locales or can be universal.
+    if (custom) {
+      return utils.format(typeof id === 'object' ? id[settings.locale] : id, params);
     } else {
-      return utils.format(msgs[str] ? msgs[str] : msgs.general, params);
+      return utils.format(settings.getMsgTemplate(id), params);
     }
   };
 
@@ -99,10 +96,10 @@ module.exports = function (conf) {
         return log.error('fields validator "isLength" must be an object if defined');
       }
       if (field.value.length < (valOpts.min || 0)) {
-        err = getMsg(false, 'isLength.min', val, { min: valOpts.min });
+        err = getMsg(false, 'isLength.min', val);
       }
       else if (valOpts.max && field.value.length > valOpts.max) {
-        err = getMsg(false, 'isLength.max', val, { max: valOpts.max });
+        err = getMsg(false, 'isLength.max', val);
       }
       return true;
     }
@@ -113,7 +110,7 @@ module.exports = function (conf) {
         return log.error('fields validator "matches" must be an object if defined');
       }
       if (!validator.matches(field.value, val.pattern)) {
-        err = getMsg(true, val.msg, val);
+        err = getMsg(true, val.msgs, val);
       }
       return true;
     }

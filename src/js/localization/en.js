@@ -2,6 +2,7 @@ const lang = {
   id: 'en',
   msgs: {
     general: 'Please fill out this field.',
+    isEqual: 'The field has to be the same.',
     isLength: {
       min: 'The field should contain at least {{min}} characters.',
       max: 'The field should contain at most {{max}} characters.'

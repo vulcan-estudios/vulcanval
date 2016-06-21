@@ -1,5 +1,18 @@
 module.exports = {
 
+  walkObject (obj, callback, context) {
+
+    if (!context) context = obj;
+
+    for (var p in obj) {
+      if (obj.hasOwnProperty(p)) {
+        callback.call(context, obj[p], p);
+      }
+    }
+
+    return obj;
+  },
+
   everyInObject (obj, callback, context) {
 
     if (!context) context = obj;
@@ -28,13 +41,16 @@ module.exports = {
   },
 
   format (str, params) {
+
     str = String(str);
     params = params || {};
+
     for (var p in params) {
       if (params.hasOwnProperty(p)) {
         str = str.replace(new RegExp(`\{\{${p}\}\}`, 'g'), params[p]);
       }
     }
+
     return str;
   }
 };
