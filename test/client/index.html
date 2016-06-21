@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>jQuery vulcanval</title>
+    <meta name="description" content="jQuery Plugin for validating forms and custom user inputs">
+
+    <link rel="stylesheet" href="../lib/flexboxgrid.min.css">
+    <link rel="stylesheet" href="../lib/qunit-1.23.1.css">
+    <script src="../lib/jquery-2.2.4.min.js"></script>
+    <script src="../lib/qunit-1.23.1.js"></script>
+    <script src="./validators.js"></script>
+    <script>
+      $(document).ready(function ($) {
+        $('form[id*=vv-]').on('submit', function (e) {
+          e.preventDefault();
+          return false;
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="qunit"></div>
+
+    <main class="vv">
+
+      <!-- DES -->
+      <section class="vv-section">
+        <h2>Normal</h2>
+        <form id="vv-01">
+        </form>
+      </section>
+
+    </main>
+  </body>
+</html>
