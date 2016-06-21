@@ -47,32 +47,32 @@
   - data-vv-fieldset - Determine a fieldset
   - data-vv-name="" - Determine name of custom entries
 
-### Client methods
+### Plugin methods
 
-- void|Object inspect([String name,] Callback fn(Object details))
+The methods callbacks should be used when there are asynchronous validations.
+Currently only the client side accepts asynchronous validators.
+
+- void|Object $().vulcanval('inspect', [String name,] Callback fn(Object details))
   - details
     - name
       - value
       - isValid
       - msg
-- void|Boolean isValid([String name,] Callback fn(Boolean isValid))
-- void|Boolean validate([String name,] Callback fn(Boolean isValid))
-  - Should focus first inValid element if there is
-- void forceValid([String name])
-- void forceInvalid([String name])
-- Object map()
+- void|Boolean $().vulcanval('isValid', [String name,] Callback fn(Boolean isValid))
+- void|Boolean $().vulcanval('validate', [String name,] Callback fn(Boolean isValid))
+- void $().vulcanval('forceValid', [String name])
+- void $().vulcanval('forceInvalid', [String name])
+- Object $().vulcanval('map', [Object opts { nested: false }])
 
-### Server methods
+### Global methods
 
-const isValid = vulcanval.validate(data, { instance configuration }, callback(details));
-const details = vulcanval.inspect(data, { instance configuration }, callback(details));
+const isValid = vulcanval.isValid(data, [{ configuration },] callback(details));
+const details = vulcanval.inspectMap(data, [{ configuration },] callback(details));
   - details
     - name
       - value
       - isValid
       - msg
-const details = vulcanval.inspectMap(data, { instance configuration }, callback(details));
-  - The same as .inspect() but details are structured.
 
 ### Custom events
 
@@ -102,8 +102,8 @@ const vulcanval = jQuery.vulcanval = require('vulcanval');
 vulcanval = {
   validator: https://www.npmjs.com/package/validator,
   locale: 'en',
-  firstValidationEvents: 'change',
-  validationEvents: 'change input',
+  firstValidationEvent: 'change',
+  validationEvents: 'change input blur',
   classes: {
     error: {
       label: '',
@@ -111,7 +111,6 @@ vulcanval = {
       display: ''
     }
   },
-  displayAllErrorsOnValidate: true,
   msg: {  // or string
     en: 'Default error message.',
     es: 'Mensaje de error por defecto.'
@@ -119,7 +118,7 @@ vulcanval = {
   validators: {
     isEmail: {
       options: undefined,  // {}
-      // {{value}} {{`options props`}}
+      // {{value}} {{`options props excluding msg`}}
       msg: {
         en: 'Error {{value}} message',
         es: 'Mensaje {{value}} de error'
@@ -128,9 +127,6 @@ vulcanval = {
     custom1: {
       exec (value, options) {
         // All methods has this context:
-        // this.$form;
-        // this.$fieldset;
-        // this.$field;
         // this.config;
         // this.get('fieldName')
         return Boolean;
@@ -149,19 +145,6 @@ vulcanval = {
 ```js
 $('#form').vulcanval({
   locale: 'en',
-  fieldsets: {
-    name: {
-      disabled: false,
-      condition () {
-        return Boolean;
-      },
-
-      // ui
-      autostart: false,
-      silent: false,
-      intern: false
-    }
-  },
   fields: [{
     name: attrs: name | data-vv-name,
     required: true,   // attr: required | data-vv-required
@@ -170,36 +153,40 @@ $('#form').vulcanval({
       return Boolean;
     },
     validators: {
-      isEmail:    attr: type="email" ? true : undefined,
-      isNumeric:  attr: type="number" ? true : undefined,
-      isURL:      attr: type="url" ? true : undefined,
-      isDate:     attr: type="date" || type="datetime" || type="datetime-local" ? true : undefined,
+      // Special validators.
       isLength: {
         min: 0,         // attr: minlength
         max: undefined  // attr: maxlength
-      },
-      isInt: {
-        min: undefined,  // attr: min
-        max: undefined   // attr: max
       },
       matches: {
         pattern: /pattern/gim,  // attr: pattern
         msg: ''                 // attr: data-vv-pattern-msg
       },
+      // `validator` validators.
+      isEmail:    attr: type="email" ? true : undefined,
+      isNumeric:  attr: type="number" ? true : undefined,
+      isURL:      attr: type="url" ? true : undefined,
+      isDate:     attr: type="date" || type="datetime" || type="datetime-local" ? true : undefined,
+      isInt: {
+        min: undefined,  // attr: min
+        max: undefined   // attr: max
+      },
       isDecimal: true,  // example of built-in validator
+      // Custom validators.
       custom1: true,    // example of built-in custom validator
       custom2 (value) {
         return Boolean;
       },
+      // Async validator.
       async (value, done) {
         setTimeout(() => done(Boolean isValid), 500);
       }
     },
 
     // ui
-    autostart: false,  // attr: data-vv-autostart
-    silent: false,  // attr: data-vv-silent
-    intern: false,  // attr: data-vv-intern
+    autostart: false, // attr: data-vv-autostart
+    silent: false,    // attr: data-vv-silent
+    intern: false,    // attr: data-vv-intern
     display: '$el' | $(el) | el | function () { return el },  // attr: data-vv-display
     value ($field) {
       return value;
@@ -217,6 +204,13 @@ $('#form').vulcanval({
       required: true
     }]
   }],
+  msgs: {
+    isEmail: 'Please enter a valid email address.',
+    isLength: {
+      en: 'This field should have at least {{min}} and at most {{max}} characters.',
+      es: 'Este campo debe tener al menos {{min}} y máximo {{max}} carácteres.'
+    }
+  },
 
   // ui
   validationEvents: 'change',
@@ -228,7 +222,7 @@ $('#form').vulcanval({
 $('#customTag .items').on('click', function (e) {
   $('#customTag .items').removeClass('selected');
   $(this).addClass('selected');
-  $('#customTag').trigger('vv-change');
+  $('#customTag').trigger('change');
 });
 ```
 
@@ -253,3 +247,4 @@ $('#customTag .items').on('click', function (e) {
 - Disable form submit inputs until validation completed after first attempt
 - reCatcha support
 - What to do when a field has readonly attribute
+- Enable trimming on inputs on event 'input change'
