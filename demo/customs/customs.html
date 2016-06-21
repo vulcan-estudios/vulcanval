@@ -1,0 +1,48 @@
+.vv-card {
+  padding: 10px;
+  width: 100%;
+  min-height: 80px;
+  border: 1px solid #999;
+  background-color: #eee;
+  color: #333;
+  cursor: pointer;
+}
+.vv-card.vv-card_selected {
+  background-color: #333;
+  color: #eee;
+}
+
+<h2>Normal</h2>
+<form id="vv-03">
+
+  <div class="row">
+    <div class="col-xs-12">
+      <input name="skill" type="text" maxlength="64" required placeholder="A normal field">
+    </div>
+  </div>
+
+  <div class="row" data-vv-name="level" data-vv-required data-vv-msgs="vv-03-level-msgs">
+    <div class="col-xs-4">
+      <div class="vv-card" data-value="basic">Basic</div>
+    </div>
+    <div class="col-xs-4">
+      <div class="vv-card" data-value="intermediate">Intermediate</div>
+    </div>
+    <div class="col-xs-4">
+      <div class="vv-card" data-value="advanced">Advanced</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div id="vv-03-level-msgs"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <input type="submit">
+    </div>
+  </div>
+
+</form>

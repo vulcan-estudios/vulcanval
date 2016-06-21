@@ -1,0 +1,21 @@
+body {
+  padding: 0;
+  margin: 20px 20px 40px;
+  max-width: 600px;
+}
+
+h2 {
+  font-size: 2rem;
+  color: #444;
+}
+
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=number],
+input[type=search],
+input[type=url],
+select,
+textarea {
+  width: 100%;
+}
