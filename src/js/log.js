@@ -1,6 +1,6 @@
 const Log = require('prhone-log');
 
 module.exports = new Log('vulcanval', {
-  throwErrors: true,
-  production: true
+  scale: 2,
+  throwErrors: true
 });
