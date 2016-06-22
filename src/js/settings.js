@@ -89,7 +89,7 @@ const settings = {
    * @type {Object}
    */
   validators: {
-    isEqual (value, opts) {
+    isEqualToField (value, opts) {
       return value === this.get(opts);
     }
   },

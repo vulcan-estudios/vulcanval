@@ -34,7 +34,7 @@ const vulcanval = {
 
   debug (isDebug) {
     if (isDebug !== undefined) {
-      log.settings.production = !isDebug;
+      log.settings.scale = isDebug ? 10 : 2;
     }
   }
 };

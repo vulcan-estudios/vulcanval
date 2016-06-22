@@ -10,18 +10,10 @@ module.exports = function (conf) {
   if (typeof conf !== 'object') {
     return log.error('parameter must be an object');
   }
-  if (typeof conf.field.name !== 'string') {
-    return log.error('field property must contain a property name as string');
-  }
-  if (!(typeof conf.field.value === 'string' || typeof conf.field.value === 'number' ||
-  typeof conf.field.value === 'boolean')) {
-    return log.error('field property must contain a property inmutable value');
-  }
 
   const field = { name: conf.field.name, value: conf.field.value };
   const settings = conf.settings;
   const context = conf.context;
-  const callback = conf.callback;
 
   field.rules = utils.find(settings.fields, vals => vals.name === field.name);
 
