@@ -13,6 +13,10 @@ const lang = {
     isURL: 'Escribe una URL válida por favor.',
     isDate: 'Escribe una fecha válida por favor.',
     contains: 'Este campo debe contener el texto "{{option}}".',
+    isAlphanumeric: 'Escribe sólo carácteres alfanuméricos por favor.',
+    isCreditCard: 'Escribe una tarjeta de crédito válida por favor.',
+    isLowercase: 'Este campo sólo debe contener texto en minúscula.',
+    isUppercase: 'Este campo sólo debe contener texto en mayúscula.',
   }
 };
 

@@ -13,6 +13,10 @@ const lang = {
     isURL: 'Please type a valid URL address.',
     isDate: 'Please type a valid date.',
     contains: 'This field should contain the text "{{option}}".',
+    isAlphanumeric: 'Please type only alfanumeric characters.',
+    isCreditCard: 'Please type a valid credit card number.',
+    isLowercase: 'This field should only contain lowercase text.',
+    isUppercase: 'This field should only contain uppercase text.',
   }
 };
 
