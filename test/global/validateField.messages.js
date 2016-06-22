@@ -129,7 +129,7 @@ conf.context = {
 var result, msg;
 
 
-describe('validateField - messages in different locale', function () {
+describe('Method validateField - messages in different locale', function () {
 
 
   describe('Mutiples ways to configure an message and formatting', function () {
@@ -184,15 +184,15 @@ describe('validateField - messages in different locale', function () {
   });
 
 
-  describe('format variables', function () {
+  describe('Format variables', function () {
 
-    it('value variable', function () {
+    it('Value variable', function () {
       conf.field = { name: 'field1', value: 'n7' };
       msg = utils.format(MSG_EMAIL, { value: 'n7' });
       assert.propertyVal(vulcanval.validateField(conf), 'msg', msg);
     });
 
-    it('option variable', function () {
+    it('Option variable', function () {
       conf.field = { name: 'field2', value: 'notTheRule' };
       msg = utils.format(MSG_CONTAINS, { value: 'notTheRule', option: RULE_CONTAINS });
       assert.propertyVal(vulcanval.validateField(conf), 'msg', msg);
