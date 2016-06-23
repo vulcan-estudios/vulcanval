@@ -110,44 +110,6 @@ const settings = {
   },
 
   /**
-   * Get a message template according to locale.
-   * @private
-   * @param  {String} id - Validator identifier.
-   * @return {String}
-   */
-  getMsgTemplate (id) {
-
-    var parts;
-    var subid;
-    var format;
-
-    if (id.indexOf('.') > 0) {
-      parts = id.split('.');
-      id = parts[0];
-      subid = parts[1];
-    }
-
-    if (subid && this.msgs[this.locale][id][subid]) {
-      return this.msgs[this.locale][id][subid];
-    }
-    else if (subid && this.msgs.defaults[id][subid]) {
-      return this.msgs.defaults[id][subid];
-    }
-    else if (this.msgs[this.locale][id]) {
-      return this.msgs[this.locale][id];
-    }
-    else if (this.msgs.defaults[id]) {
-      return this.msgs.defaults[id];
-    }
-    else if (this.msgs[this.locale].general) {
-      return this.msgs[this.locale].general;
-    }
-    else {
-      return this.msgs.defaults.general;
-    }
-  },
-
-  /**
    * The form fields to configure.
    * @type {Array}
    */
@@ -160,6 +122,8 @@ const settings = {
    * @return {Object} - Extended settings.
    */
   extend (custom) {
+
+    custom = extend(true, {}, custom);
 
     const locales = [];
     utils.walkObject(this.msgs, function (msgs, locale) {
@@ -195,6 +159,51 @@ const settings = {
     }
 
     return extend(true, {}, this, custom);
+  },
+
+  /**
+   * Get a message template according to locale.
+   * @private
+   * @param  {String} id - Validator identifier.
+   * @return {String}
+   */
+  getMsgTemplate (id) {
+
+    var parts;
+    var subid;
+    var format;
+
+    if (id.indexOf('.') > 0) {
+      parts = id.split('.');
+      id = parts[0];
+      subid = parts[1];
+    }
+
+    // locale with two properties
+    if (subid && this.msgs[this.locale][id][subid]) {
+      return this.msgs[this.locale][id][subid];
+    }
+    else if (subid && this.msgs.defaults[id][subid]) {
+      return this.msgs.defaults[id][subid];
+    }
+
+    // locale with one property
+    else if (this.msgs[this.locale][id]) {
+      return this.msgs[this.locale][id];
+    }
+    else if (this.msgs.defaults[id]) {
+      return this.msgs.defaults[id];
+    }
+
+    // general
+    else if (this.msgs[this.locale].general) {
+      return this.msgs[this.locale].general;
+    }
+
+    // default
+    else {
+      return this.msgs.defaults.general;
+    }
   }
 };
 

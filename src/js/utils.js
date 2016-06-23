@@ -17,7 +17,7 @@ module.exports = {
 
     if (!context) context = obj;
 
-    var keep = true;
+    var keep;
 
     for (var name in obj) {
       if (obj.hasOwnProperty(name)) {
@@ -27,6 +27,22 @@ module.exports = {
     }
 
     return !!keep;
+  },
+
+  findInObject (obj, callback, context) {
+
+    if (!context) context = obj;
+
+    var found;
+
+    for (var p in obj) {
+      if (obj.hasOwnProperty(p)) {
+        found = callback.call(context, obj[p], p);
+        if (found) return obj[p];
+      }
+    }
+
+    return obj;
   },
 
   find (arr, callback, context) {

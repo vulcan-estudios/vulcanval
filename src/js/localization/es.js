@@ -17,6 +17,7 @@ const lang = {
     isCreditCard: 'Escribe una tarjeta de crédito válida por favor.',
     isLowercase: 'Este campo sólo debe contener texto en minúscula.',
     isUppercase: 'Este campo sólo debe contener texto en mayúscula.',
+    isDivisibleBy: 'El número debe ser divisible por {{option}}.',
   }
 };
 

@@ -4,7 +4,7 @@ const settings = require('./settings');
 const log = require('./log');
 const utils = require('./utils');
 const convertMapTo = require('./convertMapTo');
-const validateField = require('./validateField');
+const rawValidation = require('./rawValidation');
 
 module.exports = function (map, customSettings) {
 
@@ -22,15 +22,18 @@ module.exports = function (map, customSettings) {
   }
 
   const context = {
+    validator,
     settings: customSettings,
     get (name) {
       return map[name];
     }
   };
 
-  return customSettings.fields.every(function (field) {
+  const errors = {};
 
-    const isValidField = validateField({
+  customSettings.fields.forEach(function (field) {
+
+    const isValidField = rawValidation({
       field: {
         name: field.name,
         value: map[field.name]
@@ -43,7 +46,13 @@ module.exports = function (map, customSettings) {
       return true;
     } else {
       log.debug(`invalid field name="${field.name}" with value=${map[field.name]}:`, isValidField.msg);
-      return false;
+      errors[field.name] = isValidField;
     }
   });
+
+  if (Object.keys(errors).length) {
+    return errors;
+  } else {
+    return false;
+  }
 };

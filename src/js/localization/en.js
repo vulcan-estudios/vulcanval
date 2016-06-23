@@ -17,6 +17,7 @@ const lang = {
     isCreditCard: 'Please type a valid credit card number.',
     isLowercase: 'This field should only contain lowercase text.',
     isUppercase: 'This field should only contain uppercase text.',
+    isDivisibleBy: 'The number should be divisible by {{option}}.',
   }
 };
 

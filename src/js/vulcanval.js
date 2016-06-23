@@ -3,19 +3,19 @@ const validator = require('validator');
 
 const settings =      require('./settings');
 const log =           require('./log');
-const isMapValid =    require('./isMapValid');
-const inspectMap =    require('./inspectMap');
+const rawValidation = require('./rawValidation');
 const convertMapTo =  require('./convertMapTo');
+const validateMap =   require('./validateMap');
 const validateField = require('./validateField');
 const localeEN =      require('./localization/en');
 
 const vulcanval = {
 
   validator,
-  validateField,
-  isMapValid,
-  inspectMap,
+  rawValidation,
   convertMapTo,
+  validateField,
+  validateMap,
 
   extendLocale (locale) {
     settings.msgs[locale.id] = extend(true, {}, settings.msgs[locale.id], locale.msgs);
