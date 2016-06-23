@@ -1,16 +1,10 @@
-// @NOTE: JavaScript engines are not obligated to provide the object properties
-// in the same order as they were added. There are some issues too. For
-// alfanumeric starting object keys in webkit engines this seems to work.
-// Even if this does not work in that way for some browsers, for the validateField()
-// method, it does not matter.
+require('./pre');
 
-const chai =    require('chai');
-const extend =  require('extend');
+const chai = require('chai');
+const extend = require('extend');
+const vulcanval = require('../../src/js/vulcanval');
+const utils = require('../../src/js/utils');
 
-const vulcanval =   require('../../src/js/vulcanval');
-const utils =       require('../../src/js/utils');
-const settings =    require('../../src/js/settings');
-const localeEN =    require('../../src/js/localization/en');
 
 const assert = chai.assert;
 
@@ -22,7 +16,6 @@ const RULE_IS_LENGTH_MAX = 16;
 const RULE_PASSWORD = '12345678910';
 const RULE_PATTERN_MSG = 'The field should contain double AA.';
 
-const conf = {};
 const fields = {
   username: RULE_USERNAME,
   age: RULE_AGE,
@@ -30,7 +23,7 @@ const fields = {
   password: RULE_PASSWORD
 };
 
-conf.settings = settings.extend({
+const settings = {
   validators: {
     isTheFieldUpperCase (value, opts) {
       return String(value).toUpperCase() === value;
@@ -87,6 +80,12 @@ conf.settings = settings.extend({
       }
     }
   }, {
+    name: 'isLengthFail',
+    required: true,
+    validators: {
+      isLength: true
+    }
+  }, {
     name: 'doubleA',
     required: true,
     validators: {
@@ -94,6 +93,20 @@ conf.settings = settings.extend({
         pattern: /AA/,
         msgs: RULE_PATTERN_MSG
       }
+    }
+  }, {
+    name: 'matchesFail',
+    required: true,
+    validators: {
+      matches: /abc/
+    }
+  }, {
+    name: 'hasManyDisabledValidators',
+    validators: {
+      contains: false,
+      isInt: false,
+      isHexColor: false,
+      isFQDN: false
     }
   }, {
     name: 'repeatPassword',
@@ -137,196 +150,261 @@ conf.settings = settings.extend({
       }
     }
   }]
-});
-
-conf.context = {
-  settings: conf.settings,
-  get: (fieldName) => {
-    return fields[fieldName];
-  }
 };
 
-const msgs = id => conf.settings.getMsgTemplate(id);
-
-var result, msg;
+var field;
 
 
-describe('Method validateField', function () {
+describe('Method validateField()', function () {
 
   describe('General', function () {
 
     it('Field without validators', function () {
-      conf.field = { name: 'notFoundField', value: '' };
-      assert.strictEqual(vulcanval.validateField(conf), true);
+      field = 'notFoundField';
+      fields[field] = '';
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
     });
 
     it('Field with a wrong validator should throw error', function () {
-      conf.field = { name: 'wrongValidators', value: 'wrong value' };
+      field = 'wrongValidators';
+      fields[field] = 'wrong value';
       assert.throws(function () {
-        vulcanval.validateField(conf);
+        vulcanval.validateField(field, fields, settings);
       });
     });
 
     it('A disabled field should not be validated', function () {
-      conf.field = { name: 'bio', value: 'whatever' };
-      assert.strictEqual(vulcanval.validateField(conf), true);
+      field = 'bio';
+      fields[field] = 'whatever';
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
     });
 
     it('Sharing values', function () {
-      conf.field = { name: 'shared', value: 'whatever' };
-      assert.strictEqual(vulcanval.validateField(conf), true);
+      field = 'shared';
+      fields[field] = 'whatever';
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
     });
 
     it('Condition disabled', function () {
-      conf.field = { name: 'withCondition', value: RULE_USERNAME };
-      assert.strictEqual(vulcanval.validateField(conf), true);
+      field = 'withCondition';
+      fields[field] = RULE_USERNAME;
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
     });
 
     it('Condition enabled', function () {
 
-      conf.field = { name: 'withCondition', value: 'oh whatever' };
-      msg = msgs('isEmail');
-      result = extend({}, conf.field, { msg });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'This must be invalid');
+      field = 'withCondition';
+      fields[field] = 'oh whatever';
+      assert.isString(vulcanval.validateField(field, fields, settings));
 
-      conf.field = { name: 'withCondition', value: 'romel@mail.com' };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'This must be valid');
+      field = 'withCondition';
+      fields[field] = 'romel@mail.com';
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
     });
   });
 
 
   describe('Required', function () {
 
-    it('With no validators', function () {
+    describe('With no validators', function () {
 
-      conf.field = { name: 'username', value: 'A random value' };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'String with length');
+      it('String with length', function () {
+        field = 'username';
+        fields[field] = 'A random value';
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
 
-      conf.field = { name: 'username', value: -157.978 };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'Number');
+      it('Number', function () {
+        field = 'username';
+        fields[field] = -157.978;
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
 
-      conf.field = { name: 'username', value: true };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'Boolean true');
+      it('Boolean true', function () {
+        field = 'username';
+        fields[field] = true;
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
 
-      conf.field = { name: 'username', value: '' };
-      msg = msgs('general');
-      result = extend({}, conf.field, { msg });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'Empty string');
+      it('Empty string', function () {
+        field = 'username';
+        fields[field] = '';
+        assert.isString(vulcanval.validateField(field, fields, settings));
+      });
 
-      conf.field = { name: 'username', value: false };
-      result = extend({}, conf.field, { msg: msgs('general') });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'Boolean false');
+      it('Boolean false', function () {
+        field = 'username';
+        fields[field] = false;
+        assert.isString(vulcanval.validateField(field, fields, settings));
+      });
     });
 
-    it('Booleans', function () {
+    describe('Booleans', function () {
 
-      conf.field = { name: 'username', value: true };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'Required with true');
+      it('Required with true', function () {
+        field = 'username';
+        fields[field] = true;
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
 
-      conf.field = { name: 'username', value: false };
-      msg = msgs('general');
-      result = extend({}, conf.field, { msg });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'Required with false');
+      it('Required with false', function () {
+        field = 'username';
+        fields[field] = false;
+        assert.isString(vulcanval.validateField(field, fields, settings));
+      });
 
-      conf.field = { name: 'age', value: true };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'No required with true');
+      it('No required with true', function () {
+        field = 'age';
+        fields[field] = true;
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
 
-      conf.field = { name: 'age', value: false };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'No required with false');
+      it('No required with false', function () {
+        field = 'age';
+        fields[field] = false;
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
     });
 
-    it('No required with no validators', function () {
+    describe('No required with no validators', function () {
 
-      conf.field = { name: 'lastName', value: '' };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'Empty string');
+      it('Empty string', function () {
+        field = 'lastName';
+        fields[field] = '';
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
 
-      conf.field = { name: 'lastName', value: 'a random value' };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'String with length');
+      it('String with length', function () {
+        field = 'lastName';
+        fields[field] = 'a random value';
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
 
-      conf.field = { name: 'lastName', value: -157.978 };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'Number');
+      it('Number', function () {
+        field = 'lastName';
+        fields[field] = -157.978;
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
 
-      conf.field = { name: 'lastName', value: true };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'Boolean true');
+      it('Boolean true', function () {
+        field = 'lastName';
+        fields[field] = true;
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
 
-      conf.field = { name: 'lastName', value: false };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'Boolean false');
+      it('Boolean false', function () {
+        field = 'lastName';
+        fields[field] = false;
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
     });
   });
 
 
   describe('Validators', function () {
 
-    it('Is required | isEmail', function () {
-
-      conf.field = { name: 'email', value: '' };
-      result = extend({}, conf.field, { msg: msgs('general') });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'No provided value should return error');
-
-      conf.field = { name: 'email', value: 'wrong mail' };
-      result = extend({}, conf.field, { msg: msgs('isEmail') });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'Invalid email should return error');
-
-      conf.field = { name: 'email', value: 'ronelprhone@gmail.com' };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'The email is valid');
+    it('Validator "isLength"', function () {
+      field = 'isLengthFail';
+      fields[field] = 'whatever';
+      assert.throws(function () {
+        vulcanval.validateField(field, fields, settings);
+      });
     });
 
-    it('Is required | message {{option}} | contains', function () {
+    it('Validator "matches"', function () {
 
-      conf.field = { name: 'email', value: 'goodbutno@mail.com' };
-      msg = utils.format(msgs('contains'), { option: RULE_EMAIL_CONTAINS });
-      result = extend({}, conf.field, { msg });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'Email valid but not contains string should return error');
+      field = 'doubleA';
+      fields[field] = 'something AA here';
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+
+      field = 'doubleA';
+      fields[field] = 'something without that';
+      assert.isString(vulcanval.validateField(field, fields, settings));
     });
 
-    it('No required | isLength | isInt', function () {
-
-      conf.field = { name: 'password', value: '' };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'This is not required so empty string is valid');
-
-      conf.field = { name: 'password', value: 'wrong' };
-      msg = utils.format(msgs('isLength.min'), { min: RULE_IS_LENGTH_MIN });
-      result = extend({}, conf.field, { msg });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'Value too short should fail');
-
-      conf.field = { name: 'password', value: 'this is a really long field value' };
-      msg = utils.format(msgs('isLength.max'), { max: RULE_IS_LENGTH_MAX });
-      result = extend({}, conf.field, { msg });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'Value too long should fail');
-
-      conf.field = { name: 'password', value: 'nowItPass' };
-      msg = utils.format(msgs('isInt'), {});
-      result = extend({}, conf.field, { msg });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'The value is not a proper integer so should fail');
-
-      conf.field = { name: 'password', value: '715458484847' };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'The value is valid');
+    it('Many validators but disabled', function () {
+      field = 'hasManyDisabledValidators';
+      fields[field] = 'whatever';
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
     });
 
-    it('Validator matches', function () {
+    describe('Is required with validators', function () {
 
-      conf.field = { name: 'doubleA', value: 'something AA here' };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'This value must be valid');
+      it('Empty string', function () {
+        field = 'email';
+        fields[field] = '';
+        assert.isString(vulcanval.validateField(field, fields, settings));
+      });
 
-      conf.field = { name: 'doubleA', value: 'something without that' };
-      msg = utils.format(RULE_PATTERN_MSG, {});
-      result = extend({}, conf.field, { msg });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'This should fail');
+      it('Wrong value', function () {
+        field = 'email';
+        fields[field] = 'wrong mail';
+        assert.isString(vulcanval.validateField(field, fields, settings));
+      });
+
+      it('Multiples validators and partially valid', function () {
+        field = 'email';
+        fields[field] = 'goodbutno@mail.com';
+        assert.isString(vulcanval.validateField(field, fields, settings));
+      });
+
+      it('Multiples validators and valid', function () {
+        field = 'email';
+        fields[field] = 'ronelprhone@gmail.com';
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
+    });
+
+    it('No required with validators | Validator "isLength"', function () {
+
+      it('Empty string', function () {
+        field = 'password';
+        fields[field] = '';
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
+
+      it('Value too short should fail', function () {
+        field = 'password';
+        fields[field] = 'wrong';
+        assert.isString(vulcanval.validateField(field, fields, settings));
+      });
+
+      it('Value too long should fail', function () {
+        field = 'password';
+        fields[field] = 'this is a really long field value';
+        assert.isString(vulcanval.validateField(field, fields, settings));
+      });
+
+      it('The value is not a proper integer so should fail', function () {
+        field = 'password';
+        fields[field] = 'almostPass';
+        assert.isString(vulcanval.validateField(field, fields, settings));
+      });
+
+      it('Valid', function () {
+        field = 'password';
+        fields[field] = '715458484847';
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
     });
   });
 
 
   describe('Built-in validators', function () {
 
-    it('Validator isEqualToField', function () {
+    describe('Validator "isEqualToField"', function () {
 
-      conf.field = { name: 'repeatPassword', value: 'notEqual123' };
-      msg = utils.format(msgs('isEqualToField'), {});
-      result = extend({}, conf.field, { msg });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'This must be invalid');
+      it('Invalid', function () {
+        field = 'repeatPassword';
+        fields[field] = 'notEqual123';
+        assert.isString(vulcanval.validateField(field, fields, settings));
+      });
 
-      conf.field = { name: 'repeatPassword', value: RULE_PASSWORD };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'This must be valid');
+      it('Valid', function () {
+        field = 'repeatPassword';
+        fields[field] = RULE_PASSWORD;
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      });
     });
   });
 
@@ -335,24 +413,24 @@ describe('Method validateField', function () {
 
     it('Part 1', function () {
 
-      conf.field = { name: 'fieldUC', value: 'notUpperCase' };
-      msg = utils.format(msgs('isTheFieldUpperCase'), {});
-      result = extend({}, conf.field, { msg });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'this must be invalid');
+      field = 'fieldUC';
+      fields[field] = 'notUpperCase';
+      assert.isString(vulcanval.validateField(field, fields, settings));
 
-      conf.field = { name: 'fieldUC', value: 'UPPERCASE' };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'this must be valid');
+      field = 'fieldUC';
+      fields[field] = 'UPPERCASE';
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
     });
 
     it('Part 2', function () {
 
-      conf.field = { name: 'first4lc', value: 'NotLowerCase' };
-      msg = utils.format(msgs('areTheFirst4LettersLC'), {});
-      result = extend({}, conf.field, { msg });
-      assert.deepEqual(vulcanval.validateField(conf), result, 'this must be invalid');
+      field = 'first4lc';
+      fields[field] = 'NotLowerCase';
+      assert.isString(vulcanval.validateField(field, fields, settings));
 
-      conf.field = { name: 'first4lc', value: 'lowerCASE' };
-      assert.strictEqual(vulcanval.validateField(conf), true, 'this must be valid');
+      field = 'first4lc';
+      fields[field] = 'lowerCASE';
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
     });
   });
 });

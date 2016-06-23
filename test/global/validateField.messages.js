@@ -1,9 +1,9 @@
-const chai =    require('chai');
-const extend =  require('extend');
+require('./pre');
 
+const chai =        require('chai');
+const extend =      require('extend');
 const vulcanval =   require('../../src/js/vulcanval');
 const utils =       require('../../src/js/utils');
-const settings =    require('../../src/js/settings');
 const localeEN =    require('../../src/js/localization/en');
 const localeES =    require('../../src/js/localization/es');
 
@@ -22,13 +22,10 @@ const RULE_CONTAINS = 'romel';
 const RULE_ISLENGTH = { min: 4, max: 8 };
 const RULE_CUSTOM1 = { a: 1, b: 2 };
 const RULE_CUSTOM2 = { a: true, b: false };
+const RULE_DIVISIBLEBY = 2;
 
-const conf = {};
 const fields = {};
-
-vulcanval.extendLocale(localeES);
-
-conf.settings = settings.extend({
+const settings = {
 
   validators: {
     customVal0 (value, opts) {
@@ -105,81 +102,125 @@ conf.settings = settings.extend({
       customVal1: RULE_CUSTOM1
     }
   }, {
+    name: 'field6',
+    required: true,
+    validators: {
+      isLength: RULE_ISLENGTH
+    }
+  }, {
     name: 'field7',
     required: true,
     validators: {
       customVal2: RULE_CUSTOM2
     }
   }, {
-    name: 'field6',
+    name: 'field8',
     required: true,
     validators: {
+      isNumeric: true,
+      isDivisibleBy: RULE_DIVISIBLEBY,
       isLength: RULE_ISLENGTH
     }
   }]
-});
-
-conf.context = {
-  settings: conf.settings,
-  get: (fieldName) => {
-    return fields[fieldName];
-  }
 };
 
-var result, msg;
+var field;
+var msg;
 
 
-describe('Method validateField - messages in different locale', function () {
-
+describe('Method validateField() - messages in different locale with many formats', function () {
 
   describe('Mutiples ways to configure an message and formatting', function () {
 
     it('Built-in validator without custom message', function () {
-      conf.field = { name: 'field0', value: 'noNumber' };
+      field = 'field0';
+      fields[field] = 'noNumber';
       msg = utils.format(localeES.msgs.isInt);
-      assert.propertyVal(vulcanval.validateField(conf), 'msg', msg);
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), msg);
     });
 
     it('Built-in validator with custom default message', function () {
-      conf.field = { name: 'field1', value: 'noEmail' };
-      msg = utils.format(MSG_EMAIL, conf.field);
-      assert.propertyVal(vulcanval.validateField(conf), 'msg', msg);
+      field = 'field1';
+      fields[field] = 'noEmail';
+      msg = utils.format(MSG_EMAIL, {value: fields[field]});
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), msg);
     });
 
     it('Built-in validator with locales messages', function () {
-      conf.field = { name: 'field3', value: 'notFloat' };
-      msg = utils.format(MSG_FLOAT, conf.field);
-      assert.propertyVal(vulcanval.validateField(conf), 'msg', msg);
+      field = 'field3';
+      fields[field] = 'notFloat';
+      msg = utils.format(MSG_FLOAT, {value: fields[field]});
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), msg);
     });
 
     it('isLength validator with locale messages (min)', function () {
-      conf.field = { name: 'field6', value: 'aa' };
-      msg = utils.format(MSG_IL_MIN, extend(conf.field, RULE_ISLENGTH));
-      assert.propertyVal(vulcanval.validateField(conf), 'msg', msg);
+      field = 'field6';
+      fields[field] = 'aa';
+      msg = utils.format(MSG_IL_MIN, extend({value: fields[field]}, RULE_ISLENGTH));
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), msg);
     });
 
     it('isLength validator with locale messages (max)', function () {
-      conf.field = { name: 'field6', value: 'aaaaaaaaaaaaa' };
-      msg = utils.format(MSG_IL_MAX, extend(conf.field, RULE_ISLENGTH));
-      assert.propertyVal(vulcanval.validateField(conf), 'msg', msg);
+      field = 'field6';
+      fields[field] = 'aaaaaaaaaaaaa';
+      msg = utils.format(MSG_IL_MAX, extend({value: fields[field]}, RULE_ISLENGTH));
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), msg);
     });
 
     it('Custom validator without custom message', function () {
-      conf.field = { name: 'field4', value: 'not custom0' };
-      msg = utils.format(localeES.msgs.general, {});
-      assert.propertyVal(vulcanval.validateField(conf), 'msg', msg);
+      field = 'field4';
+      fields[field] = 'not custom0';
+      msg = utils.format(localeES.msgs.general);
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), msg);
     });
 
     it('Custom validator with custom default message', function () {
-      conf.field = { name: 'field5', value: 'not custom1' };
+      field = 'field5';
+      fields[field] = 'not custom1';
       msg = utils.format(MSG_CUSTOM1, RULE_CUSTOM1);
-      assert.propertyVal(vulcanval.validateField(conf), 'msg', msg);
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), msg);
     });
 
     it('Custom validator with custom locales messages', function () {
-      conf.field = { name: 'field7', value: 'not custom2' };
+      field = 'field7';
+      fields[field] = 'not custom2';
       msg = utils.format(MSG_CUSTOM2, RULE_CUSTOM2);
-      assert.propertyVal(vulcanval.validateField(conf), 'msg', msg);
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), msg);
+    });
+
+    // @NOTE: JavaScript engines are not obligated to provide the object properties
+    // in the same order as they were added. There are some issues too. For
+    // alfanumeric starting object keys in webkit engines this seems to work.
+    // Even if this does not work in that way for some browsers, for the validateField()
+    // method, it does not matter.
+    describe('Validator with multiples messages', function () {
+
+      it('Validator with multiples messages (part1)', function () {
+        field = 'field8';
+        fields[field] = 'notNumber';
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), localeES.msgs.isNumeric);
+      });
+
+      it('Validator with multiples messages (part2)', function () {
+        field = 'field8';
+        fields[field] = '15151515153';
+        msg = utils.format(localeES.msgs.isDivisibleBy, {option: RULE_DIVISIBLEBY});
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), msg);
+      });
+
+      it('Validator with multiples messages (part3)', function () {
+        field = 'field8';
+        fields[field] = '70';
+        msg = utils.format(MSG_IL_MIN, extend({value: fields[field]}, RULE_ISLENGTH));
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), msg);
+      });
+
+      it('Validator with multiples messages (part4)', function () {
+        field = 'field8';
+        fields[field] = '7515050154215051512';
+        msg = utils.format(MSG_IL_MAX, extend({value: fields[field]}, RULE_ISLENGTH));
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), msg);
+      });
     });
   });
 
@@ -187,15 +228,17 @@ describe('Method validateField - messages in different locale', function () {
   describe('Format variables', function () {
 
     it('Value variable', function () {
-      conf.field = { name: 'field1', value: 'n7' };
-      msg = utils.format(MSG_EMAIL, { value: 'n7' });
-      assert.propertyVal(vulcanval.validateField(conf), 'msg', msg);
+      field = 'field1';
+      fields[field] = 'n7';
+      msg = utils.format(MSG_EMAIL, {value: fields[field]});
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), msg);
     });
 
     it('Option variable', function () {
-      conf.field = { name: 'field2', value: 'notTheRule' };
-      msg = utils.format(MSG_CONTAINS, { value: 'notTheRule', option: RULE_CONTAINS });
-      assert.propertyVal(vulcanval.validateField(conf), 'msg', msg);
+      field = 'field2';
+      fields[field] = 'notTheRule';
+      msg = utils.format(MSG_CONTAINS, { value: fields[field], option: RULE_CONTAINS });
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), msg);
     });
   });
 });
