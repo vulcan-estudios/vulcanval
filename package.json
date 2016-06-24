@@ -1,7 +1,7 @@
 {
   "name": "vulcanval",
-  "version": "0.1.0",
-  "description": "jQuery Plugin for validating forms and custom user inputs",
+  "version": "1.0.0-beta",
+  "description": "Validate data forms in client and server sides",
   "keywords": [
     "jquery",
     "plugin",
@@ -31,23 +31,21 @@
     "babelify": "^7.2.0",
     "browserify": "^13.0.0",
     "chai": "^3.5.0",
+    "express": "^4.14.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-babel": "^6.1.2",
     "gulp-clean-css": "^2.0.7",
-    "gulp-if": "^2.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.1.0",
-    "gulp-streamify": "^1.0.2",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
     "require-dir": "^0.3.0",
-    "vinyl-source-stream": "^1.1.0",
-    "yargs": "^4.7.1"
+    "vinyl-source-stream": "^1.1.0"
   },
   "main": "dist/vulcanval.js",
   "scripts": {
-    "test": "gulp test",
+    "test": "mocha test",
     "doc": "gulp doc",
     "build": "gulp build"
   }
