@@ -16,7 +16,12 @@ module.exports = function (conf) {
   const settings = conf.settings;
   const context = conf.context;
 
-  field.rules = utils.find(settings.fields, vals => vals.name === field.name);
+  field.rules = utils.find(settings.fields, vals => {
+    if (typeof vals !== 'object') {
+      return log.error('a field can only have an object to describe its validation');
+    }
+    return vals.name === field.name;
+  });
 
   if (!field.rules) {
     log.warn('field to validate does not have validators');

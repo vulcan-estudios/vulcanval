@@ -1,9 +1,9 @@
-const validator = require('validator');
-const extend = require('extend');
-const settings = require('./settings');
-const log = require('./log');
-const utils = require('./utils');
-const convertMapTo = require('./convertMapTo');
+const validator =     require('validator');
+const extend =        require('extend');
+const settings =      require('./settings');
+const log =           require('./log');
+const utils =         require('./utils');
+const convertMapTo =  require('./convertMapTo');
 const rawValidation = require('./rawValidation');
 
 module.exports = function (map, customSettings) {

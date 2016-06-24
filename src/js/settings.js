@@ -4,54 +4,62 @@ const utils = require('./utils');
 const settings = {
 
   /**
+   * UI. Overwritten by field.
    * What event to listen to trigger the first validation on fields.
    * @type {String}
    */
-  firstValidationEvent: 'change',
+  firstValidationEvent: 'blur change',
 
   /**
+   * UI. Overwritten by field.
    * After first validation, what events to listen to re-validate fields.
    * @type {String}
    */
-  validationEvents: 'change input blur',
+  validationEvents: 'input blur change',
 
   /**
-   * Auto start validation at instance time.
+   * UI. Overwritten by field.
+   * Validate field elements on instance time.
    * @type {Boolean}
    */
   autostart: false,
 
   /**
-   * Don't validate form/fieldsets/fields. This can be used to ignore validations
-   * but map a form field values into an object.
-   * @type {Boolean}
-   */
-  silent: false,
-
-  /**
-   * Validate form/fieldsets/fields but don't modify UI. Ex: don't show error
-   * messages.
+   * UI. Overwritten by field.
+   * When a field is validated, don't show changes visually nor show messages.
+   * This is used to know whether they are valid or not, update the fields
+   * elements states and trigger events.
    * @type {Boolean}
    */
   intern: false,
 
   /**
+   * UI. <form>.
+   * Enable asynchronous validations. The UI API will behave differently.
+   * @type {Boolean}
+   */
+  async: false,
+
+  /**
+   * UI. <form>.
+   * Disable HTML5 validation with novalidate attribute when instanced on <form>.
+   * @type {Boolean}
+   */
+  disableHTML5Validation: false,
+
+  /**
+   * UI. <form>.
    * HTML tag classes to add to specific elements in form on error.
    * @type {Object}
    */
   classes: {
     error: {
+      form: '',
       label: '',
       input: '',
       display: ''
     }
   },
-
-  /**
-   * Enable asynchronous validations.
-   * @type {Boolean}
-   */
-  async: false,
 
   /**
    * When a map of fields is created out of a form, should it be converted to a
@@ -195,12 +203,12 @@ const settings = {
       return this.msgs.defaults[id];
     }
 
-    // general
+    // locale general
     else if (this.msgs[this.locale].general) {
       return this.msgs[this.locale].general;
     }
 
-    // default
+    // default general
     else {
       return this.msgs.defaults.general;
     }

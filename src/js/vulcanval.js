@@ -1,45 +1,21 @@
-const extend =    require('extend');
-const validator = require('validator');
+const log = require('./log');
+const utils = require('./utils');
+const vulcanval = require('./main');
+const plugin = require('./plugin/plugin');
+const localeEN = require('./localization/en');
 
-const settings =      require('./settings');
-const log =           require('./log');
-const rawValidation = require('./rawValidation');
-const convertMapTo =  require('./convertMapTo');
-const validateMap =   require('./validateMap');
-const validateField = require('./validateField');
-const localeEN =      require('./localization/en');
-
-const vulcanval = {
-
-  validator,
-  rawValidation,
-  convertMapTo,
-  validateField,
-  validateMap,
-
-  extendLocale (locale) {
-    settings.msgs[locale.id] = extend(true, {}, settings.msgs[locale.id], locale.msgs);
-  },
-
-  setLocale (locale) {
-    if (!settings.msgs[locale]) {
-      return log.error(`the locale "${locale}" does not exist`);
-    }
-    settings.locale = locale;
-  },
-
-  addValidator (name, validator) {
-    settings.validators[name] = validator;
-  },
-
-  debug (isDebug) {
-    if (isDebug !== undefined) {
-      log.settings.scale = isDebug ? 10 : 2;
-    }
-  }
-};
-
+// Install the English language.
 vulcanval.extendLocale(localeEN);
 vulcanval.setLocale('en');
+
+// Expose the public API.
+if (!utils.isNodejs) {
+  if (window.jQuery) {
+    window.jQuery.vulcanval = vulcanval;
+    window.jQuery.fn.vulcanval = plugin;
+  } else {
+    log.error('jQuery is required to perform operations');
+  }
+}
 
 module.exports = vulcanval;

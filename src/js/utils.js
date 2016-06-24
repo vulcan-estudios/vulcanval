@@ -1,5 +1,18 @@
 module.exports = {
 
+  /**
+   * Is the environment Node.js?
+   * Snippet source: https://github.com/iliakan/detect-node
+   * @type {Boolean}
+   */
+  isNodejs: (function () {
+    var isNodejs = false;
+    try {
+      isNodejs = Object.prototype.toString.call(global.process) === '[object process]';
+    } catch(e) {}
+    return isNodejs;
+  })(),
+
   walkObject (obj, callback, context) {
 
     if (!context) context = obj;
