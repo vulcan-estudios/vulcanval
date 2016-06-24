@@ -159,6 +159,22 @@ describe('Method validateField()', function () {
 
   describe('General', function () {
 
+    it('Field with an invalid validation definition should throw error', function () {
+      assert.throws(function () {
+        vulcanval.validateField('fieldName', {
+          fieldName: 'a value'
+        }, {
+          fields: [
+            {
+              name: 'aProperField',
+              required: true
+            },
+            'this will trigger the error'
+          ]
+        });
+      });
+    });
+
     it('Field without validators', function () {
       field = 'notFoundField';
       fields[field] = '';
