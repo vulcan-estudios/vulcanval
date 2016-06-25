@@ -1,3 +1,4 @@
+const del =          require('del');
 const gulp =         require('gulp');
 const rename =       require('gulp-rename');
 const gutil =        require('gulp-util');
@@ -7,6 +8,8 @@ const uglify =       require('gulp-uglify');
 const sass =         require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
 const cleanCSS =     require('gulp-clean-css');
+const sassdoc =      require('sassdoc');
+const jsdoc =        require('gulp-jsdoc3');
 
 
 gulp.task('browserify', function () {
@@ -71,12 +74,39 @@ gulp.task('sass-compress', ['sass'], function () {
     }));
 });
 
-gulp.task('doc-js', function () {
-  // TODO:
+// JS docs.
+gulp.task('doc-js-clean', function () {
+  return del(['./doc/js']);
+});
+gulp.task('doc-js', ['doc-js-clean'], function (cb) {
+  const config = {
+    opts: {
+      destination: './doc/js'
+    },
+    plugins: [
+      'plugins/markdown'
+    ]
+  };
+  gulp.src(['./doc/js-intro.md', './src/js/**/*.js'], {
+    read: false
+  })
+  .pipe(jsdoc(config, cb));
 });
 
-gulp.task('doc-sass', function () {
-  // TODO:
+// SASS docs.
+gulp.task('doc-sass-clean', function () {
+  return del(['./doc/sass']);
+});
+gulp.task('doc-sass', ['doc-sass-clean'], function () {
+  return gulp.src('./src/scss/**/*.scss')
+    .pipe(sassdoc({
+      dest: './doc/sass',
+      basePath: 'https://github.com/vulcan-estudios/vulcanval/tree/master',
+      descriptionPath: './doc/sass-intro.md',
+      display: {
+        access: ['public']
+      }
+    }));
 });
 
 
