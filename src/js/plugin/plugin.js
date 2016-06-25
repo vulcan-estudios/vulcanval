@@ -1,13 +1,36 @@
-const isValid =       require('./isValid');
-const validate =      require('./validate');
 const inspect =       require('./inspect');
-const getMap =        require('./getMap');
+const validate =      require('./validate');
 const forceValid =    require('./forceValid');
 const forceInvalid =  require('./forceInvalid');
+const getMap =        require('./getMap');
 
-const methods = { isValid, validate, inspect, getMap, forceValid, forceInvalid };
+const methods = { inspect, validate, forceValid, forceInvalid, getMap };
 
-jQuery.fn.vulcanval = function (settings) {
+/**
+ * @summary jQuery plugin to set the validators in forms.
+ *
+ * @description
+ * Defines validation functionalities over form elements.
+ *
+ * This can be instantiated on any form element with a valid attribute `name`,
+ * except the `<form>`:
+ *
+ * - `<form>`
+ * - `<input>` with `type` different than `submit` and `button`
+ * - `<textarea>`
+ * - `<select>`
+ *
+ * Also, the plugin can be instantiated on any element with a valid input name in
+ * attribute `data-vv-name` which will be treated as a normal `<input>`. This is
+ * useful to create custom fields/entries.
+ *
+ * @function external:"jQuery.fn".vulcanval
+ *
+ * @param  {settings} settings - Instance settings. This is used to configure the
+ * whole validation process.
+ * @return {external:jQuery} The same jQuery object.
+ */
+module.exports = function (settings) {
 
   if (typeof settings === 'string') {
     if (methods[settings]) {
