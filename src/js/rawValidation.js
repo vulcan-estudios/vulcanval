@@ -3,14 +3,27 @@ const validator = require('validator');
 const log = require('./log');
 const utils = require('./utils');
 
-// @private
+/**
+ * vulcanval.rawValidation()
+ *
+ * @private
+ *
+ * @param  {Object} conf
+ * @param  {Object} conf.field
+ * @param  {String} conf.field.name
+ * @param  {*}      conf.field.value
+ * @param  {settings} conf.settings
+ * @param  {utilityContext} conf.context
+ *
+ * @return {String|Boolean} `false` if invalid, otherwise the error message.
+ */
 module.exports = function (conf) {
-
-  log.debug(`validateField: ${conf.field.name}=${conf.field.value}`);
 
   if (typeof conf !== 'object') {
     return log.error('parameter must be an object');
   }
+
+  log.debug(`validating field ${conf.field.name}="${conf.field.value}"`);
 
   const field = conf.field;
   const settings = conf.settings;
@@ -25,7 +38,7 @@ module.exports = function (conf) {
 
   if (!field.rules) {
     log.warn('field to validate does not have validators');
-    return true;
+    return false;
   }
 
   // If the value is boolean, we don't go until validators.
@@ -38,12 +51,12 @@ module.exports = function (conf) {
 
   // disabled
   if (field.rules.disabled) {
-    return true;
+    return false;
   }
 
   // condition
   if (field.rules.onlyIf && !field.rules.onlyIf.call(context, field.value)) {
-    return true;
+    return false;
   }
 
   // Get a message according to error and error parameters.
@@ -70,7 +83,7 @@ module.exports = function (conf) {
   if (field.rules.required) {
     if (field.type === 'boolean') {
       if (field.value) {
-        return true;
+        return false;
       } else {
         err = getMsg();
       }
@@ -80,17 +93,21 @@ module.exports = function (conf) {
     }
   } else {
     if (field.value === '' || field.type === 'boolean') {
-      return true;
+      return false;
     }
   }
 
   utils.everyInObject(field.rules.validators, function (val, valName) {
 
     // There is already an error.
-    if (err) return false;
+    if (err) {
+      return true;
+    }
 
     // Validator disabled.
-    if (val === false) return false;
+    if (val === false) {
+      return true;
+    }
 
     var hasMsg, pattern;
 
@@ -148,5 +165,7 @@ module.exports = function (conf) {
     }
   });
 
-  return err ? err : true;
+  log.info(`invalid field ${conf.field.name}="${conf.field.value}":`, err);
+
+  return !err ? false : err;
 };

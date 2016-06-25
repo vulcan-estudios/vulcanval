@@ -6,6 +6,60 @@ const utils =         require('./utils');
 const convertMapTo =  require('./convertMapTo');
 const rawValidation = require('./rawValidation');
 
+/**
+ * Validate provided data map using the provided validation settings and get an
+ * object describing each field error if there are.
+ *
+ * @static
+ * @method module:vulcanval.validateMap
+ *
+ * @param  {map} map - The data map.
+ * @param  {settings} settings - The validation settings.
+ *
+ * @return {Boolean|Object} If the map is valid, `false` will be returned. Otherwise
+ * there will be an object describing each field error as a plain map with its
+ * keys as the fields names even if the property {@link settings.enableNestedMaps}
+ * is enabled. Use the {@link vulcanval.convertMapTo} method if needed.
+ *
+ * @example
+ * const map = {
+ *   name: 'Romel',
+ *   age: 22,
+ *   likesPumpkin: false
+ * };
+ *
+ * const settings = {
+ *   fields: [{
+ *     name: 'name',
+ *     required: true,
+ *     validators: {
+ *       isAlphanumeric: 'en-US',
+ *       isLowercase: true
+ *     }
+ *   }, {
+ *     name: 'age',
+ *     validators: {
+ *       isInt: { min: 1, max: 500 }
+ *     }
+ *   }, {
+ *     name: 'likesPumpkin',
+ *     required: true
+ *   }]
+ * };
+ *
+ * const result = vulcanval.validateMap(map, settings);
+ * console.log(result);
+ * // {
+ * //   name: 'This field should only contain lowercase text.',
+ * //   likesPumpkin: 'Please fill out this field.'
+ * // }
+ *
+ * map.name = 'romel';
+ * map.likesPumpkin = true;
+ * const result2 = vulcanval.validateMap(map, settings);
+ * console.log(result2);
+ * // false
+ */
 module.exports = function (map, customSettings) {
 
   if (typeof map !== 'object') {
@@ -33,7 +87,7 @@ module.exports = function (map, customSettings) {
 
   customSettings.fields.forEach(function (field) {
 
-    const isValidField = rawValidation({
+    const err = rawValidation({
       field: {
         name: field.name,
         value: map[field.name]
@@ -42,11 +96,9 @@ module.exports = function (map, customSettings) {
       context
     });
 
-    if (isValidField === true) {
-      return true;
-    } else {
-      log.debug(`invalid field name="${field.name}" with value=${map[field.name]}:`, isValidField.msg);
-      errors[field.name] = isValidField;
+    if (err) {
+      log.debug(`invalid field name="${field.name}" with value=${map[field.name]}:`, err);
+      errors[field.name] = err;
     }
   });
 

@@ -1,54 +1,85 @@
 const extend = require('extend');
 const utils = require('./utils');
 
+/**
+ * @namespace settings
+ * @type {Object}
+ *
+ * @description
+ * vulcanval validation settings by default.
+ *
+ * When using validation methods you have to pass an object settings to
+ * configure the validation process which will overwrite this settings used by
+ * default.
+ */
 const settings = {
 
   /**
-   * UI. Overwritten by field.
+   * Only client-side. Overwritten by {@link fieldSettings}.
+   *
    * What event to listen to trigger the first validation on fields.
+   *
    * @type {String}
+   * @default 'blur change'
    */
   firstValidationEvent: 'blur change',
 
   /**
-   * UI. Overwritten by field.
+   * Only client-side. Overwritten by {@link fieldSettings}.
+   *
    * After first validation, what events to listen to re-validate fields.
+   *
    * @type {String}
+   * @default 'input blur change'
    */
   validationEvents: 'input blur change',
 
   /**
-   * UI. Overwritten by field.
+   * Only client-side. Overwritten by {@link fieldSettings}.
+   *
    * Validate field elements on instance time.
+   *
    * @type {Boolean}
+   * @default false
    */
   autostart: false,
 
   /**
-   * UI. Overwritten by field.
+   * Only client-side. Overwritten by {@link fieldSettings}.
+   *
    * When a field is validated, don't show changes visually nor show messages.
    * This is used to know whether they are valid or not, update the fields
    * elements states and trigger events.
+   *
    * @type {Boolean}
+   * @default false
    */
   intern: false,
 
   /**
-   * UI. <form>.
+   * Only client-side. Only for `<form>`.
+   *
    * Enable asynchronous validations. The UI API will behave differently.
+   *
    * @type {Boolean}
+   * @default false
    */
   async: false,
 
   /**
-   * UI. <form>.
-   * Disable HTML5 validation with novalidate attribute when instanced on <form>.
+   * Only client-side. Only for `<form>`.
+   *
+   * Disable HTML5 validation with novalidate attribute when instanced on `<form>`.
+   * This is enabled if attribute "novalidate" is present.
+   *
    * @type {Boolean}
+   * @default false
    */
   disableHTML5Validation: false,
 
   /**
-   * UI. <form>.
+   * Only client-side. Only for `<form>`.
+   *
    * HTML tag classes to add to specific elements in form on error.
    * @type {Object}
    */
@@ -63,38 +94,43 @@ const settings = {
 
   /**
    * When a map of fields is created out of a form, should it be converted to a
-   * map of nested fields or only plain fields.
+   * map of nested fields or only plain fields?
+   *
+   * Validation methods use this property to convert data {@link map maps} from
+   * nested maps to plain maps when this property is enabled.
+   *
    * @type {Boolean}
    *
    * @example
-   * ```html
-   * <form>
-   *  <input name="field1" />
-   *  <input name="map1.field2" />
-   *  <input name="map1.field3" />
-   *  <input name="map2.field4" />
-   * </form>
-   * ```
+   * // Using a form like this:
+   * // <form>
+   * //  <input name="field1" />
+   * //  <input name="map1.field2" />
+   * //  <input name="map1.field3" />
+   * //  <input name="map2.field4" />
+   * // </form>
    *
-   * ```js
-   * const map = $('form').vulcanval('map');
-   * ```
+   * const map = $('form').vulcanval('getMap');
    *
-   * If nested maps are enabled, the map object will have this value:
-   * ```json
-   * { field1: '', map1: { field2: '', field3: '' }, map2: { field4: '' } }
-   * ```
+   * // If nested maps are enabled, the map object will have this value:
+   * // { field1: '', map1: { field2: '', field3: '' }, map2: { field4: '' } }
    *
-   * Otherwise:
-   * ```json
-   * { field1: '', 'map1.field2': '', 'map1.field3': '', 'map2.field4': '' }
-   * ```
+   * // Otherwise:
+   * // { field1: '', 'map1.field2': '', 'map1.field3': '', 'map2.field4': '' }
+   *
+   * @see {@link external:"jQuery.fn".vulcanval}
    */
   enableNestedMaps: false,
 
   /**
    * List of custom validators.
+   *
+   * @see To add new custom validators {@link module:vulcanval.addValidator vulcanval.addValidator}.
    * @type {Object}
+   *
+   * @property {Function} isEqualToField - This field value has to be the same as
+   * another field the form. The name of the comparing field should be set as a
+   * string parameter.
    */
   validators: {
     isEqualToField (value, opts) {
@@ -104,14 +140,102 @@ const settings = {
 
   /**
    * Default messages locale.
+   *
    * @type {String}
+   * @default 'en'
    */
   locale: 'en',
 
   /**
-   * Validators messages. If a validator does not have a message for a locale,
-   * it will be search in the `defaults` "locale".
+   * Validators messages formats. This is an a plain object with keys as validator
+   * names and values as messages formats. The messages can be configured by
+   * locale otherwise the messages will be for the validator regardless the
+   * locale configured.
+   *
+   * If a validator does not have a message for a locale, it will be search in this order:
+   *
+   * - `general` message in locale
+   * - locale `defaults`
+   * - `general` message in `defaults` locale
+   *
+   * The formats can have some variables expressed as `{{var}}` where `var` is the
+   * variable name.
+   *
+   * - The variable `{{value}}` is always present to use.
+   * - The variable `{{option}}` can be used when the validator is configured
+   *   with an string. Ex: in validator `isAlphanumeric: 'de-DE'`, the
+   *   variable will have the `de-DE` value.
+   * - If the validator is configured with an object, then its properties are
+   *   available as variables. Ex: in `isInt: {min:4, max:8}`, `{{min}}` and `{{max}}`
+   *   will be available as variables in the message.
+   *
+   * There is one exception, the validator `isLength` can have an specific message
+   * for its two properties to configure, min and max values. Other validators only
+   * have messages regardless the properties passes to it. See examples.
+   *
+   * Also, the order of validator messages on errors can vary.
+   *
    * @type {Object}
+   * @default {}
+   *
+   * @example
+   * const map = {
+   *   username: 'Romel Pérez',
+   *   age: 720
+   * };
+   *
+   * const settings = {
+   *
+   *   locale: 'es',
+   *   msgs: {
+   *
+   *     // Used regardless the locale.
+   *     isAlphanumeric: 'Debe ser alfanumérico en local "{{option}}".',
+   *
+   *     // Configured by locale.
+   *     isInt: {
+   *       en: 'Value "{{value}}" must be a integer number.',
+   *       es: 'Valor "{{value}}" debe ser número entero.'
+   *     },
+   *
+   *     // This is an special case. We can configure by properties only in this validator.
+   *     isLength: {
+   *
+   *       // We can configure a global message when the validator fails in this property.
+   *       min: 'Mínimo valor: {{min}}.',
+   *
+   *       // And we can configure by locale too.
+   *       max: {
+   *         en: 'Maximum value: {{max}}.',
+   *         es: 'Máximo valor: {{max}}.'
+   *       }
+   *     }
+   *   },
+   *
+   *   fields: [{
+   *     name: 'username',
+   *     validators: {
+   *       isAlphanumeric: 'en-GB',
+   *       isLength: { min: 4, max: 16 },
+   *       isLowercase: true  // If this fails, the default message will be used
+   *     }
+   *   }, {
+   *     name: 'age',
+   *     validators: {
+   *       isInt: { max: 500 }
+   *     }
+   *   }]
+   * };
+   *
+   * let usernameValid = vulcanval.validateField('username', map, settings);
+   * console.log(usernameValid); // 'Debe ser alfanumérico en local "en-GB".'
+   *
+   * map.username = 'rp';
+   * usernameValid = vulcanval.validateField('username', map, settings);
+   * console.log(usernameValid); // 'Mínimo valor: 4.'
+   *
+   * let ageValid = vulcanval.validateField('age', map, settings);
+   * console.log(ageValid); // 'Valor "720" debe ser número entero.'
    */
   msgs: {
     defaults: {}
@@ -119,47 +243,74 @@ const settings = {
 
   /**
    * The form fields to configure.
+   *
    * @type {Array}
+   * @default [ ]
    */
   fields: [],
 
   /**
    * Extend settings.
+   *
    * @private
    * @param  {Object} custom - Extend this settings with this paramter.
-   * @return {Object} - Extended settings.
+   * @return {Object} Extended settings.
    */
   extend (custom) {
 
     custom = extend(true, {}, custom);
 
-    const locales = [];
-    utils.walkObject(this.msgs, function (msgs, locale) {
-      if (locale !== 'defaults') locales.push(locale);
-    });
-
     // Interpolate messages by validator to messages by locale.
     if (custom.msgs) {
+
+      const locales = [];
+      utils.walkObject(this.msgs, function (msgs, locale) {
+        if (locale !== 'defaults') locales.push(locale);
+      });
+
       const msgs = custom.msgs;
       const newMsgs = {};
 
+      const setMsgInLocale = (locale, name, msg) => {
+        if (!newMsgs[locale]) newMsgs[locale] = {};
+        newMsgs[locale][name] = msg;
+      };
+      const setMsgAsDefault = (name, msg) => {
+
+        // A default message will be set as the only one to search.
+        if (!newMsgs.defaults) newMsgs.defaults = {};
+        newMsgs.defaults[name] = msg;
+
+        // Locale messages will be set to empty.
+        locales.forEach(function (locale) {
+          if (!newMsgs[locale]) newMsgs[locale] = {};
+          newMsgs[locale][name] = null;
+        });
+      };
+
       utils.walkObject(msgs, function (messages, validatorName) {
+
+        // Messages for properties in validator.
+        // At the moment, only isLength works this way.
+        if (validatorName === 'isLength') {
+          const properties = messages;
+          utils.walkObject(properties, function (value, property) {
+            if (typeof value === 'object') {
+              utils.walkObject(value, function (message, locale) {
+                setMsgInLocale(locale, `${validatorName}.${property}`, message);
+              });
+            } else {
+              setMsgAsDefault(`${validatorName}.${property}`, value);
+            }
+          });
+        }
+
         if (typeof messages === 'object') {
           utils.walkObject(messages, function (message, locale) {
-            if (!newMsgs[locale]) newMsgs[locale] = {};
-            newMsgs[locale][validatorName] = message;
+            setMsgInLocale(locale, validatorName, message);
           });
         } else {
-
-          // A default message will be set as the only one to search.
-          if (!newMsgs.defaults) newMsgs.defaults = {};
-          newMsgs.defaults[validatorName] = messages;
-
-          // Locale messages will be set to empty.
-          locales.forEach(function (locale) {
-            if (!newMsgs[locale]) newMsgs[locale] = {};
-            newMsgs[locale][validatorName] = null;
-          });
+          setMsgAsDefault(validatorName, messages);
         }
       });
 
@@ -171,32 +322,15 @@ const settings = {
 
   /**
    * Get a message template according to locale.
+   *
    * @private
    * @param  {String} id - Validator identifier.
    * @return {String}
    */
   getMsgTemplate (id) {
 
-    var parts;
-    var subid;
-    var format;
-
-    if (id.indexOf('.') > 0) {
-      parts = id.split('.');
-      id = parts[0];
-      subid = parts[1];
-    }
-
-    // locale with two properties
-    if (subid && this.msgs[this.locale][id][subid]) {
-      return this.msgs[this.locale][id][subid];
-    }
-    else if (subid && this.msgs.defaults[id][subid]) {
-      return this.msgs.defaults[id][subid];
-    }
-
-    // locale with one property
-    else if (this.msgs[this.locale][id]) {
+    // locale with validator
+    if (this.msgs[this.locale] && this.msgs[this.locale][id]) {
       return this.msgs[this.locale][id];
     }
     else if (this.msgs.defaults[id]) {
@@ -204,7 +338,7 @@ const settings = {
     }
 
     // locale general
-    else if (this.msgs[this.locale].general) {
+    else if (this.msgs[this.locale] && this.msgs[this.locale].general) {
       return this.msgs[this.locale].general;
     }
 

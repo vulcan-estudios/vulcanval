@@ -6,6 +6,49 @@ const utils =         require('./utils');
 const convertMapTo =  require('./convertMapTo');
 const rawValidation = require('./rawValidation');
 
+/**
+ * Validate a field in provided data {@link map} using the provided validation {@link settings}.
+ *
+ * @static
+ * @method module:vulcanval.validateField
+ *
+ * @param  {String} fieldName - The field name in data map. If the {@link map} is nested,
+ * the field name is set as in plain map. Ex: `{user: {name: 'romel'}}` will be `'user.name'`.
+ * @param  {map} map - The data map (plain or nested).
+ * @param  {settings} settings - The validation settings.
+ *
+ * @return {Boolean|String} If it is valid, `false` will be returned. Otherwise
+ * there will be an string message describing the error.
+ *
+ * @example
+ * const map = {
+ *   name: 'Romel',
+ *   age: 22,
+ *   likesPumpkin: false
+ * };
+ *
+ * const settings = {
+ *   fields: [{
+ *     name: 'name',
+ *     required: true,
+ *     validators: {
+ *       isAlphanumeric: 'en-US',
+ *       isLowercase: true
+ *     }
+ *   }, {
+ *     name: 'age',
+ *     validators: {
+ *       isInt: { min: 1, max: 500 }
+ *     }
+ *   }]
+ * };
+ *
+ * const nameResult = vulcanval.validateField('name', map, settings);
+ * console.log(nameResult); // 'This field should only contain lowercase text.'
+ *
+ * const ageResult = vulcanval.validateField('age', map, settings);
+ * console.log(ageResult); // false
+ */
 module.exports = function (fieldName, map, customSettings) {
 
   if (typeof map !== 'object') {
@@ -38,10 +81,5 @@ module.exports = function (fieldName, map, customSettings) {
     context
   });
 
-  if (isValidField === true) {
-    return true;
-  } else {
-    log.debug(`invalid field name="${fieldName}" with value=${map[fieldName]}:`, isValidField.msg);
-    return isValidField;
-  }
+  return isValidField;
 };
