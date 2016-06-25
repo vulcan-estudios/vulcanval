@@ -13,10 +13,9 @@ const assert = chai.assert;
 const MSG_EMAIL = 'msg email';
 const MSG_FLOAT_EN = 'msg float en';
 const MSG_FLOAT_ES = 'msg float es';
-const MSG_LENGTH_EN_MIN = 'msg length en min';
-const MSG_LENGTH_EN_MAX = 'msg length en max';
-const MSG_LENGTH_ES_MIN = 'msg length es min';
-const MSG_LENGTH_ES_MAX = 'msg length es max';
+const MSG_LENGTH_MIN = 'msg length en min';
+const MSG_LENGTH_MAX_EN = 'msg length en max';
+const MSG_LENGTH_MAX_ES = 'msg length es max';
 
 const customSettings1 = {
   //default locale: en
@@ -27,13 +26,10 @@ const customSettings1 = {
       es: MSG_FLOAT_ES
     },
     isLength: {
-      en: {
-        min: MSG_LENGTH_EN_MIN,
-        max: MSG_LENGTH_EN_MAX
-      },
-      es: {
-        min: MSG_LENGTH_ES_MIN,
-        max: MSG_LENGTH_ES_MAX
+      min: MSG_LENGTH_MIN,
+      max: {
+        en: MSG_LENGTH_MAX_EN,
+        es: MSG_LENGTH_MAX_ES
       }
     }
   }
@@ -47,13 +43,10 @@ const customSettings2 = {
       es: MSG_FLOAT_ES
     },
     isLength: {
-      en: {
-        min: MSG_LENGTH_EN_MIN,
-        max: MSG_LENGTH_EN_MAX
-      },
-      es: {
-        min: MSG_LENGTH_ES_MIN,
-        max: MSG_LENGTH_ES_MAX
+      min: MSG_LENGTH_MIN,
+      max: {
+        en: MSG_LENGTH_MAX_EN,
+        es: MSG_LENGTH_MAX_ES
       }
     }
   }
@@ -84,11 +77,11 @@ describe('Module settings', function () {
       });
 
       it('Locale message by properties', function () {
-        assert.strictEqual(custom1.msgs.en.isLength.min, MSG_LENGTH_EN_MIN);
-        assert.strictEqual(custom1.msgs.en.isLength.max, MSG_LENGTH_EN_MAX);
+        assert.strictEqual(custom1.msgs.defaults['isLength.min'], MSG_LENGTH_MIN);
+        assert.strictEqual(custom1.msgs.en['isLength.max'], MSG_LENGTH_MAX_EN);
 
-        assert.strictEqual(custom1.msgs.es.isLength.min, MSG_LENGTH_ES_MIN);
-        assert.strictEqual(custom1.msgs.es.isLength.max, MSG_LENGTH_ES_MAX);
+        assert.strictEqual(custom1.msgs.defaults['isLength.min'], MSG_LENGTH_MIN);
+        assert.strictEqual(custom1.msgs.es['isLength.max'], MSG_LENGTH_MAX_ES);
 
         assert.strictEqual(custom1.msgs.defaults.isLength, undefined);
       });
@@ -109,7 +102,7 @@ describe('Module settings', function () {
     });
 
     it('Default message of unknown validator', function () {
-      // validator isMACAddress does not have a message configured yet.
+      // validator isMACAddress does not have a message configured yet in localization packages.
       assert.strictEqual(custom1.getMsgTemplate('isMACAddress'), localeEN.msgs.general);
       assert.strictEqual(custom2.getMsgTemplate('isMACAddress'), localeES.msgs.general);
     });
@@ -130,11 +123,11 @@ describe('Module settings', function () {
     });
 
     it('Updated specific locale message by properties', function () {
-      assert.strictEqual(custom1.getMsgTemplate('isLength.min'), MSG_LENGTH_EN_MIN);
-      assert.strictEqual(custom1.getMsgTemplate('isLength.max'), MSG_LENGTH_EN_MAX);
+      assert.strictEqual(custom1.getMsgTemplate('isLength.min'), MSG_LENGTH_MIN);
+      assert.strictEqual(custom1.getMsgTemplate('isLength.max'), MSG_LENGTH_MAX_EN);
 
-      assert.strictEqual(custom2.getMsgTemplate('isLength.min'), MSG_LENGTH_ES_MIN);
-      assert.strictEqual(custom2.getMsgTemplate('isLength.max'), MSG_LENGTH_ES_MAX);
+      assert.strictEqual(custom2.getMsgTemplate('isLength.min'), MSG_LENGTH_MIN);
+      assert.strictEqual(custom2.getMsgTemplate('isLength.max'), MSG_LENGTH_MAX_ES);
     });
   });
 });

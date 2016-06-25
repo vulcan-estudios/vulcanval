@@ -137,6 +137,22 @@ describe('Method convertMapTo()', function () {
       assert.deepEqual(map, converted);
     });
 
+    it('Already nested object', function () {
+      map = {
+        a: 'str1',
+        b: 150,
+        c: {
+          x: 'str2',
+          y: 'str3'
+        },
+        d: {
+          n: true
+        }
+      };
+      converted = vulcanval.convertMapTo('nested', map);
+      assert.deepEqual(map, converted);
+    });
+
     it('Plain with one level of deep', function () {
       map = {
         a: 'str1',

@@ -49,13 +49,13 @@ const settings = {
       es: MSG_FLOAT
     },
     isLength: {
-      en: {
-        min: 'Too low {{value}}, at least {{min}}.',
-        max: 'Too high {{value}}, at most {{max}}.'
+      min: {
+        en: 'Too low {{value}}, at least {{min}}.',
+        es: MSG_IL_MIN
       },
-      es: {
-        min: MSG_IL_MIN,
-        max: MSG_IL_MAX
+      max: {
+        en: 'Too high {{value}}, at most {{max}}.',
+        es: MSG_IL_MAX
       }
     },
     customVal1: MSG_CUSTOM1,

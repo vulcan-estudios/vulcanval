@@ -178,7 +178,7 @@ describe('Method validateField()', function () {
     it('Field without validators', function () {
       field = 'notFoundField';
       fields[field] = '';
-      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
     });
 
     it('Field with a wrong validator should throw error', function () {
@@ -192,19 +192,19 @@ describe('Method validateField()', function () {
     it('A disabled field should not be validated', function () {
       field = 'bio';
       fields[field] = 'whatever';
-      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
     });
 
     it('Sharing values', function () {
       field = 'shared';
       fields[field] = 'whatever';
-      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
     });
 
     it('Condition disabled', function () {
       field = 'withCondition';
       fields[field] = RULE_USERNAME;
-      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
     });
 
     it('Condition enabled', function () {
@@ -215,7 +215,7 @@ describe('Method validateField()', function () {
 
       field = 'withCondition';
       fields[field] = 'romel@mail.com';
-      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
     });
   });
 
@@ -227,19 +227,19 @@ describe('Method validateField()', function () {
       it('String with length', function () {
         field = 'username';
         fields[field] = 'A random value';
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
 
       it('Number', function () {
         field = 'username';
         fields[field] = -157.978;
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
 
       it('Boolean true', function () {
         field = 'username';
         fields[field] = true;
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
 
       it('Empty string', function () {
@@ -260,7 +260,7 @@ describe('Method validateField()', function () {
       it('Required with true', function () {
         field = 'username';
         fields[field] = true;
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
 
       it('Required with false', function () {
@@ -272,13 +272,13 @@ describe('Method validateField()', function () {
       it('No required with true', function () {
         field = 'age';
         fields[field] = true;
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
 
       it('No required with false', function () {
         field = 'age';
         fields[field] = false;
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
     });
 
@@ -287,31 +287,31 @@ describe('Method validateField()', function () {
       it('Empty string', function () {
         field = 'lastName';
         fields[field] = '';
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
 
       it('String with length', function () {
         field = 'lastName';
         fields[field] = 'a random value';
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
 
       it('Number', function () {
         field = 'lastName';
         fields[field] = -157.978;
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
 
       it('Boolean true', function () {
         field = 'lastName';
         fields[field] = true;
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
 
       it('Boolean false', function () {
         field = 'lastName';
         fields[field] = false;
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
     });
   });
@@ -331,7 +331,7 @@ describe('Method validateField()', function () {
 
       field = 'doubleA';
       fields[field] = 'something AA here';
-      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
 
       field = 'doubleA';
       fields[field] = 'something without that';
@@ -341,7 +341,7 @@ describe('Method validateField()', function () {
     it('Many validators but disabled', function () {
       field = 'hasManyDisabledValidators';
       fields[field] = 'whatever';
-      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
     });
 
     describe('Is required with validators', function () {
@@ -367,7 +367,7 @@ describe('Method validateField()', function () {
       it('Multiples validators and valid', function () {
         field = 'email';
         fields[field] = 'ronelprhone@gmail.com';
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
     });
 
@@ -376,7 +376,7 @@ describe('Method validateField()', function () {
       it('Empty string', function () {
         field = 'password';
         fields[field] = '';
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
 
       it('Value too short should fail', function () {
@@ -400,7 +400,7 @@ describe('Method validateField()', function () {
       it('Valid', function () {
         field = 'password';
         fields[field] = '715458484847';
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
     });
   });
@@ -419,7 +419,7 @@ describe('Method validateField()', function () {
       it('Valid', function () {
         field = 'repeatPassword';
         fields[field] = RULE_PASSWORD;
-        assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+        assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
       });
     });
   });
@@ -435,7 +435,7 @@ describe('Method validateField()', function () {
 
       field = 'fieldUC';
       fields[field] = 'UPPERCASE';
-      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
     });
 
     it('Part 2', function () {
@@ -446,7 +446,7 @@ describe('Method validateField()', function () {
 
       field = 'first4lc';
       fields[field] = 'lowerCASE';
-      assert.strictEqual(vulcanval.validateField(field, fields, settings), true);
+      assert.strictEqual(vulcanval.validateField(field, fields, settings), false);
     });
   });
 });
