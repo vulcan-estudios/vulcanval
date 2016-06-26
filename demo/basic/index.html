@@ -20,13 +20,12 @@
     <h2>Basic demo | jQuery vulcanval</h2>
     <p>Framework agnostic example of a basic form validation process.</p>
 
-    <form novalidate>
+    <form>
 
       <div class="row">
         <div class="col-xs-5">
           <label for="email">Your Email</label>
-          <input id="email" name="email" type="email" placeholder="Your Email"
-                 required maxlength="255" data-vv-display="#email-msgs">
+          <input id="email" name="email" type="email" placeholder="Your Email" data-vv-display="#email-msgs">
           <div id="email-msgs"></div>
         </div>
       </div>
@@ -34,7 +33,7 @@
         <div class="col-xs-5">
           <label for="pass">Your Password</label>
           <input id="pass" name="pass" type="password" placeholder="Your Password"
-                 required maxlength="255" data-vv-display="#pass-msgs">
+                 required minlength="8" data-vv-display="#pass-msgs">
           <div id="pass-msgs"></div>
         </div>
       </div>
@@ -47,11 +46,30 @@
 
     </form>
 
+    <input id="aaa" type="submit" name="fieldName">
+
     <script src="../../lib/jquery-3.0.0.min.js"></script>
     <script src="../../dist/vulcanval.js"></script>
     <script src="./../assets/scripts.js"></script>
     <script>
-      $('form').vulcanval();
+      $('form').vulcanval({
+        disabled: true,
+        disableHTML5Validation: true,
+        fields: [{
+          name: 'email',
+          required: true,
+          validators: {
+            isEmail: true,
+            isLength: { min: 4, max: 32 }
+          }
+        }, {
+          name: 'pass',
+          required: true,
+          validators: {
+            isLength: { min: 4, max: 32 }
+          }
+        }]
+      });
     </script>
   </body>
 </html>
