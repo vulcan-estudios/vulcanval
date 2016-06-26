@@ -1,3 +1,5 @@
+const extend = require('extend');
+
 /**
  * @namespace fieldSettings
  * @type {Object}
@@ -7,6 +9,13 @@
  * configuration.
  */
 const fieldSettings = {
+
+  /**
+   * The field name. This property is always required.
+   *
+   * @type {String}
+   */
+  name: null,
 
   /**
    * Field will be ignored in validation if `true`.
@@ -37,7 +46,6 @@ const fieldSettings = {
    * {@link https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions arrow functions}.
    *
    * @type {Function}
-   * @default null
    */
   onlyIf: null,
 
@@ -54,7 +62,6 @@ const fieldSettings = {
    * package.
    *
    * @type {Object}
-   * @default null
    */
   validators: null,
 
@@ -64,9 +71,9 @@ const fieldSettings = {
    * What event to listen to trigger the first validation on field.
    *
    * @type {String}
-   * @default 'blur change'
+   * @default Inherited from {@link settings}
    */
-  firstValidationEvent: 'blur change',
+  firstValidationEvent: null,
 
   /**
    * Only client-side.
@@ -74,9 +81,9 @@ const fieldSettings = {
    * After first validation, what events to listen to re-validate field.
    *
    * @type {String}
-   * @default 'input blur change'
+   * @default Inherited from {@link settings}
    */
-  validationEvents: 'input blur change',
+  validationEvents: null,
 
   /**
    * Only client-side.
@@ -106,12 +113,41 @@ const fieldSettings = {
    * Only client-side.
    *
    * The element where to set the current field message error. If not specified,
-   * the messages won't be shown on UI.
+   * the messages won't be shown on UI. This is a jQuery selector.
    *
    * @type {external:jQuery}
-   * @default null
    */
   display: null,
+
+  /**
+   * Only client-side.
+   *
+   * Display jQuery element.
+   *
+   * @private
+   * @type {external:jQuery}
+   */
+  $display: null,
+
+  /**
+   * Only client-side.
+   *
+   * jQuery `<label>` elements which have `for` attribute to the field element.
+   *
+   * @private
+   * @type {external:jQuery}
+   */
+  $labels: null,
+
+  /**
+   * Only client-side.
+   *
+   * Field jQuery element.
+   *
+   * @private
+   * @type {external:jQuery}
+   */
+  $el: null,
 
   /**
    * Only client-side.
@@ -151,6 +187,17 @@ const fieldSettings = {
     else if ($field[0].tagName === 'TEXTAREA' || $field[0].tagName === 'SELECT') {
       return $field.val();
     }
+  },
+
+  /**
+   * Extend field settings default configuration.
+   *
+   * @private
+   * @param  {Object} custom
+   * @return {Object}
+   */
+  extend (custom) {
+    return extend(true, {}, this, custom);
   }
 };
 
