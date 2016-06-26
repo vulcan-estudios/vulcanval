@@ -61,6 +61,7 @@ const rawValidation = require('./rawValidation');
  * // false
  */
 module.exports = function (map, customSettings) {
+  'use strict';
 
   if (typeof map !== 'object') {
     return log.error('first parameter (map) must be an object');

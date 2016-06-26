@@ -63,11 +63,9 @@ const toNested = function (map) {
 
     split = prop1.split('.');
 
-    split.forEach(function (str) {
-      if (!str.length) {
-        log.error(`map field name "${prop1}" is invalid`);
-      }
-    });
+    if (!utils.validateFieldName(prop1)) {
+      log.error(`map field name "${prop1}" is invalid`);
+    }
 
     last = split[split.length-1];
     first = prop1.replace('.' + last, '');
@@ -148,6 +146,7 @@ const toPlain = function (map) {
  * @return {Object} The converted object.
  */
 module.exports = function (to, map) {
+  'use strict';
 
   if (typeof map !== 'object') {
     return log.error('second parameter (map) must be an object');

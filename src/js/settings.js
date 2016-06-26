@@ -84,13 +84,29 @@ const settings = {
    * @type {Object}
    */
   classes: {
+    defaults: {
+      form: '',
+      label: '',
+      field: '',
+      display: ''
+    },
     error: {
       form: '',
       label: '',
-      input: '',
+      field: '',
       display: ''
     }
   },
+
+  /**
+   * Only client-side.
+   *
+   * jQuery `<form>` element.
+   *
+   * @private
+   * @type {external:jQuery}
+   */
+  $form: null,
 
   /**
    * When a map of fields is created out of a form, should it be converted to a
@@ -257,6 +273,7 @@ const settings = {
    * @return {Object} Extended settings.
    */
   extend (custom) {
+    'use strict';
 
     custom = extend(true, {}, custom);
 
@@ -328,6 +345,7 @@ const settings = {
    * @return {String}
    */
   getMsgTemplate (id) {
+    'use strict';
 
     // locale with validator
     if (this.msgs[this.locale] && this.msgs[this.locale][id]) {

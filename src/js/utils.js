@@ -1,4 +1,6 @@
-module.exports = {
+const validator = require('validator');
+
+const utils = {
 
   /**
    * Is the environment Node.js?
@@ -81,5 +83,13 @@ module.exports = {
     }
 
     return str;
+  },
+
+  validateFieldName (name) {
+    return name.split('.').every(function (part) {
+      return validator.isAlphanumeric(part) && !validator.isInt(part.charAt(0)) && !!part.length;
+    });
   }
 };
+
+module.exports = utils;

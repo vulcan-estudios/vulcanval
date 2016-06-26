@@ -50,6 +50,7 @@ const rawValidation = require('./rawValidation');
  * console.log(ageResult); // false
  */
 module.exports = function (fieldName, map, customSettings) {
+  'use strict';
 
   if (typeof map !== 'object') {
     return log.error('second parameter (map) must be an object');

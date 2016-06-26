@@ -18,6 +18,7 @@ const utils = require('./utils');
  * @return {String|Boolean} `false` if invalid, otherwise the error message.
  */
 module.exports = function (conf) {
+  'use strict';
 
   if (typeof conf !== 'object') {
     return log.error('parameter must be an object');
