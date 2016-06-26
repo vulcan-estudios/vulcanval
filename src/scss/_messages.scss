@@ -1,0 +1,32 @@
+.vv-form {
+  //
+
+  &.vv-form_error {
+    outline: 1px solid orange;
+  }
+}
+
+.vv-label {
+  //
+
+  &.vv-label_error {
+    color: orange;
+  }
+}
+
+.vv-field {
+  //
+
+  &.vv-field_error {
+    color: orange;
+  }
+}
+
+.vv-display {
+  display: none;
+
+  &.vv-display_error {
+    display: block;
+    color: red;
+  }
+}
