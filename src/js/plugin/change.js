@@ -1,3 +1,5 @@
+const ui = require('./ui');
+
 /**
  * On field change.
  *
@@ -33,7 +35,7 @@ module.exports = function (conf) {
     field.$el.data('vv-valid', false);
 
     if (!field.intern && !settings.intern) {
-      field.$el.html(invalid).addClass('vv-field_error');
+      field.$el.addClass('vv-field_error');
       field.$el.addClass(settings.classes.error.field);
 
       if (field.$display) {
@@ -42,7 +44,7 @@ module.exports = function (conf) {
       }
 
       if (field.$labels) {
-        field.$labels.html(invalid).addClass('vv-label_error');
+        field.$labels.addClass('vv-label_error');
         field.$labels.addClass(settings.classes.error.label);
       }
     }
@@ -67,34 +69,7 @@ module.exports = function (conf) {
     }
   }
 
-  let formUnknown = false;
-  const formValid = settings.fields.every(field => {
-    const state = field.$el.data('vv-valid');
-    if (state === void 0) {
-      formUnknown = true;
-      return true;
-    }
-    if (state === true) {
-      return true;
-    }
-  });
-
-  if (settings.$form) {
-    settings.$form.data({
-      'vv-modified': true,
-      'vv-valid': formUnknown ? void 0 : formValid
-    });
-
-    if (!field.intern && !settings.intern) {
-      if (formUnknown || formValid) {
-        settings.$form.removeClass('vv-form_error');
-        settings.$form.removeClass(settings.classes.error.form);
-      } else {
-        settings.$form.addClass('vv-form_error');
-        settings.$form.addClass(settings.classes.error.form);
-      }
-    }
-  }
+  ui.refreshFormState(settings);
 
   return this;
 };

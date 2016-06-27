@@ -1,5 +1,8 @@
+const log = require('../log');
+const utils = require('../utils');
+
 /**
- * Validate complete `<form>` or specific field in it.
+ * Validate visually complete `<form>` or specific field in it.
  *
  * @function external:"jQuery.fn".vulcanval
  *
@@ -8,11 +11,34 @@
  * @return {external:jQuery} The same jQuery object.
  */
 module.exports = function (fieldName) {
+  'use strict';
 
-  const conf = this.data('vv-config');
-  if (!conf) return this;
+  const settings = this.data('vv-settings');
+  if (!settings) return this;
 
-  // Should focus the first invalid field if there is.
+  if (fieldName) {
+    const field = utils.find(settings.fields, f => f.name === fieldName);
+    if (!field) log.error(`field "${fieldName}" not found`);
+    field.$el.trigger('vv-change');
+    field.$el.trigger('focus');
+  } else {
+
+    let invalid;
+    let first = true;
+
+    settings.fields.forEach(function (field) {
+
+      invalid = field.$el.vulcanval('inspect', field.name);
+
+      if (invalid) {
+        field.$el.trigger('vv-change');
+        if (first) {
+          first = false;
+          field.$el.trigger('focus');
+        }
+      }
+    });
+  }
 
   return this;
 };

@@ -1,3 +1,7 @@
+const log = require('../log');
+const utils = require('../utils');
+const ui = require('./ui');
+
 /**
  * Reset the form validation state.
  *
@@ -8,11 +12,18 @@
  * @return {external:jQuery} The same jQuery object.
  */
 module.exports = function (fieldName) {
+  'use strict';
 
   const settings = this.data('vv-settings');
   if (!settings) return this;
 
-  if (settings.$form) {
+  let field;
+  if (fieldName) {
+    field = utils.find(settings.fields, f => f.name === fieldName);
+    if (!field) log.error(`field "${fieldName}" not found`);
+  }
+
+  if (!field && settings.$form) {
     settings.$form.removeClass('vv-form_error');
     settings.$form.removeClass(settings.classes.error.form);
     settings.$form.data({
@@ -21,31 +32,37 @@ module.exports = function (fieldName) {
     });
   }
 
-  settings.fields.forEach(function (field) {
+  settings.fields.every(function (f) {
 
-    field.$el.removeClass('vv-field_error');
-    field.$el.removeClass(settings.classes.error.field);
+    if (field && field.name !== f.name) return true;
 
-    if (field.$display) {
-      field.$display.removeClass('vv-display_error');
-      field.$display.removeClass(settings.classes.error.display);
+    f.$el.removeClass('vv-field_error');
+    f.$el.removeClass(settings.classes.error.field);
+
+    if (f.$display) {
+      f.$display.removeClass('vv-display_error');
+      f.$display.removeClass(settings.classes.error.display);
     }
 
-    if (field.$labels) {
-      field.$labels.removeClass('vv-label_error');
-      field.$labels.removeClass(settings.classes.error.label);
+    if (f.$labels) {
+      f.$labels.removeClass('vv-label_error');
+      f.$labels.removeClass(settings.classes.error.label);
     }
 
-    field.$el.data({
+    f.$el.data({
       'vv-modified': void 0,
       'vv-valid': void 0
     });
-    field.$el.trigger('vv-modify', {
-      name: field.name,
-      value: field.value(),
+    f.$el.trigger('vv-modify', {
+      name: f.name,
+      value: f.value(),
       valid: void 0
     });
+
+    return true;
   });
+
+  ui.refreshFormState(settings);
 
   return this;
 };
