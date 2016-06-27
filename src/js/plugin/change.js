@@ -11,6 +11,7 @@
  * @return {external:jQuery}
  */
 module.exports = function (conf) {
+  'use strict';
 
   const settings = this.data('vv-settings');
   if (!settings) return this;
@@ -18,28 +19,58 @@ module.exports = function (conf) {
   const field = conf.field;
   const context = field._context;
   const invalid = this.vulcanval('inspect', field.name);
+  const evModify = {
+    name: field.name,
+    value: field.value(),
+    valid: !invalid,
+    msg: invalid
+  };
 
-  // @TODO: Behaviour in async validation.
-  // @TODO: Determine behaviour with intern property.
-  // @TODO: Set states.
-  // @TODO: Trigger custom events.
+  field.$el.data('vv-modified', true);
+  field.$el.trigger('vv-modify', evModify);
 
   if (invalid) {
-    field.$el.data('vv-isValid', false);
-    field.$el.html(invalid).addClass('vv-field_error');
-    if (field.$display) field.$display.html(invalid).addClass('vv-display_error');
+    field.$el.data('vv-valid', false);
+
+    if (!field.intern && !settings.intern) {
+      field.$el.html(invalid).addClass('vv-field_error');
+      field.$el.addClass(settings.classes.error.field);
+
+      if (field.$display) {
+        field.$display.html(invalid).addClass('vv-display_error');
+        field.$display.addClass(settings.classes.error.display);
+      }
+
+      if (field.$labels) {
+        field.$labels.html(invalid).addClass('vv-label_error');
+        field.$labels.addClass(settings.classes.error.label);
+      }
+    }
   }
 
   else {
-    field.$el.data('vv-isValid', true);
-    field.$el.removeClass('vv-field_error');
-    if (field.$display) field.$display.removeClass('vv-display_error');
+    field.$el.data('vv-valid', true);
+
+    if (!field.intern && !settings.intern) {
+      field.$el.removeClass('vv-field_error');
+      field.$el.removeClass(settings.classes.error.field);
+
+      if (field.$display) {
+        field.$display.removeClass('vv-display_error');
+        field.$display.removeClass(settings.classes.error.display);
+      }
+
+      if (field.$labels) {
+        field.$labels.removeClass('vv-label_error');
+        field.$labels.removeClass(settings.classes.error.label);
+      }
+    }
   }
 
   let formUnknown = false;
   const formValid = settings.fields.every(field => {
-    const state = field.$el.data('vv-isValid');
-    if (state === undefined) {
+    const state = field.$el.data('vv-valid');
+    if (state === void 0) {
       formUnknown = true;
       return true;
     }
@@ -48,14 +79,21 @@ module.exports = function (conf) {
     }
   });
 
-  if (formUnknown || formValid) {
-    if (settings.$form) settings.$form.removeClass('vv-form_error');
-  } else {
-    if (settings.$form) settings.$form.addClass('vv-form_error');
-  }
-
   if (settings.$form) {
-    settings.$form.data('vv-isValid', formUnknown ? undefined : formValid);
+    settings.$form.data({
+      'vv-modified': true,
+      'vv-valid': formUnknown ? void 0 : formValid
+    });
+
+    if (!field.intern && !settings.intern) {
+      if (formUnknown || formValid) {
+        settings.$form.removeClass('vv-form_error');
+        settings.$form.removeClass(settings.classes.error.form);
+      } else {
+        settings.$form.addClass('vv-form_error');
+        settings.$form.addClass(settings.classes.error.form);
+      }
+    }
   }
 
   return this;

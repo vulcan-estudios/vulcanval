@@ -24,8 +24,9 @@ const getMap =        require('./getMap');
 const forceValid =    require('./forceValid');
 const forceInvalid =  require('./forceInvalid');
 const change =        require('./change');
+const reset =         require('./reset');
 
-const methods = { inspect, validate, getMap, forceValid, forceInvalid, change };
+const methods = { inspect, validate, getMap, forceValid, forceInvalid, change, reset };
 
 /**
  * @summary jQuery plugin to set the validators in forms.
@@ -80,13 +81,13 @@ module.exports = function (custom) {
   let $fields;
 
   const getAttr = (el, attr) => {
-    return $(el).attr(attr) !== undefined ? $(el).attr(attr) : $(el).data(`vv-${attr}`);
+    return $(el).attr(attr) !== void 0 ? $(el).attr(attr) : $(el).data(`vv-${attr}`);
   };
   const getProp = (el, prop) => {
     const value1 = $(el).prop(prop);
     const value2 = $(el).data(`vv-${prop}`);
     return typeof value1 === 'boolean' || typeof value1 === 'string' ? true :
-      value2 !== undefined ? value2 : undefined;
+      value2 !== void 0 ? value2 : void 0;
   };
 
 
@@ -95,7 +96,7 @@ module.exports = function (custom) {
   //
   const elTag = $el[0].tagName;
   const filter = ($toFilter) => {
-    return $toFilter.filter('input[name][type!=button][type!=submit], select[name], textarea[name], [data-vv-name]');
+    return $toFilter.filter('input[name][type!=button][type!=submit][type!=reset], select[name], textarea[name], [data-vv-name]');
   };
 
   if (elTag === 'FORM') {
@@ -128,9 +129,9 @@ console.log('html fields gathered', $fields);
   if (elTag === 'FORM') {
 
     const disabled = getProp($el, 'disabled');
-    const intern = getAttr($el, 'intern') !== undefined;
-    const autostart = getAttr($el, 'autostart') !== undefined;
-    const novalidate = getAttr($el, 'novalidate') !== undefined;
+    const intern = getAttr($el, 'intern') !== void 0;
+    const autostart = getAttr($el, 'autostart') !== void 0;
+    const novalidate = getAttr($el, 'novalidate') !== void 0;
 
     if (disabled) customSettings.disabled = true;
     if (intern) customSettings.intern = true;
@@ -161,9 +162,9 @@ console.log('html parsed settings', JSON.parse(JSON.stringify(customSettings)));
     const validators = {};
 
     const disabled = getAttr($f, 'disabled');
-    const required = getAttr($f, 'required') !== undefined;
-    const autostart = getAttr($f, 'autostart') !== undefined;
-    const intern = getAttr($f, 'intern') !== undefined;
+    const required = getAttr($f, 'required') !== void 0;
+    const autostart = getAttr($f, 'autostart') !== void 0;
+    const intern = getAttr($f, 'intern') !== void 0;
 
     if (disabled) field.disabled = true;
     if (required) field.required = true;
@@ -233,6 +234,7 @@ console.log('html parsed fields', JSON.parse(JSON.stringify(fields)));
     customSettings.$form = $el;
   }
 
+  // Extend every specific field settings.
   if (customFields) {
     customFields.forEach(cf => {
       const field = utils.find(fields, field => field.name === cf.name);
@@ -248,6 +250,12 @@ console.log('html parsed fields', JSON.parse(JSON.stringify(fields)));
   customSettings = customSettings.extend(custom);
   customSettings.fields = fields;
 
+  // Entire form is disabled.
+  if (customSettings.disabled) {
+    log.warn('complete form is disabled');
+    return $el;
+  }
+
 
 // DEBUG:
 console.log('final settings', customSettings);
@@ -256,7 +264,7 @@ console.log('final settings', customSettings);
   //
   // SET ATTRS FROM SETTINGS
   //
-  if (elTag === 'FORM') {
+  if (customSettings.$form) {
 
     $el.data('vv-settings', customSettings);
 
@@ -296,20 +304,36 @@ console.log('final settings', customSettings);
   //
   // HTML
   //
-  if (customSettings.$form) {
-    customSettings.$form.addClass('vv-form');
+  if (!customSettings.intern) {
+
+    // FORM.
+    if (customSettings.$form) {
+      customSettings.$form.addClass('vv-form');
+      customSettings.$form.addClass(customSettings.classes.defaults.form);
+    }
+
+    // FIELDS.
+    fields.forEach(function (field) {
+
+      if (field.disabled || field.intern) return;
+
+      const id = field.$el.attr('id');
+      if (id) {
+        field.$labels = $(`label[for=${id}]`);
+        field.$labels.addClass('vv-label');
+        field.$labels.addClass(customSettings.classes.defaults.label);
+      }
+
+      field.$el.addClass('vv-field');
+      field.$el.addClass(customSettings.classes.defaults.field);
+
+      if (field.display) {
+        field.$display = field.display && $(field.display);
+        field.$display.addClass('vv-display');
+        field.$display.addClass(customSettings.classes.defaults.display);
+      }
+    });
   }
-
-  fields.forEach(function (field) {
-
-    // TODO: Search field related labels.
-    // TODO: Add custom classes to items.
-
-    field.$display = field.display && $(field.display);
-
-    field.$el.addClass('vv-field');
-    field.$display.addClass('vv-display');
-  });
 
 
   //
@@ -319,17 +343,28 @@ console.log('final settings', customSettings);
     if (ev.replace(/\s/g, '').length) $e.trigger(ev);
   };
 
-  // TODO: form submit and reset events.
-  if (elTag === 'FORM') {
+  // FORM.
+  if (customSettings.$form) {
 
-    customSettings._onSubmit = function (e) {};
-    $el.on('submit', customSettings._onSubmit);
+    customSettings._onSubmit = function (e) {
+      if (customSettings.$form.data('vv-valid') !== true) {
+        e.preventDefault();
+        customSettings.$form.vulcanval('validate');
+        return false;
+      }
+    };
+    customSettings.$form.on('submit', customSettings._onSubmit);
 
-    customSettings._onReset = function (e) {};
-    $el.on('reset', customSettings._onReset);
+    customSettings._onReset = function (e) {
+      customSettings.$form.vulcanval('reset');
+    };
+    customSettings.$form.on('reset', customSettings._onReset);
   }
 
+  // FIELDS.
   fields.forEach(function (field) {
+
+    if (field.disabled) return;
 
     const firstEvent = (field.firstValidationEvent || customSettings.firstValidationEvent) +' vv-change';
     const normalEvent = (field.validationEvents || customSettings.validationEvents) +' vv-change';
