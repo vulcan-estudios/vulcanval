@@ -6,7 +6,7 @@ const utils = require('../utils');
  *
  * @function external:"jQuery.fn".vulcanval
  *
- * @param  {String} validate - With value `validate`.
+ * @param  {String} validate - With value `'validate'`.
  * @param  {String} [fieldName] - Only limite validation to the field.
  * @return {external:jQuery} The same jQuery object.
  */

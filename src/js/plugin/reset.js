@@ -3,11 +3,11 @@ const utils = require('../utils');
 const ui = require('./_ui');
 
 /**
- * Reset the form validation state.
+ * Reset the form or specific field validation state.
  *
  * @function external:"jQuery.fn".vulcanval
  *
- * @param  {String} reset - With value `reset`.
+ * @param  {String} reset - With value `'reset'`.
  * @param  {String} [fieldName] - Only limite reset to specified field.
  * @return {external:jQuery} The same jQuery object.
  */

@@ -10,7 +10,7 @@ const ui = require('./_ui');
  *
  * @function external:"jQuery.fn".vulcanval
  *
- * @param  {String} getMap - With value `getMap`.
+ * @param  {String} getMap - With value `'getMap'`.
  * @return {map} The data {@link map}.
  */
 const getMap = function () {
