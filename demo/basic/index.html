@@ -13,6 +13,10 @@
     .row {
       margin-bottom: 20px;
     }
+    input {
+      margin: 10px 0;
+      padding: 6px;
+    }
     </style>
   </head>
   <body>
@@ -32,28 +36,27 @@
       <div class="row">
         <div class="col-xs-5">
           <label for="pass">Your Password</label>
-          <input id="pass" name="pass" type="password" placeholder="Your Password"
-                 required minlength="8" data-vv-display="#pass-msgs">
+          <input id="pass" name="pass" type="password" placeholder="Your Password" data-vv-display="#pass-msgs">
           <div id="pass-msgs"></div>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-xs-5">
+        <div class="col-xs-2">
           <input type="submit" value="Login">
+        </div>
+        <div class="col-xs-2">
+          <input type="reset" value="Reset">
         </div>
       </div>
 
     </form>
-
-    <input id="aaa" type="submit" name="fieldName">
 
     <script src="../../lib/jquery-3.0.0.min.js"></script>
     <script src="../../dist/vulcanval.js"></script>
     <script src="./../assets/scripts.js"></script>
     <script>
       $('form').vulcanval({
-        disabled: true,
         disableHTML5Validation: true,
         fields: [{
           name: 'email',
@@ -66,6 +69,7 @@
           name: 'pass',
           required: true,
           validators: {
+            isAlphanumeric: true,
             isLength: { min: 4, max: 32 }
           }
         }]
