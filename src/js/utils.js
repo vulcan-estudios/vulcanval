@@ -15,6 +15,17 @@ const utils = {
     return isNodejs;
   })(),
 
+  performInBrowser (isNeeded, fn) {
+    if (!utils.isNodejs) {
+      if (window.jQuery) {
+        fn();
+      }
+      else if (isNeeded) {
+        log.error('jQuery is required to perform operations');
+      }
+    }
+  },
+
   walkObject (obj, callback, context) {
 
     if (!context) context = obj;
