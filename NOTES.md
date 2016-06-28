@@ -1,7 +1,5 @@
 # Notes
 
-- @TODO: Reorganize plugin methods.
-- @TODO: forceValid() and forceInvalid() plugin methods
 - @TODO: Document left methods
 - @TODO: Localization installers builder
 - @TODO: Listen to fields autofill event (https://github.com/tbosch/autofill-event/)
@@ -13,6 +11,11 @@
 
 # Additionals
 
+- A way to validate conditionally in server and client and/or set onlyIf
+  for more than one field. An idea could be "groups" as configuration.
+- In UI, detect fields that listens to changes in other fields to re-validate
+  them as events in themselves. This could be done by recording on its methods (value(),
+  onlyIf() and custom validators)
 - Support for material design, polymer input components and react
 - Tips/infos messages support
 - Warnings messages support
@@ -22,8 +25,3 @@
 - Enable trimming on inputs on event 'input change'
 - Parser values in map
 - Update settings after instance time on elements attributes changes
-- In UI, detect fields that listens to changes in other fields to re-validate
-  them as events in themselves. This could be done by recording on its methods (value(),
-  onlyIf() and custom validators)
-- A way to validate conditionally in server and client and/or set onlyIf
-  for more than one field.
