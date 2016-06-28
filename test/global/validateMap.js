@@ -2,7 +2,7 @@ require('./pre');
 
 const chai =    require('chai');
 const extend =  require('extend');
-const vulcanval = require('../../src/js/vulcanval');
+const vulcanval = require('../../src/js/main');
 
 
 const assert = chai.assert;

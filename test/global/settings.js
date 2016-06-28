@@ -2,7 +2,7 @@ require('./pre');
 
 const chai = require('chai');
 const extend = require('extend');
-const vulcanval = require('../../src/js/vulcanval');
+const vulcanval = require('../../src/js/main');
 const settings = require('../../src/js/settings');
 const localeEN = require('../../src/js/localization/en');
 const localeES = require('../../src/js/localization/es');
