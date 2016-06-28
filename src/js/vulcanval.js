@@ -21,13 +21,9 @@ vulcanval.extendLocale(localeEN);
 vulcanval.setLocale('en');
 
 // Expose the public API.
-if (!utils.isNodejs) {
-  if (window.jQuery) {
-    window.jQuery.vulcanval = vulcanval;
-    window.jQuery.fn.vulcanval = plugin;
-  } else {
-    log.error('jQuery is required to perform operations');
-  }
-}
+utils.performInBrowser(true, function () {
+  window.jQuery.vulcanval = vulcanval;
+  window.jQuery.fn.vulcanval = plugin;
+});
 
 module.exports = vulcanval;
