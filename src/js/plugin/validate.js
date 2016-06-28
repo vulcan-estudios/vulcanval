@@ -10,7 +10,7 @@ const utils = require('../utils');
  * @param  {String} [fieldName] - Only limite validation to the field.
  * @return {external:jQuery} The same jQuery object.
  */
-module.exports = function (fieldName) {
+const validate = function (fieldName) {
   'use strict';
 
   const settings = this.data('vv-settings');
@@ -42,3 +42,5 @@ module.exports = function (fieldName) {
 
   return this;
 };
+
+module.exports = validate;

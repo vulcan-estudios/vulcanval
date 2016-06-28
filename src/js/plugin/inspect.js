@@ -1,3 +1,4 @@
+const log = require('../log');
 const utils = require('../utils');
 const rawValidation = require('../rawValidation');
 
@@ -11,13 +12,14 @@ const rawValidation = require('../rawValidation');
  * @return {Object} A plain object with keys as field names and values with objects
  * describing: `{ * value, Boolean isValid, String [msg] }`.
  */
-module.exports = function (fieldName) {
+const inspect = function (fieldName) {
 
   const settings = this.data('vv-settings');
   if (!settings) return this;
 
   if (fieldName) {
     const field = utils.find(settings.fields, f => f.name === fieldName);
+    if (!field) log.error(`field "${fieldName}" not found`);
     return rawValidation({
       settings,
       context: field._context,
@@ -38,3 +40,5 @@ module.exports = function (fieldName) {
     return Object.keys(errors).length ? errors : false;
   }
 };
+
+module.exports = inspect;

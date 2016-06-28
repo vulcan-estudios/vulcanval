@@ -1,6 +1,6 @@
 const convertMapTo = require('../convertMapTo');
-const fieldSettings = require('./fieldSettings');
-const ui = require('./ui');
+const fieldSettings = require('./_fieldSettings');
+const ui = require('./_ui');
 
 /**
  * Get the data {@link map} extracted from the `<form>`.
@@ -13,7 +13,7 @@ const ui = require('./ui');
  * @param  {String} getMap - With value `getMap`.
  * @return {map} The data {@link map}.
  */
-module.exports = function () {
+const getMap = function () {
   'use strict';
 
   const settings = this.data('vv-settings');
@@ -39,3 +39,7 @@ module.exports = function () {
 
   return map;
 };
+
+getMap.free = true;
+
+module.exports = getMap;
