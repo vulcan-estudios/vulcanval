@@ -43,7 +43,7 @@ const methods = { inspect, validate, reset, getMap };
  * whole validation process.
  * @return {external:jQuery} The same jQuery object.
  */
-module.exports = function (customSettings) {
+const plugin = function (customSettings) {
   'use strict';
 
   if (!this.length) {
@@ -111,3 +111,9 @@ module.exports = function (customSettings) {
 
   return $el;
 };
+
+utils.performInBrowser(true, function () {
+  window.jQuery.fn.vulcanval = plugin;
+});
+
+module.exports = plugin;
