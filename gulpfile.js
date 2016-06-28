@@ -14,13 +14,13 @@ const jsdoc =        require('gulp-jsdoc3');
 
 gulp.task('browserify', function () {
   return browserify({
-    entries: './src/js/vulcanval.js'
+    entries: './src/js/main.js'
   })
   .transform('babelify', {
     presets: ['es2015']
   })
   .bundle()
-  .pipe(source('./src/js/vulcanval.js'))
+  .pipe(source('./src/js/main.js'))
   .pipe(rename({
     dirname: '',
     basename: 'vulcanval'
