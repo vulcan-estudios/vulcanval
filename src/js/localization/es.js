@@ -1,3 +1,5 @@
+const utils = require('../utils');
+
 const lang = {
   id: 'es',
   msgs: {
@@ -20,5 +22,10 @@ const lang = {
     isDivisibleBy: 'El número debe ser divisible por {{option}}.',
   }
 };
+
+utils.performInBrowser(true, function () {
+  vulcanval.extendLocale(lang);
+  vulcanval.setLocale(lang.id);
+});
 
 module.exports = lang;
