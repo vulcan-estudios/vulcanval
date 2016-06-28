@@ -5,13 +5,16 @@
  * @description
  * This is the function context used in some methods/functions in validations
  * processes.
+ *
+ * Currently is available in custom validators functions, onlyIf gates, fields
+ * value methods and this.get().
  */
 const utilityContext = {
 
   /**
-   * Reference to the form element used in jQuery plugin instance.
-   *
    * This is only available on the client side, on server this will be `null`.
+   *
+   * Reference to the form element used in jQuery plugin instance.
    *
    * @type {external:jQuery}
    * @default null
@@ -19,9 +22,9 @@ const utilityContext = {
   $form: null,
 
   /**
-   * Reference to the field used in the specific validation in task.
-   *
    * This is only available on the client side, on server this will be `null`.
+   *
+   * Reference to the field used in the specific validation in task.
    *
    * @type {external:jQuery}
    * @default null

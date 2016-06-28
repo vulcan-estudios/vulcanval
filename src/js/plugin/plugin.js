@@ -37,8 +37,6 @@ const methods = { inspect, validate, getMap, forceValid, forceInvalid, change, r
  * @param  {settings} settings - Instance settings. This is used to configure the
  * whole validation process.
  * @return {external:jQuery} The same jQuery object.
- *
- * @TODO Add event on form submit to block if invalid form and enable in async mode.
  */
 module.exports = function (custom) {
   'use strict';
@@ -82,6 +80,21 @@ module.exports = function (custom) {
   //
   const elTag = $el[0].tagName;
 
+  // API can be instantiated on:
+  // - form
+  // - fields
+  // - custom entries (with data-vv-name attribute)
+
+  // Allow fields types:
+  // - input type text-like
+  // - input type checkbox
+  // - input type radio
+  // - input type hidden (is intern by default)
+  // - input type to exclude: submit, button
+  // - textarea
+  // - select
+  // - custom entries (attr: data-vv-name="")
+
   if (elTag === 'FORM') {
     $fields = ui.filterFields(ui.findFields($el));
   } else {
@@ -98,10 +111,6 @@ module.exports = function (custom) {
       log.error(`the field with attribute name "${name}" is invalid`);
     }
   });
-
-
-// DEBUG:
-console.log('html fields gathered', $fields);
 
 
   //
@@ -124,10 +133,6 @@ console.log('html fields gathered', $fields);
     const locale = getAttr($el, 'locale');
     if (locale) customSettings.locale = locale;
   }
-
-
-// DEBUG:
-console.log('html parsed settings', JSON.parse(JSON.stringify(customSettings)));
 
 
   //
@@ -203,10 +208,6 @@ console.log('html parsed settings', JSON.parse(JSON.stringify(customSettings)));
   });
 
 
-// DEBUG:
-console.log('html parsed fields', JSON.parse(JSON.stringify(fields)));
-
-
   //
   // CREATE SETTINGS
   //
@@ -238,10 +239,6 @@ console.log('html parsed fields', JSON.parse(JSON.stringify(fields)));
     log.warn('complete form is disabled');
     return $el;
   }
-
-
-// DEBUG:
-console.log('final settings', customSettings);
 
 
   //
@@ -379,8 +376,6 @@ console.log('final settings', customSettings);
       field.$el.on(normalEvent, field._onChange);
       trigger(field.$el, 'vv-change');
     };
-
-    // @TODO: Listen to autofill event.
 
     field.$el.on(firstEvent, field._onFirstChange);
 
