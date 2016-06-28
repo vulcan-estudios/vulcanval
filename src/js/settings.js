@@ -103,6 +103,11 @@ const settings = {
    *
    * jQuery `<form>` element.
    *
+   * The form node element saves the jQuery data states:
+   * - {undefined|Boolean} vv-modified - If any field has been modified by the user
+   *   after the validation process has been set. undefined if it's unknown.
+   * - {undefined|Boolean} vv-valid - If all fields are valid. undefined if it's unknown.
+   *
    * @private
    * @type {external:jQuery}
    */
@@ -264,6 +269,36 @@ const settings = {
    * @default [ ]
    */
   fields: [],
+
+  /**
+   * Only client-side.
+   *
+   * Utility context. Makes reference to the {@link utilityContext}.
+   *
+   * @private
+   * @type {Object}
+   */
+  context: null,
+
+  /**
+   * Only client-side. Only for `<form>`.
+   *
+   * On form submit event.
+   *
+   * @private
+   * @type {Function}
+   */
+  onSubmit: null,
+
+  /**
+   * Only client-side. Only for `<form>`.
+   *
+   * On form reset event.
+   *
+   * @private
+   * @type {Function}
+   */
+  onReset: null,
 
   /**
    * Extend settings.
