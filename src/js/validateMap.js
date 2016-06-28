@@ -76,6 +76,7 @@ module.exports = function (map, customSettings) {
     map = convertMapTo('plain', map);
   }
 
+  // Creating the './utilityContext' for this validation.
   const context = {
     validator,
     settings: customSettings,
