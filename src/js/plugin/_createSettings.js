@@ -5,6 +5,7 @@ const fieldSettings = require('./_fieldSettings');
 const ui = require('./_ui');
 
 const createSettings = function ($el, fetched, custom) {
+  'use strict';
 
   // Extend every specific field settings.
   const fetchedFields = fetched.fields || [];

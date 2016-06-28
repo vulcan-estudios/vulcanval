@@ -2,6 +2,7 @@ const utils = require('../utils');
 const ui = require('./_ui');
 
 const setHTML = function (settings) {
+  'use strict';
 
   if (!settings.intern) {
 

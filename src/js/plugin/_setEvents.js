@@ -8,6 +8,7 @@ const trigger = ($e, ev) => {
 };
 
 const setEvents = function (settings) {
+  'use strict';
 
   // Create an utility context. This will be used in all methods using the
   // '../utilityContext.js' format.

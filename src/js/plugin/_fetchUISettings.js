@@ -1,6 +1,7 @@
 const ui = require('./_ui');
 
 const fetchUISettings = function ($el, $fields) {
+  'use strict';
 
   const fetched = {};
   const elTag = $el[0].tagName;
