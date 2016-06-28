@@ -1,6 +1,59 @@
-/// The main color
-$vv-color: #0ff !default;
+/// Animations and transitions time in milliseconds.
+/// @type number
+$vv-animation-time: 300 !default;
 
-/// The secondary color
-/// @access private
-$vv-color-secondary: #222 !default;
+
+/// Label error font color.
+/// @type color
+/// @group label
+$vv-label-error-color: #ec5840 !default;
+
+
+/// Field error font color.
+/// @type color
+/// @group field
+$vv-field-error-color: #0a0a0a !default;
+
+/// Field error border color.
+/// @type color
+/// @group field
+$vv-field-error-border-color: #ec5840 !default;
+
+/// Field error background color.
+/// @type color
+/// @group field
+$vv-field-error-background-color: rgba(236, 88, 64, 0.1) !default;
+
+
+/// Field error :focus font color.
+/// @type color
+/// @group field
+$vv-field-error-focus-color: null !default;
+
+/// Field error :focus border color.
+/// @type color
+/// @group field
+$vv-field-error-focus-border-color: null !default;
+
+/// Field error :focus background color.
+/// @type color
+/// @group field
+$vv-field-error-focus-background-color: null !default;
+
+
+/// Display error font color.
+/// @type color
+/// @group display
+$vv-display-error-color: #ec5840 !default;
+
+/// Display error font weight.
+/// @group display
+$vv-display-error-font-weight: bold !default;
+
+/// Display error for show message.
+/// @group display
+$vv-display-error-animation-show: vvDisplayShow #{$vv-animation-time}ms linear 0s 1 alternate !default;
+
+/// Display error animation for message update.
+/// @group display
+$vv-display-error-animation-update: vvDisplayUpdate #{$vv-animation-time}ms linear 0s 1 alternate !default;

@@ -2,31 +2,46 @@
   //
 
   &.vv-form_error {
-    outline: 1px solid orange;
+    //
   }
 }
 
 .vv-label {
-  //
+  @include vv-transitions;
 
   &.vv-label_error {
-    color: orange;
+    color: $vv-label-error-color;
   }
 }
 
 .vv-field {
-  //
+  @include vv-transitions;
 
-  &.vv-field_error {
-    color: orange;
+  &.vv-field_error:not(:focus) {
+    color: $vv-field-error-color;
+    border-color: $vv-field-error-border-color;
+    background-color: $vv-field-error-background-color;
+  }
+
+  &.vv-field_error:focus {
+    color: $vv-field-error-focus-color;
+    border-color: $vv-field-error-focus-border-color;
+    background-color: $vv-field-error-focus-background-color;
   }
 }
 
 .vv-display {
+  @include vv-transitions;
   display: none;
 
   &.vv-display_error {
     display: block;
-    color: red;
+    color: $vv-display-error-color;
+    font-weight: $vv-display-error-font-weight;
+    animation: $vv-display-error-animation-show;
+  }
+
+  &.vv-display_error-update {
+    animation: $vv-display-error-animation-update;
   }
 }

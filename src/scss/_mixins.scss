@@ -1,0 +1,7 @@
+/// Adds transitions for color, background-color and border-color.
+/// The time used to those transitions is the variable $vv-animation-time.
+@mixin vv-transitions {
+  transition: color #{$vv-animation-time}ms,
+              background-color #{$vv-animation-time}ms,
+              border-color #{$vv-animation-time}ms;
+}
