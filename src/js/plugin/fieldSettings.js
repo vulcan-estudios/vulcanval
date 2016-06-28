@@ -166,6 +166,9 @@ const fieldSettings = {
    */
   value ($field) {
 
+    // By default this should only use in its context the $form and the $field
+    // values.
+
     var type, name;
 
     if ($field[0].tagName === 'INPUT') {

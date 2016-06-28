@@ -38,8 +38,15 @@ const ui = {
     }
 
     return { valid, unknown };
-  }
+  },
 
+  findFields ($form) {
+    return $form.find('input, select, textarea, [data-vv-name]');
+  },
+
+  filterFields ($fields) {
+    return $fields.filter('input[name][type!=button][type!=submit][type!=reset], select[name], textarea[name], [data-vv-name]');
+  }
 };
 
 module.exports = ui;

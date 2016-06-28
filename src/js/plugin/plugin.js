@@ -1,22 +1,8 @@
-// @TODO:
-// - validate and set the target
-//  - form
-//  - input-like
-//  - parameter
-// - fetch all fields
-// - get HTML fields validators
-// - extend settings from base, HTML and JS
-// - set initial states
-// - set events and detect changes according to DOM
-//  - execute validation proccesses
-//  - reflect them in UI and states
-//  - propagate custom events
-// - initialize starting methods
-
 const validator =     require('validator');
 const log =           require('../log');
 const utils =         require('../utils');
 const settings =      require('../settings');
+const ui =            require('./ui');
 const fieldSettings = require('./fieldSettings');
 const inspect =       require('./inspect');
 const validate =      require('./validate');
@@ -57,11 +43,11 @@ const methods = { inspect, validate, getMap, forceValid, forceInvalid, change, r
 module.exports = function (custom) {
   'use strict';
 
-  const $el = this.first();
-
   if (!this.length) {
-    return log.error('no elements found');
+    return this;
   }
+
+  const $el = this.first();
 
   if (typeof custom === 'string') {
     if (methods[custom]) {
@@ -95,14 +81,11 @@ module.exports = function (custom) {
   // VALIDATE ELEMENTS
   //
   const elTag = $el[0].tagName;
-  const filter = ($toFilter) => {
-    return $toFilter.filter('input[name][type!=button][type!=submit][type!=reset], select[name], textarea[name], [data-vv-name]');
-  };
 
   if (elTag === 'FORM') {
-    $fields = filter($el.find('input, select, textarea, [data-vv-name]'));
+    $fields = ui.filterFields(ui.findFields($el));
   } else {
-    $fields = filter($el);
+    $fields = ui.filterFields($el);
   }
 
   if (!$fields.length) {

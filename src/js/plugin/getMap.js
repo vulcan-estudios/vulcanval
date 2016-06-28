@@ -1,3 +1,7 @@
+const convertMapTo = require('../convertMapTo');
+const fieldSettings = require('./fieldSettings');
+const ui = require('./ui');
+
 /**
  * Get the data {@link map} extracted from the `<form>`.
  *
@@ -10,13 +14,28 @@
  * @return {map} The data {@link map}.
  */
 module.exports = function () {
+  'use strict';
 
-  // This does not necessarily required the plugin instance.
+  const settings = this.data('vv-settings');
 
-  const conf = this.data('vv-config');
-  if (!conf) return this;
+  let map = {};
 
-  //
+  if (settings) {
+    settings.fields.forEach(function (field) {
+      map[field.name] = field.value();
+    });
+    if (settings.enableNestedMaps) {
+      map = convertMapTo('nested', map);
+    }
+  }
+  else if (this[0].tagName === 'FORM') {
+    const $form = this;
+    ui.filterFields(ui.findFields($form)).each(function (i, field) {
+      const $field = $(field);
+      const name = $field.attr('name') || $field.data('vv-name');
+      map[name] = fieldSettings.value.call({ $form, $field }, $field);
+    });
+  }
 
-  return this;
+  return map;
 };

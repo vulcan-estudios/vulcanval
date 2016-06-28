@@ -19,17 +19,19 @@ module.exports = function (conf) {
   if (!settings) return this;
 
   const field = conf.field;
-  const context = field._context;
   const invalid = this.vulcanval('inspect', field.name);
-  const evModify = {
+
+  const wasInvalid = field.$el.data('vv-valid') === false;
+  const lastMsg = field.$el.data('vv-msg');
+
+  field.$el.data('vv-modified', true);
+  field.$el.data('vv-msg', invalid);
+  field.$el.trigger('vv-modify', {
     name: field.name,
     value: field.value(),
     valid: !invalid,
     msg: invalid
-  };
-
-  field.$el.data('vv-modified', true);
-  field.$el.trigger('vv-modify', evModify);
+  });
 
   if (invalid) {
     field.$el.data('vv-valid', false);
@@ -41,6 +43,11 @@ module.exports = function (conf) {
       if (field.$display) {
         field.$display.html(invalid).addClass('vv-display_error');
         field.$display.addClass(settings.classes.error.display);
+
+        if (wasInvalid && lastMsg !== invalid) {
+          field.$display.removeClass('vv-display_error-update');
+          setTimeout(() => field.$display.addClass('vv-display_error-update'), 0);
+        }
       }
 
       if (field.$labels) {
@@ -58,7 +65,7 @@ module.exports = function (conf) {
       field.$el.removeClass(settings.classes.error.field);
 
       if (field.$display) {
-        field.$display.removeClass('vv-display_error');
+        field.$display.removeClass('vv-display_error vv-display_error-update');
         field.$display.removeClass(settings.classes.error.display);
       }
 
