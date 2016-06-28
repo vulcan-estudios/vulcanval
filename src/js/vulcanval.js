@@ -16,14 +16,12 @@ const vulcanval = require('./main');
 const plugin = require('./plugin/plugin');
 const localeEN = require('./localization/en');
 
+utils.performInBrowser(true, function () {
+  window.jQuery.fn.vulcanval = plugin;
+});
+
 // Install the English language.
 vulcanval.extendLocale(localeEN);
 vulcanval.setLocale('en');
-
-// Expose the public API.
-utils.performInBrowser(true, function () {
-  window.jQuery.vulcanval = vulcanval;
-  window.jQuery.fn.vulcanval = plugin;
-});
 
 module.exports = vulcanval;

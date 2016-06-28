@@ -35,7 +35,7 @@ const validateField = require('./validateField');
  *
  * @module vulcanval
  */
-module.exports = {
+const vulcanval = {
 
   validator,
   rawValidation,
@@ -152,3 +152,9 @@ module.exports = {
     }
   }
 };
+
+utils.performInBrowser(true, function () {
+  window.jQuery.vulcanval = vulcanval;
+});
+
+module.exports = vulcanval;

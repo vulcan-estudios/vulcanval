@@ -15,7 +15,7 @@ const lang = {
     isURL: 'Please type a valid URL address.',
     isDate: 'Please type a valid date.',
     contains: 'This field should contain the text "{{option}}".',
-    isAlphanumeric: 'Please type only alfanumeric characters.',
+    isAlphanumeric: 'Please type only alphanumeric characters.',
     isCreditCard: 'Please type a valid credit card number.',
     isLowercase: 'This field should only contain lowercase text.',
     isUppercase: 'This field should only contain uppercase text.',
@@ -24,8 +24,8 @@ const lang = {
 };
 
 utils.performInBrowser(true, function () {
-  vulcanval.extendLocale(lang);
-  vulcanval.setLocale(lang.id);
+  jQuery.vulcanval.extendLocale(lang);
+  jQuery.vulcanval.setLocale(lang.id);
 });
 
 module.exports = lang;
