@@ -1,6 +1,10 @@
 # vulcanval
 
-> Vulcan Validator, a jQuery plugin for form validations.
+> Vulcan Validator.
+
+A package to validate data objects (possibly extracted from HTML forms) in client and server sides and a customizable jQuery plugin to validate them in realtime.
+
+You can add certain support to browser input autofill with this package [github.com/tbosch/autofill-event](https://github.com/tbosch/autofill-event).
 
 ## Thanks
 
