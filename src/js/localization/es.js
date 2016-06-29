@@ -4,11 +4,9 @@ const lang = {
   id: 'es',
   msgs: {
     general: 'Completa este campo por favor.',
-    isEqual: 'Este campo debe ser igual.',
-    isLength: {
-      min: 'El campo debe contener al menos {{min}} carácteres.',
-      max: 'El campo debe contener un máximo de {{max}} carácteres.'
-    },
+    isEqualToField: 'Este campo debe ser igual.',
+    'isLength.min': 'El campo debe contener al menos {{min}} carácteres.',
+    'isLength.max': 'El campo debe contener un máximo de {{max}} carácteres.',
     isEmail: 'Escribe un correo electrónico válido por favor.',
     isNumeric: 'Escribe un número válido por favor.',
     isInt: 'Escribe un número entero válido por favor.',
