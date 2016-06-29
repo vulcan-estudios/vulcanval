@@ -74,7 +74,8 @@ const utils = {
 
   validateFieldName (name) {
     return name.split('.').every(function (part) {
-      return validator.isAlphanumeric(part) && !validator.isInt(part.charAt(0)) && !!part.length;
+      return /^[-_a-zA-Z0-9]{1,}$/.test(part) &&
+        !validator.isInt(part.charAt(0)) && !!part.length;
     });
   }
 };
