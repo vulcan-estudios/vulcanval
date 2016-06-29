@@ -1,14 +1,3 @@
-# Notes
-
-- @TODO: Document left methods
-- @TODO: Localization installers builder
-- @TODO: Listen to fields autofill event (https://github.com/tbosch/autofill-event/)
-- @TODO: Support async
-- @TODO: cleanMap() method
-- @TODO: Test plugin
-- @TODO: Create demos
-- @TODO: Document introductions, links, examples and guides
-
 # Additionals
 
 - A way to validate conditionally in server and client and/or set onlyIf
