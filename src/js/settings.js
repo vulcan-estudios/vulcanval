@@ -59,16 +59,6 @@ const settings = {
   /**
    * Only client-side. Only for `<form>`.
    *
-   * Enable asynchronous validations. The UI API will behave differently.
-   *
-   * @type {Boolean}
-   * @default false
-   */
-  async: false,
-
-  /**
-   * Only client-side. Only for `<form>`.
-   *
    * Disable HTML5 validation with novalidate attribute when instanced on `<form>`.
    * This is enabled if attribute "novalidate" is present.
    *
