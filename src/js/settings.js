@@ -164,11 +164,8 @@ const settings = {
    * locale otherwise the messages will be for the validator regardless the
    * locale configured.
    *
-   * If a validator does not have a message for a locale, it will be search in this order:
-   *
-   * - `general` message in locale
-   * - locale `defaults`
-   * - `general` message in `defaults` locale
+   * If a validator does not have a message for a locale, it will use the message
+   * `general` in the locale.
    *
    * The formats can have some variables expressed as `{{var}}` where `var` is the
    * variable name.
@@ -384,15 +381,14 @@ const settings = {
     if (this.msgs[this.locale] && this.msgs[this.locale][id]) {
       return this.msgs[this.locale][id];
     }
+    // default with validator
     else if (this.msgs.defaults[id]) {
       return this.msgs.defaults[id];
     }
-
     // locale general
     else if (this.msgs[this.locale] && this.msgs[this.locale].general) {
       return this.msgs[this.locale].general;
     }
-
     // default general
     else {
       return this.msgs.defaults.general;
