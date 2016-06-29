@@ -3,10 +3,11 @@
   "version": "1.0.0-beta",
   "description": "Validate data forms in client and server sides",
   "keywords": [
-    "jquery",
-    "plugin",
     "validation",
-    "form"
+    "form",
+    "forms",
+    "jquery",
+    "plugin"
   ],
   "private": false,
   "author": "Romel Pérez (romelperez.com)",
@@ -42,13 +43,26 @@
     "gulp-sass": "^2.1.0",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
+    "karma": "^1.1.0",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-fixture": "^0.2.6",
+    "karma-html2js-preprocessor": "^1.0.0",
+    "karma-ie-launcher": "^1.0.0",
+    "karma-json-fixtures-preprocessor": "0.0.6",
+    "karma-mocha": "^1.1.1",
+    "karma-phantomjs-launcher": "^1.0.1",
+    "mocha": "^2.5.3",
     "require-dir": "^0.3.0",
     "sassdoc": "^2.1.20",
     "vinyl-source-stream": "^1.1.0"
   },
-  "main": "dist/vulcanval.js",
+  "main": "src/js/main.js",
   "scripts": {
-    "test": "mocha test",
+    "test": "npm run test-server && npm run test-client",
+    "test-server": "NODE_ENV=test mocha test/global",
+    "test-client": "NODE_ENV=test karma start karma.conf.js",
     "doc": "gulp doc",
     "build": "gulp build"
   }
