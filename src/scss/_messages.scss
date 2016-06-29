@@ -36,6 +36,7 @@
 
   &.vv-display_error {
     display: block;
+    margin: $vv-display-error-margin;
     color: $vv-display-error-color;
     font-weight: $vv-display-error-font-weight;
     animation: $vv-display-error-animation-show;
