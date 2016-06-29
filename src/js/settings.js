@@ -1,4 +1,5 @@
 const extend = require('extend');
+const log = require('./log');
 const utils = require('./utils');
 
 /**
@@ -302,13 +303,20 @@ const settings = {
 
     custom = extend(true, {}, custom);
 
+    const locales = [];
+    utils.walkObject(this.msgs, function (msgs, locale) {
+      if (locale !== 'defaults') locales.push(locale);
+    });
+
+    // Validate locale.
+    if (custom.locale) {
+      if (!this.msgs[custom.locale]) {
+        log.error(`locale "${custom.locale}" not found`);
+      }
+    }
+
     // Interpolate messages by validator to messages by locale.
     if (custom.msgs) {
-
-      const locales = [];
-      utils.walkObject(this.msgs, function (msgs, locale) {
-        if (locale !== 'defaults') locales.push(locale);
-      });
 
       const msgs = custom.msgs;
       const newMsgs = {};
