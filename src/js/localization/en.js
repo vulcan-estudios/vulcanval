@@ -1,4 +1,4 @@
-const utils = require('../utils');
+const browser = require('../browser');
 
 const lang = {
   id: 'en',
@@ -23,9 +23,9 @@ const lang = {
   }
 };
 
-utils.performInBrowser(true, function () {
-  jQuery.vulcanval.extendLocale(lang);
-  jQuery.vulcanval.setLocale(lang.id);
+browser.perform(false, function () {
+  window.vulcanval.extendLocale(lang);
+  window.vulcanval.setLocale(lang.id);
 });
 
 module.exports = lang;

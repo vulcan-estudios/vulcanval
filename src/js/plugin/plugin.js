@@ -2,6 +2,7 @@ const validator =     require('validator');
 
 const log =           require('../log');
 const utils =         require('../utils');
+const browser =       require('../browser');
 
 const ui =              require('./_ui');
 const fieldSettings =   require('./_fieldSettings');
@@ -112,7 +113,7 @@ const plugin = function (customSettings) {
   return $el;
 };
 
-utils.performInBrowser(true, function () {
+browser.perform(true, function () {
   window.jQuery.fn.vulcanval = plugin;
 });
 

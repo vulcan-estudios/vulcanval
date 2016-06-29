@@ -3,6 +3,7 @@ const validator =     require('validator');
 const settings =      require('./settings');
 const log =           require('./log');
 const utils =         require('./utils');
+const browser =       require('./browser');
 const rawValidation = require('./rawValidation');
 const convertMapTo =  require('./convertMapTo');
 const cleanMap =      require('./cleanMap');
@@ -44,7 +45,7 @@ const validateField = require('./validateField');
  * const vulcanval = require('vulcanval');
  * ```
  *
- * In browser environments this object is available in {@link external:jQuery.vulcanval jQuery.vulcanval}.
+ * In browser environments this object is available in {@link external:window.vulcanval window.vulcanval}.
  *
  * @module vulcanval
  */
@@ -167,8 +168,8 @@ const vulcanval = {
   }
 };
 
-utils.performInBrowser(true, function () {
-  window.jQuery.vulcanval = vulcanval;
+browser.perform(false, function () {
+  window.vulcanval = vulcanval;
 });
 
 module.exports = vulcanval;

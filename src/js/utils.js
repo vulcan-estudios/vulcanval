@@ -2,30 +2,6 @@ const validator = require('validator');
 
 const utils = {
 
-  /**
-   * Is the environment Node.js?
-   * Snippet source: https://github.com/iliakan/detect-node
-   * @type {Boolean}
-   */
-  isNodejs: (function () {
-    var isNodejs = false;
-    try {
-      isNodejs = Object.prototype.toString.call(global.process) === '[object process]';
-    } catch(e) {}
-    return isNodejs;
-  })(),
-
-  performInBrowser (isNeeded, fn) {
-    if (!utils.isNodejs) {
-      if (window.jQuery) {
-        fn();
-      }
-      else if (isNeeded) {
-        log.error('jQuery is required to perform operations');
-      }
-    }
-  },
-
   walkObject (obj, callback, context) {
 
     if (!context) context = obj;
