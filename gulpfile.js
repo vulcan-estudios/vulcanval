@@ -1,4 +1,5 @@
 const del =          require('del');
+const requireDir =   require('require-dir');
 const gulp =         require('gulp');
 const rename =       require('gulp-rename');
 const gutil =        require('gulp-util');
@@ -13,19 +14,34 @@ const jsdoc =        require('gulp-jsdoc3');
 
 
 gulp.task('browserify', function () {
-  return browserify({
-    entries: './src/js/main.js'
-  })
-  .transform('babelify', {
-    presets: ['es2015']
-  })
-  .bundle()
-  .pipe(source('./src/js/main.js'))
-  .pipe(rename({
-    dirname: '',
-    basename: 'vulcanval'
-  }))
-  .pipe(gulp.dest('./dist'));
+
+  // Browserify files to build.
+  const files = {
+    vulcanval: './src/js/main.js'
+  };
+
+  // Add languages not added to package.
+  const langs = requireDir('./src/js/localization');
+  delete langs.en;
+  Object.keys(langs).forEach(lang => {
+    files[lang] = `./src/js/localization/${lang}.js`;
+  });
+
+  Object.keys(files).forEach(function (file) {
+    browserify({
+      entries: files[file]
+    })
+    .transform('babelify', {
+      presets: ['es2015']
+    })
+    .bundle()
+    .pipe(source(files[file]))
+    .pipe(rename({
+      dirname: '',
+      basename: file
+    }))
+    .pipe(gulp.dest('./dist'));
+  });
 });
 
 gulp.task('browserify-compress', ['browserify'], function () {
