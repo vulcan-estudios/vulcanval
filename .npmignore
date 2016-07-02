@@ -13,7 +13,9 @@ doc
 *.pid
 *.seed
 
+NOTES.md
 gulpfile.js
+karma.conf.js
 .gitignore
 .npmignore
 .editorconfig
