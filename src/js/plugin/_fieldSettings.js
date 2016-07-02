@@ -97,6 +97,8 @@ const fieldSettings = {
   intern: false,
 
   /**
+   * Only client-side.
+   *
    * Ignore field when extracting the data {@link map} from the form.
    *
    * @type {Boolean}
