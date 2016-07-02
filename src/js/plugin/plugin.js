@@ -10,6 +10,7 @@ const fetchUISettings = require('./_fetchUISettings.js');
 const createSettings =  require('./_createSettings');
 const setAttrs =        require('./_setAttrs');
 const setHTML =         require('./_setHTML');
+const setMethods =      require('./_setMethods');
 const setEvents =       require('./_setEvents');
 const change =          require('./_change');
 
@@ -106,6 +107,9 @@ const plugin = function (customSettings) {
 
   // Update form elements.
   setHTML(settings);
+
+  // Set settings methods.
+  setMethods(settings);
 
   // Set elements events.
   setEvents(settings);
