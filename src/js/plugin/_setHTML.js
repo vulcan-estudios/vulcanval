@@ -1,6 +1,11 @@
 const utils = require('../utils');
 const ui = require('./_ui');
 
+/**
+ * Set HTML elements and initial classes.
+ *
+ * @param {settings} settings
+ */
 const setHTML = function (settings) {
   'use strict';
 
