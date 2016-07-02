@@ -14,7 +14,6 @@ const validate = function (fieldName) {
   'use strict';
 
   const settings = this.data('vv-settings');
-  if (!settings) return this;
 
   if (fieldName) {
     const field = utils.find(settings.fields, f => f.name === fieldName);

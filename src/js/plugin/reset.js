@@ -15,7 +15,6 @@ const reset = function (fieldName) {
   'use strict';
 
   const settings = this.data('vv-settings');
-  if (!settings) return this;
 
   let field;
   if (fieldName) {
