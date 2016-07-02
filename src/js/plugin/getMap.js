@@ -22,6 +22,7 @@ const getMap = function () {
 
   if (settings) {
     settings.fields.forEach(function (field) {
+      if (field.ignoreInMap || field.disabled) return;
       map[field.name] = field.value();
     });
     if (settings.enableNestedMaps) {
@@ -31,8 +32,13 @@ const getMap = function () {
   else if (this[0].tagName === 'FORM') {
     const $form = this;
     ui.filterFields(ui.findFields($form)).each(function (i, field) {
+
       const $field = $(field);
       const name = $field.attr('name') || $field.data('vv-name');
+      const isDisabled = $field.prop('disabled');
+
+      if (isDisabled) return;
+
       map[name] = fieldSettings.value.call({ $form, $field }, $field);
     });
   }
