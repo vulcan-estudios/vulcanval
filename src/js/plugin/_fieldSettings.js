@@ -200,7 +200,7 @@ const fieldSettings = {
    * so don't use
    * {@link https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions arrow functions}.
    *
-   * By default this can retrieve the value of `<input>`s of any kind except `submit`
+   * By default this can retrieve the value of `<input>`s of any kind except `submit`, 'reset'
    * and `button`, `<textarea>`s and `<select>`s.
    *
    * You can overwrite this to create your own custom field value getter.
@@ -209,9 +209,6 @@ const fieldSettings = {
    * @return {*} The value returned will depend on the type of element.
    */
   value ($field) {
-
-    // By default this should only use in its context the $form and the $field
-    // values.
 
     var type, name;
 
@@ -224,9 +221,9 @@ const fieldSettings = {
         return $field.prop('checked');
       }
       if (type === 'RADIO') {
-        return this.$form.find(`input[type="radio"][name="${name}"]:checked`).val();
+        return $field.parents('form, body').first().find(`input[type="radio"][name="${name}"]:checked`).val();
       }
-      else if (type !== 'BUTTON' && type !== 'SUBMIT') {
+      else if (type !== 'BUTTON' && type !== 'SUBMIT' && type !== 'RESET') {
         return $field.val();
       }
     }
