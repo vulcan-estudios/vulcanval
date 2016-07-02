@@ -37,19 +37,6 @@ const fieldSettings = {
   required: false,
 
   /**
-   * A condition gate to verify if the field will be validated. Receives
-   * the field value as first parameter and has to return a boolean, if `true`
-   * the validation will procced as normal, otherwise the validation will halt.
-   *
-   * This is a function
-   * with the {@link utilityContext utility context} as function context so don't use
-   * {@link https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions arrow functions}.
-   *
-   * @type {Function}
-   */
-  onlyIf: null,
-
-  /**
    * The validators list. This is an object with keys as the validators names and
    * values as their configuration. If the value is simply a boolean `true`,
    * the validator will be invoked without options. It it is string, number or
@@ -108,6 +95,14 @@ const fieldSettings = {
    * @default false
    */
   intern: false,
+
+  /**
+   * Ignore field when extracting the data {@link map} from the form.
+   *
+   * @type {Boolean}
+   * @default false
+   */
+  ignoreInMap: false,
 
   /**
    * Only client-side.
@@ -183,6 +178,20 @@ const fieldSettings = {
    * @type {Function}
    */
   onChange: null,
+
+  /**
+   * A condition gate to verify if the field will be validated. Receives
+   * the field value as first parameter and has to return a boolean, if `true`
+   * the validation will procced as normal, otherwise the validation will halt.
+   *
+   * This is a function
+   * with the {@link utilityContext utility context} as function context so don't use
+   * {@link https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions arrow functions}.
+   *
+   * @method
+   * @return {Boolean}
+   */
+  onlyIf: null,
 
   /**
    * Only client-side.
