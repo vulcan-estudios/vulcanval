@@ -1,5 +1,14 @@
+const utils = require('../utils');
 const ui = require('./_ui');
 
+/**
+ * Fetch UI elements settings configured as nodes attributes and properties.
+ *
+ * @private
+ * @param  {external:jQuery} $el - Element on instance.
+ * @param  {external:jQuery} $fields - Fields filtered.
+ * @return {settings}
+ */
 const fetchUISettings = function ($el, $fields) {
   'use strict';
 
@@ -37,7 +46,7 @@ const fetchUISettings = function ($el, $fields) {
     const field = { name, $el: $f };
     const validators = {};
 
-    const disabled = ui.getAttr($f, 'disabled');
+    const disabled = ui.getAttr($f, 'disabled') !== void 0;
     const required = ui.getAttr($f, 'required') !== void 0;
     const autostart = ui.getAttr($f, 'autostart') !== void 0;
     const intern = ui.getAttr($f, 'intern') !== void 0;
@@ -73,7 +82,6 @@ const fetchUISettings = function ($el, $fields) {
         if (validators.isFloat === true) validators.isFloat = {};
         validators.isFloat.max = +max;
       }
-      validators.isFloat = isFloat;
     }
 
     if (type === 'email') validators.isEmail = true;
