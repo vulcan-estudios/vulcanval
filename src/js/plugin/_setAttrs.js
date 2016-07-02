@@ -1,6 +1,11 @@
 const utils = require('../utils');
 const ui = require('./_ui');
 
+/**
+ * Set HTML elements attributes according to final settings.
+ *
+ * @param {settings} settings
+ */
 const setAttrs = function (settings) {
   'use strict';
 
@@ -28,9 +33,11 @@ const setAttrs = function (settings) {
             if (val.min) field.$el.attr('minlength', val.min);
             if (val.max) field.$el.attr('maxlength', val.max);
             break;
+
+          // Modifiers/flags in RegExp are not supported in HTML input pattern attr.
           case 'matches':
-            if (val instanceof RegExp) field.$el.attr('pattern', val);
-            else field.$el.attr('pattern', val.pattern);
+            const pattern = val instanceof RegExp ? val : val.pattern;
+            field.$el.attr('pattern', (pattern.toString()).replace(/^\//, '').replace(/\/.{0,3}$/, ''));
             break;
           case 'isFloat':
           case 'isInt':
