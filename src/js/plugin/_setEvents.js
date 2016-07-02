@@ -10,21 +10,6 @@ const trigger = ($e, ev) => {
 const setEvents = function (settings) {
   'use strict';
 
-  // Create an utility context. This will be used in all methods using the
-  // '../utilityContext.js' format.
-  settings.context = {
-    $form: settings.$form,
-    settings,
-    validator
-  };
-  const get = (function (getFieldName) {
-    const getField = utils.find(settings.fields, f => f.name === getFieldName);
-    if (getField) {
-      return getField.value && getField.value();
-    }
-  }).bind(settings.context);
-  settings.context.get = get;
-
   // Form.
   if (settings.$form) {
 
@@ -52,13 +37,8 @@ const setEvents = function (settings) {
     const normalEvent = (field.validationEvents || settings.validationEvents) +' vv-change';
     const initial = typeof field.$el.val() === 'string' && field.$el.val().length;
 
-    // Shortcut to the field value.
-    const context = Object.create(settings.context);
-    context.$field = field.$el;
-    field.value = field.value && field.value.bind(context, field.$el);
-
-    field.onChange = function (e) {
-      change(settings, field, e);
+    field.onChange = function (ev) {
+      change(settings, field, ev);
     };
 
     field.onFirstChange = function (e) {

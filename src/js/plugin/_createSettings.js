@@ -1,9 +1,18 @@
+const validator = require('validator');
 const settings = require('../settings');
 const utils = require('../utils');
 const log = require('../log');
 const fieldSettings = require('./_fieldSettings');
 const ui = require('./_ui');
 
+/**
+ * Create final settings from fetched from UI and provided from user.
+ *
+ * @param  {external:jQuery} $el
+ * @param  {settings} fetched
+ * @param  {settings} custom
+ * @return {settings}
+ */
 const createSettings = function ($el, fetched, custom) {
   'use strict';
 
@@ -42,6 +51,20 @@ const createSettings = function ($el, fetched, custom) {
   if ($el[0].tagName === 'FORM') {
     newSettings.$form = $el;
   }
+
+  // Create an utility context. This will be used in all methods using the
+  // '../utilityContext.js' function context.
+  newSettings.context = {
+    validator,
+    get (getFieldName) {
+      const getField = utils.find(newSettings.fields, f => f.name === getFieldName);
+      if (getField) {
+        return getField.value && getField.value();
+      } else {
+        log.warn(`field "${getFieldName}" not found`);
+      }
+    }
+  };
 
   return newSettings;
 };
