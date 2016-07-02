@@ -39,7 +39,7 @@ const getMap = function () {
 
       if (isDisabled) return;
 
-      map[name] = fieldSettings.value.call({ $form, $field }, $field);
+      map[name] = fieldSettings.value($field);
     });
   }
 
