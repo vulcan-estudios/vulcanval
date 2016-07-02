@@ -27,8 +27,7 @@ const methods = { inspect, validate, reset, getMap };
  * @description
  * Defines validation functionalities over form elements.
  *
- * This can be instantiated on any form element with a valid attribute `name`,
- * except the `<form>`:
+ * This can be instantiated on forms or any form elements with a valid attribute `name`:
  *
  * - `<form>`
  * - `<input>` with `type` different than `submit`, `button` and `reset`
