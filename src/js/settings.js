@@ -251,15 +251,6 @@ const settings = {
   },
 
   /**
-   * A form fields group to configure. By default this will set `ignoreInMap` as
-   * `true` in every field in the group.
-   *
-   * @type {Array}
-   * @default [ ]
-   */
-  groups: [],
-
-  /**
    * The form fields to configure.
    *
    * @type {Array}
