@@ -17,14 +17,13 @@ const rawValidation = require('../rawValidation');
 const inspect = function (fieldName) {
 
   const settings = this.data('vv-settings');
-  if (!settings) return this;
 
   if (fieldName) {
     const field = utils.find(settings.fields, f => f.name === fieldName);
     if (!field) log.error(`field "${fieldName}" not found`);
     return rawValidation({
       settings,
-      context: field._context,
+      context: settings.context,
       field: { name: field.name, value: field.value() }
     });
   }
