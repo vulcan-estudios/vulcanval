@@ -68,9 +68,12 @@ module.exports = function (fieldName, map, customSettings) {
   // Creating the './utilityContext' for this validation.
   const context = {
     validator,
-    settings: customSettings,
     get (name) {
-      return map[name];
+      if (map[name]) {
+        return map[name];
+      } else {
+        log.warn(`field "${name}" not found in map`);
+      }
     }
   };
 
