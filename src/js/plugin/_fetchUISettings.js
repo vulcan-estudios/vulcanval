@@ -88,9 +88,10 @@ const fetchUISettings = function ($el, $fields) {
     if (type === 'url') validators.isURL = true;
     if (type === 'datetime') validators.isDate = true;
 
-    const pattern = ui.getAttr($f, 'pattern');
+    let pattern = ui.getAttr($f, 'pattern');
     const patternMsgs = ui.getAttr($f, 'pattern-msgs');
     if (pattern) {
+      pattern = new RegExp(pattern);
       validators.matches = pattern;
       if (patternMsgs) validators.matches = { pattern, msgs: patternMsgs };
     }
