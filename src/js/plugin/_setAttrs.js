@@ -14,6 +14,8 @@ const setAttrs = function (settings) {
 
   settings.fields.forEach(function (field) {
 
+    if (!field.$el) return;
+
     field.$el.data('vv-settings', settings);
 
     if (field.disabled) field.$el.attr('disabled', 'disabled');

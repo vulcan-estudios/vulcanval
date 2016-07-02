@@ -15,7 +15,7 @@ const setHTML = function (settings) {
     // Fields.
     settings.fields.forEach(function (field) {
 
-      if (field.disabled || field.intern) return;
+      if (!field.$el || field.disabled || field.intern) return;
 
       const id = field.$el.attr('id');
       if (id) {

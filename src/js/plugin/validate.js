@@ -27,6 +27,8 @@ const validate = function (fieldName) {
 
     settings.fields.forEach(function (field) {
 
+      if (!field.$el) return;
+
       invalid = field.$el.vulcanval('inspect', field.name);
 
       if (invalid) {

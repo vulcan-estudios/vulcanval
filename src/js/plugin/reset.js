@@ -25,6 +25,7 @@ const reset = function (fieldName) {
   settings.fields.forEach(function (f) {
 
     if (field && field.name !== f.name) return;
+    if (!f.$el) return;
 
     ui.removeFieldErrorClasses(settings, f);
 
@@ -45,6 +46,7 @@ const reset = function (fieldName) {
   }
 
   settings.fields.every(function (f) {
+    if (!f.$el) return;
     f.$el.trigger('vv-modify', {
       name: f.name,
       value: f.value(),

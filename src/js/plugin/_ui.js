@@ -13,6 +13,8 @@ const ui = {
 
       valid = settings.fields.every(field => {
 
+        if (!field.$el) return true;
+
         state = field.$el.data('vv-valid');
 
         if (state === void 0) {
@@ -76,7 +78,7 @@ const ui = {
 
   addFieldErrorClasses (settings, field) {
 
-    if (!field.intern && !settings.intern) {
+    if (field.$el && !field.intern && !settings.intern) {
 
       field.$el.addClass('vv-field_error');
       field.$el.addClass(settings.classes.error.field);
@@ -95,7 +97,7 @@ const ui = {
 
   updateFieldErrorClasses (settings, field) {
 
-    if (field.$display) {
+    if (field.$el && field.$display) {
       field.$display.removeClass('vv-display_error-update');
       setTimeout(() => field.$display.addClass('vv-display_error-update'), 0);
     }
@@ -103,7 +105,7 @@ const ui = {
 
   removeFieldErrorClasses (settings, field) {
 
-    if (!field.intern && !settings.intern) {
+    if (field.$el && !field.intern && !settings.intern) {
 
       field.$el.removeClass('vv-field_error');
       field.$el.removeClass(settings.classes.error.field);

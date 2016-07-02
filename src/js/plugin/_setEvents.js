@@ -31,7 +31,7 @@ const setEvents = function (settings) {
   // Fields.
   settings.fields.forEach(function (field) {
 
-    if (field.disabled) return;
+    if (!field.$el || field.disabled) return;
 
     const firstEvent = (field.firstValidationEvent || settings.firstValidationEvent) +' vv-change';
     const normalEvent = (field.validationEvents || settings.validationEvents) +' vv-change';
