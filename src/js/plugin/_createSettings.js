@@ -2,7 +2,7 @@ const validator = require('validator');
 const settings = require('../settings');
 const utils = require('../utils');
 const log = require('../log');
-const fieldSettings = require('./_fieldSettings');
+const fieldSettings = require('../fieldSettings');
 const ui = require('./_ui');
 
 /**

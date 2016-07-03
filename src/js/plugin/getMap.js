@@ -1,5 +1,5 @@
 const convertMapTo = require('../convertMapTo');
-const fieldSettings = require('./_fieldSettings');
+const fieldSettings = require('../fieldSettings');
 const ui = require('./_ui');
 
 /**

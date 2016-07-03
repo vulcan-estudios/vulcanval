@@ -3,9 +3,9 @@ const validator =     require('validator');
 const log =           require('../log');
 const utils =         require('../utils');
 const browser =       require('../browser');
+const fieldSettings = require('../fieldSettings');
 
 const ui =              require('./_ui');
-const fieldSettings =   require('./_fieldSettings');
 const fetchUISettings = require('./_fetchUISettings.js');
 const createSettings =  require('./_createSettings');
 const setAttrs =        require('./_setAttrs');
