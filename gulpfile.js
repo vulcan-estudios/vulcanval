@@ -21,10 +21,10 @@ gulp.task('browserify', function () {
   };
 
   // Add languages not added to package.
-  const langs = requireDir('./src/js/localization');
+  const langs = requireDir('./src/js/locale');
   delete langs.en;
   Object.keys(langs).forEach(lang => {
-    files[lang] = `./src/js/localization/${lang}.js`;
+    files[lang] = `./src/js/locale/${lang}.js`;
   });
 
   Object.keys(files).forEach(function (file) {

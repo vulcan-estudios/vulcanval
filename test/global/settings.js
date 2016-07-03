@@ -4,8 +4,8 @@ const chai = require('chai');
 const extend = require('extend');
 const vulcanval = require('../../src/js/main');
 const settings = require('../../src/js/settings');
-const localeEN = require('../../src/js/localization/en');
-const localeES = require('../../src/js/localization/es');
+const localeEN = require('../../src/js/locale/en');
+const localeES = require('../../src/js/locale/es');
 
 
 const assert = chai.assert;

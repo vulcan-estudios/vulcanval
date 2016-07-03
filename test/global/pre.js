@@ -1,5 +1,5 @@
 const vulcanval = require('../../src/js/main');
-const localeES = require('../../src/js/localization/es');
+const localeES = require('../../src/js/locale/es');
 
 vulcanval.debug(1);
 
