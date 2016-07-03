@@ -25,6 +25,7 @@ module.exports = function (isPlain, map, settings) {
   const newMap = {};
 
   settings.fields.forEach(field => {
+    if (field.disabled || field.onlyUI) return;
     newMap[field.name] = map[field.name];
   });
 

@@ -22,7 +22,7 @@ const getMap = function () {
 
   if (settings) {
     settings.fields.forEach(function (field) {
-      if (field.ignoreInMap || field.disabled) return;
+      if (field.onlyUI || field.disabled) return;
       map[field.name] = field.value();
     });
     if (settings.enableNestedMaps) {

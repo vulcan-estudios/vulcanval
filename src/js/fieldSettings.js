@@ -99,12 +99,12 @@ const fieldSettings = {
   /**
    * Only client-side.
    *
-   * Ignore field when extracting the data {@link map} from the form.
+   * Ignore field in validation in server side.
    *
    * @type {Boolean}
    * @default false
    */
-  ignoreInMap: false,
+  onlyUI: false,
 
   /**
    * Only client-side.
