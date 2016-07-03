@@ -6,6 +6,7 @@ const change = require('./_change');
 /**
  * Set settings static methods.
  *
+ * @private
  * @param {settings} settings
  */
 const setMethods = function (settings) {
