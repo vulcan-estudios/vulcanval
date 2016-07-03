@@ -4,6 +4,7 @@ const ui = require('./_ui');
 /**
  * Set HTML elements attributes according to final settings.
  *
+ * @private
  * @param {settings} settings
  */
 const setAttrs = function (settings) {

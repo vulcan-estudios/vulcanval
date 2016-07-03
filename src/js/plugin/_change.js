@@ -3,11 +3,11 @@ const ui = require('./_ui');
 /**
  * On field change.
  *
+ * @private
  * @param  {settings} settings
  * @param  {fieldSettings} field
- * @param  {Object} ev - jQuery event.
  */
-const change = function (settings, field, ev) {
+const change = function (settings, field) {
   'use strict';
 
   const invalid = field.$el.vulcanval('inspect', field.name);

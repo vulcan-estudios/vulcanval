@@ -4,6 +4,7 @@ const ui = require('./_ui');
 /**
  * Set HTML elements and initial classes.
  *
+ * @private
  * @param {settings} settings
  */
 const setHTML = function (settings) {

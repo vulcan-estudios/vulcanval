@@ -18,9 +18,13 @@ const validate = function (fieldName) {
   if (fieldName) {
     const field = utils.find(settings.fields, f => f.name === fieldName);
     if (!field) log.error(`field "${fieldName}" not found`);
+
     field.$el.trigger('vv-change');
+
     field.$el.trigger('focus');
-  } else {
+  }
+
+  else {
 
     let invalid;
     let first = true;
