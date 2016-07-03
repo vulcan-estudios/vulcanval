@@ -139,16 +139,8 @@ const settings = {
    *
    * @see To add new custom validators {@link module:vulcanval.addValidator vulcanval.addValidator}.
    * @type {Object}
-   *
-   * @property {Function} isEqualToField - This field value has to be the same as
-   * another field the form. The name of the comparing field should be set as a
-   * string parameter.
    */
-  validators: {
-    isEqualToField (value, opts) {
-      return value === this.get(opts);
-    }
-  },
+  validators: {},
 
   /**
    * Default messages locale.
