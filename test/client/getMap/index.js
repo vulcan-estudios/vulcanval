@@ -1,7 +1,9 @@
+fixture.setBase('test/client/getMap');
+$(fixture.load('forms.html')).appendTo('body');
+
+
 describe('Method getMap()', function () {
 
-  fixture.setBase('test/client/getMap');
-  $(fixture.load('forms.html')).appendTo('body');
   const formData = fixture.load('forms.json');
 
   it('Get form data without instantiating the plugin', function () {
