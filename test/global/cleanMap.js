@@ -11,7 +11,7 @@ var map, converted, expected, settings;
 
 describe('Method cleanMap()', function () {
 
-  it('Cleaning a plain map', function () {
+  it('Cleaning a plain map (with disabled and ignored fields)', function () {
     map = {
       a: 1,
       b: true,
@@ -32,7 +32,13 @@ describe('Method cleanMap()', function () {
     };
     settings = {
       fields: [{
+        name: 'a',
+        onlyUI: true
+      }, {
         name: 'b'
+      }, {
+        name: 'c',
+        disabled: true
       }, {
         name: 'd'
       }, {
@@ -43,7 +49,7 @@ describe('Method cleanMap()', function () {
     assert.deepEqual(converted, expected);
   });
 
-  it('Cleaning a nested map', function () {
+  it('Cleaning a nested map (with disabled and ignored fields)', function () {
     map = {
       set1: {
         field1: 'str1',
@@ -61,12 +67,10 @@ describe('Method cleanMap()', function () {
     };
     expected = {
       set1: {
-        field1: 'str1',
         field2: 'str2'
       },
       set2: {
         set3: {
-          field3: true,
           field4: false
         },
         field5: 'str3'
@@ -74,9 +78,9 @@ describe('Method cleanMap()', function () {
     };
     settings = {
       fields: [
-        { name: 'set1.field1' },
+        { name: 'set1.field1', disabled: true },
         { name: 'set1.field2' },
-        { name: 'set2.set3.field3' },
+        { name: 'set2.set3.field3', onlyUI: true },
         { name: 'set2.set3.field4' },
         { name: 'set2.field5' }
       ]

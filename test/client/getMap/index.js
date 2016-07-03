@@ -97,10 +97,10 @@ describe('Method getMap()', function () {
     const settings = {
       fields: [{
         name: 'website',
-        ignoreInMap: true
+        onlyUI: true
       }, {
         name: 'age',
-        ignoreInMap: true
+        onlyUI: true
       }]
     };
     $form.vulcanval(settings);
