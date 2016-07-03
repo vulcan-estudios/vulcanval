@@ -77,6 +77,10 @@ const utils = {
       return /^[-_a-zA-Z0-9]{1,}$/.test(part) &&
         !validator.isInt(part.charAt(0)) && !!part.length;
     });
+  },
+
+  trimSpaces (str) {
+    return str.replace(/^\s*/, '').replace(/\s*$/, '');
   }
 };
 
