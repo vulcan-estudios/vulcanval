@@ -65,6 +65,7 @@
     "test-server": "NODE_ENV=test mocha test/global",
     "test-client": "NODE_ENV=test karma start karma.conf.js",
     "doc": "gulp doc",
-    "build": "gulp build"
+    "build": "gulp build",
+    "all": "gulp build && gulp doc && npm test"
   }
 }
