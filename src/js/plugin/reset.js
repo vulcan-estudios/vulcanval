@@ -16,44 +16,69 @@ const reset = function (fieldName) {
 
   const settings = this.data('vv-settings');
 
-  let field;
+  // Specific field.
   if (fieldName) {
-    field = utils.find(settings.fields, f => f.name === fieldName);
+
+    const field = utils.find(settings.fields, f => f.name === fieldName);
     if (!field) log.error(`field "${fieldName}" not found`);
-  }
 
-  settings.fields.forEach(function (f) {
+    if (!field.$el) return;
 
-    if (field && field.name !== f.name) return;
-    if (!f.$el) return;
+    ui.removeFieldErrorClasses(settings, field);
 
-    ui.removeFieldErrorClasses(settings, f);
-
-    f.$el.data({
+    field.$el.data({
       'vv-modified': void 0,
       'vv-valid': void 0,
       'vv-msg': void 0
     });
-  });
 
-  ui.refreshFormState(settings);
+    ui.refreshFormState(settings);
 
-  if (!field && settings.$form) {
-    settings.$form.data({
-      'vv-modified': void 0,
-      'vv-valid': void 0
+    settings.fields.every(function (f) {
+      if (!f.$el) return;
+      f.$el.trigger('vv-modify', {
+        name: f.name,
+        value: f.value(),
+        valid: void 0,
+        msg: void 0
+      });
     });
   }
 
-  settings.fields.every(function (f) {
-    if (!f.$el) return;
-    f.$el.trigger('vv-modify', {
-      name: f.name,
-      value: f.value(),
-      valid: void 0,
-      msg: void 0
+  // Form.
+  else {
+    settings.fields.forEach(function (f) {
+
+      if (!f.$el) return;
+
+      ui.removeFieldErrorClasses(settings, f);
+
+      f.$el.data({
+        'vv-modified': void 0,
+        'vv-valid': void 0,
+        'vv-msg': void 0
+      });
     });
-  });
+
+    ui.refreshFormState(settings);
+
+    if (settings.$form) {
+      settings.$form.data({
+        'vv-modified': void 0,
+        'vv-valid': void 0
+      });
+    }
+
+    settings.fields.every(function (f) {
+      if (!f.$el) return;
+      f.$el.trigger('vv-modify', {
+        name: f.name,
+        value: f.value(),
+        valid: void 0,
+        msg: void 0
+      });
+    });
+  }
 
   return this;
 };
