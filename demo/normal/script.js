@@ -2,11 +2,16 @@
 
   const ensureLeadZero = val => {
     if (val.length === 1) return '0'+ val;
-    else return val;
+    return val;
+  };
+
+  const validateBirthdate = function () {
+    return this.get('birthdate.mm') || this.get('birthdate.dd') || this.get('birthdate.yyyy');
   };
 
   $('form').vulcanval({
 
+    enableNestedMaps: true,
     disableHTML5Validation: true,
 
     validators: {
@@ -17,10 +22,14 @@
         return this.validator.isInt(value, { min: 1, max: 31 });
       },
       isYear (value) {
-        return this.validator.isInt(value, { min: 1990 });
+        const max = (new Date()).getFullYear();
+        return this.validator.isInt(value, { min: 1990, max });
       },
       isBirthdate (value) {
-        const birthdate = this.get('birthdate');
+        const yyyy = this.get('birthdate.yyyy');
+        const mm = this.get('birthdate.mm');
+        const dd = this.get('birthdate.dd');
+        const birthdate = yyyy +'-'+ mm +'-'+ dd;
         return this.validator.isDate(birthdate) && this.validator.isBefore(birthdate);
       }
     },
@@ -32,33 +41,17 @@
       isBirthdate: 'The birthdate has to be previous the current date.'
     },
 
-    fieldsets: [{
-      namePattern: 'bd',
-      required: true,
-      onlyIf () {
-        return this.get('bd-mm') || this.get('bd-dd') || this.get('bd-yyyy');
-      }
-    }],
-
-    groups: [{
-      name: 'birthdate',
-      fields: ['bd-mm', 'bd-dd', 'bd-yyyy'],
-      value (mm, dd, yyyy) {
-        return ensureLeadZero(mm) +'-'+ ensureLeadZero(dd) +'-'+ yyyy;
-      }
-    }],
-
     fields: [{
       name: 'name',
       required: true,
-      validations: {
-        isAlphanumeric: true,
+      validators: {
+        isAlphanumericText: true,
         isLength: { min: 4, max: 124 }
       }
     }, {
       name: 'email',
       required: true,
-      validations: {
+      validators: {
         isEmail: true,
         contains: '@gmail.com',
         isLength: { max: 124 }
@@ -66,7 +59,7 @@
     }, {
       name: 'website',
       required: true,
-      validations: {
+      validators: {
         isURL: true,
         isLength: { max: 124 }
       }
@@ -76,15 +69,18 @@
     }, {
       name: 'pass',
       required: true,
-      validations: {
-        matches: /^[a-zA-Z0-9-_]$/,
+      validators: {
+        matches: {
+          pattern: /^[a-z0-9-_]*$/i,
+          msgs: 'A valid password is required.'
+        },
         isLength: { min: 8, max: 124 }
       }
     }, {
       name: 'pass2',
+      onlyUI: true,
       required: true,
-      ignoreInMap: true,
-      validations: {
+      validators: {
         isEqualToField: 'pass'
       }
     }, {
@@ -96,17 +92,23 @@
         isLength: { max: 255 }
       }
     }, {
-      name: 'bd-mm',
+      name: 'birthdate.mm',
+      required: true,
+      onlyIf: validateBirthdate,
       validators: {
         isMonth: true
       }
     }, {
-      name: 'bd-dd',
+      name: 'birthdate.dd',
+      required: true,
+      onlyIf: validateBirthdate,
       validators: {
         isDay: true
       }
     }, {
-      name: 'bd-yyyy',
+      name: 'birthdate.yyyy',
+      required: true,
+      onlyIf: validateBirthdate,
       validators: {
         isYear: true,
         isBirthdate: true
