@@ -3,10 +3,11 @@ const utils = require('../utils');
 const ui = require('./_ui');
 const change = require('./_change');
 
-const trigger = ($e, ev) => {
-  if (ev.replace(/\s/g, '').length) $e.trigger(ev);
-};
-
+/**
+ * Set elements validation events.
+ *
+ * @param {settings} settings
+ */
 const setEvents = function (settings) {
   'use strict';
 
@@ -44,13 +45,13 @@ const setEvents = function (settings) {
     field.onFirstChange = function (e) {
       field.$el.off(firstEvent, field.onFirstChange);
       field.$el.on(normalEvent, field.onChange);
-      trigger(field.$el, 'vv-change');
+      field.$el.trigger('vv-change');
     };
 
     field.$el.on(firstEvent, field.onFirstChange);
 
     if (initial || field.autostart || settings.autostart) {
-      trigger(field.$el, 'vv-change');
+      field.$el.trigger('vv-change');
     }
   });
 };
