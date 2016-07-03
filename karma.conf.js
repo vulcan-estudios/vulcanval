@@ -10,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai', 'fixture'],
+    frameworks: ['browserify', 'mocha', 'chai', 'fixture'],
 
 
     // list of files / patterns to load in the browser
@@ -31,10 +31,21 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      '**/*.html': ['html2js'],
-      '**/*.json': ['json_fixtures']
+      'src/js/**/*.js': ['browserify'],
+      'test/client/**/*.js': ['browserify'],
+      'test/client/**/*.html': ['html2js'],
+      'test/client/**/*.json': ['json_fixtures']
     },
 
+
+    // preprocessor browserify
+    browserify: {
+      transform: [
+        ['babelify', {
+          presets: ['es2015']
+        }]
+      ]
+    },
 
     // preprocessor json fixtures
     jsonFixturesPreprocessor: {
@@ -67,7 +78,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS', 'Chrome', 'Firefox'],
+    browsers: ['PhantomJS'],//, 'Chrome', 'Firefox'],
 
 
     // Continuous Integration mode
