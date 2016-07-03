@@ -5,10 +5,12 @@ const lang = {
   msgs: {
     general: 'Completa este campo por favor.',
     isEqualToField: 'Este campo debe ser igual.',
+    isAlphanumericText: 'Escribe sólo texto alfanumérico por favor.',
     'isLength.min': 'El campo debe contener al menos {{min}} carácteres.',
     'isLength.max': 'El campo debe contener un máximo de {{max}} carácteres.',
     isEmail: 'Escribe un correo electrónico válido por favor.',
-    isNumeric: 'Escribe un número válido por favor.',
+    isNumeric: 'Escribe un número positivo válido por favor.',
+    isFloat: 'Escribe un número válido por favor.',
     isInt: 'Escribe un número entero válido por favor.',
     isURL: 'Escribe una URL válida por favor.',
     isDate: 'Escribe una fecha válida por favor.',

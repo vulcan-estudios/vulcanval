@@ -5,10 +5,12 @@ const lang = {
   msgs: {
     general: 'Please fill out this field.',
     isEqualToField: 'The field has to be the same.',
+    isAlphanumericText: 'Please type only alphanumeric text.',
     'isLength.min': 'The field should contain at least {{min}} characters.',
     'isLength.max': 'The field should contain at most {{max}} characters.',
     isEmail: 'Please type a valid email address.',
-    isNumeric: 'Please type a valid number.',
+    isNumeric: 'Please type a valid positive number.',
+    isFloat: 'Please type a valid number.',
     isInt: 'Please type a valid integer number.',
     isURL: 'Please type a valid URL address.',
     isDate: 'Please type a valid date.',
