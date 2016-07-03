@@ -14,6 +14,7 @@ const ui = {
       valid = settings.fields.every(field => {
 
         if (!field.$el) return true;
+        if (field.disabled || (field.onlyIf && !field.onlyIf())) return true;
 
         state = field.$el.data('vv-valid');
 

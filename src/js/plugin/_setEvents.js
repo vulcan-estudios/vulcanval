@@ -6,6 +6,7 @@ const change = require('./_change');
 /**
  * Set elements validation events.
  *
+ * @private
  * @param {settings} settings
  */
 const setEvents = function (settings) {
@@ -15,9 +16,9 @@ const setEvents = function (settings) {
   if (settings.$form) {
 
     settings.onSubmit = function (e) {
+      settings.$form.vulcanval('validate');
       if (settings.$form.data('vv-valid') !== true) {
         e.preventDefault();
-        settings.$form.vulcanval('validate');
         return false;
       }
     };
@@ -34,9 +35,10 @@ const setEvents = function (settings) {
 
     if (!field.$el || field.disabled) return;
 
+    const isTextField = !!field.$el.filter('input[type!=checkbox][type!=radio], textarea').length;
     const firstEvent = (field.firstValidationEvent || settings.firstValidationEvent) +' vv-change';
     const normalEvent = (field.validationEvents || settings.validationEvents) +' vv-change';
-    const initial = typeof field.$el.val() === 'string' && field.$el.val().length;
+    const initial = isTextField && typeof field.$el.val() === 'string' && field.$el.val().length;
 
     field.onChange = function (ev) {
       change(settings, field, ev);
@@ -48,6 +50,14 @@ const setEvents = function (settings) {
       field.$el.trigger('vv-change');
     };
 
+    // @FIXIT: Make this run with an option.
+    field.onBlur = function (e) {
+      if (isTextField) {
+        field.$el.val(utils.trimSpaces(field.$el.val()));
+      }
+    };
+
+    field.$el.on('blur', field.onBlur);
     field.$el.on(firstEvent, field.onFirstChange);
 
     if (initial || field.autostart || settings.autostart) {
