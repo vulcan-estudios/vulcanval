@@ -2,7 +2,7 @@ fixture.setBase('test/client/events');
 $(fixture.load('forms.html')).appendTo('body');
 
 
-describe('Events', function () {
+describe('Events (setEvents, change)', function () {
 
   describe('Form', function () {
 
