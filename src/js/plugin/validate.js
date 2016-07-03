@@ -29,14 +29,13 @@ const validate = function (fieldName) {
 
       if (!field.$el) return;
 
+      field.$el.trigger('vv-change');
+
       invalid = field.$el.vulcanval('inspect', field.name);
 
-      if (invalid) {
-        field.$el.trigger('vv-change');
-        if (first) {
-          first = false;
-          field.$el.trigger('focus');
-        }
+      if (invalid && first) {
+        first = false;
+        field.$el.trigger('focus');
       }
     });
   }
