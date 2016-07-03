@@ -8,6 +8,7 @@ const ui = require('./_ui');
 /**
  * Create final settings from fetched from UI and provided from user.
  *
+ * @private
  * @param  {external:jQuery} $el
  * @param  {settings} fetched
  * @param  {settings} custom
@@ -40,6 +41,10 @@ const createSettings = function ($el, fetched, custom) {
     if (!utils.find(newFields, nf => nf.name === fetchedField.name)) {
       newFields.push(fieldSettings.extend(fetchedField));
     }
+  });
+
+  newFields.forEach(f => {
+    if (!f.$el) log.warn(`field "${f.name}" does not have DOM element`);
   });
 
   // Extend base settings with fetched and custom settings.
