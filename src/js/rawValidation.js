@@ -125,7 +125,7 @@ module.exports = function (conf) {
 
     // isLength validator.
     if (valName === 'isLength') {
-      if (valType !== 'object' || !val.min || !val.max) {
+      if (valType !== 'object' || !(typeof val.min === 'number' || val.max)) {
         return log.error('fields validator "isLength" must be a plain object if defined');
       }
       if (field.value.length < (valOpts.min || 0)) {
