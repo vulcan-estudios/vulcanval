@@ -48,11 +48,8 @@ const reset = function (fieldName) {
   // Form.
   else {
     settings.fields.forEach(function (f) {
-
       if (!f.$el) return;
-
       ui.removeFieldErrorClasses(settings, f);
-
       f.$el.data({
         'vv-modified': void 0,
         'vv-valid': void 0,
@@ -69,7 +66,7 @@ const reset = function (fieldName) {
       });
     }
 
-    settings.fields.every(function (f) {
+    settings.fields.forEach(function (f) {
       if (!f.$el) return;
       f.$el.trigger('vv-modify', {
         name: f.name,
