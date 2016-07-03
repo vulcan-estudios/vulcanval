@@ -1,0 +1,5 @@
+.field-error {
+  border: 4px solid #a3400f !important;
+  background-color: #ed4b4b !important;
+  color: #fff !important;
+}
