@@ -1,4 +1,5 @@
 const extend = require('extend');
+const utils = require('./utils');
 
 /**
  * @namespace fieldSettings
@@ -164,7 +165,7 @@ const fieldSettings = {
   /**
    * Only client-side.
    *
-   * Field onFirstChange event.
+   * Field onFirstChange event (this is defined by user).
    *
    * @private
    * @type {Function}
@@ -174,12 +175,22 @@ const fieldSettings = {
   /**
    * Only client-side.
    *
-   * Field onChange event.
+   * Field onChange event (this is defined by user).
    *
    * @private
    * @type {Function}
    */
   onChange: null,
+
+  /**
+   * Only client-side.
+   *
+   * Field onBlur event.
+   *
+   * @private
+   * @type {Function}
+   */
+  onBlur: null,
 
   /**
    * A condition gate to verify if the field will be validated. Receives
@@ -212,9 +223,15 @@ const fieldSettings = {
    */
   value ($field) {
 
-    var type, name;
+    // @FIXIT: Make the space trimmer works with an option.
 
-    if ($field[0].tagName === 'INPUT') {
+    var type, name, val;
+
+    if (!$field) {
+      return;
+    }
+
+    else if ($field[0].tagName === 'INPUT') {
 
       type = String($field.attr('type')).toUpperCase();
       name = $field.attr('name') || $field.data('vv-name');
@@ -223,15 +240,15 @@ const fieldSettings = {
         return $field.prop('checked');
       }
       if (type === 'RADIO') {
-        return $field.parents('form, body').first().find(`input[type="radio"][name="${name}"]:checked`).val();
+        return $field.parents('form, body').first().find(`input[type="radio"][name="${name}"]:checked`).val() || '';
       }
       else if (type !== 'BUTTON' && type !== 'SUBMIT' && type !== 'RESET') {
-        return $field.val();
+        return utils.trimSpaces($field.val());
       }
     }
 
     else if ($field[0].tagName === 'TEXTAREA' || $field[0].tagName === 'SELECT') {
-      return $field.val();
+      return utils.trimSpaces($field.val());
     }
   },
 
