@@ -33,7 +33,7 @@ const inspect = function (fieldName) {
     settings.fields.forEach(function (field) {
       const invalid = rawValidation({
         settings,
-        context: field._context,
+        context: settings.context,
         field: { name: field.name, value: field.value() }
       });
       if (invalid) errors[field.name] = invalid;
