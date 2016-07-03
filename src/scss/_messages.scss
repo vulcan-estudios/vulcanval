@@ -1,4 +1,4 @@
-.vv-form {
+form.vv-form {
   //
 
   &.vv-form_error {
@@ -6,7 +6,7 @@
   }
 }
 
-.vv-label {
+label.vv-label {
   @include vv-transitions;
 
   &.vv-label_error {
@@ -14,7 +14,9 @@
   }
 }
 
-.vv-field {
+input.vv-field,
+select.vv-field,
+textarea.vv-field {
   @include vv-transitions;
 
   &.vv-field_error:not(:focus) {
