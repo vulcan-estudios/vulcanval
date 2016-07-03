@@ -2,6 +2,7 @@ const extend = require('extend');
 const validator = require('validator');
 const log = require('./log');
 const utils = require('./utils');
+const browser = require('./browser');
 
 /**
  * vulcanval.rawValidation()
@@ -52,6 +53,11 @@ module.exports = function (conf) {
 
   // disabled
   if (field.rules.disabled) {
+    return false;
+  }
+
+  // used only in client side
+  if (browser.isNodejs && field.rules.onlyUI) {
     return false;
   }
 
