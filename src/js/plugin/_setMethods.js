@@ -13,8 +13,16 @@ const setMethods = function (settings) {
   'use strict';
 
   settings.fields.forEach(field => {
+
     field.value = field.value && field.value.bind(settings.context, field.$el);
-    field.onlyIf = field.onlyIf && field.onlyIf.bind(settings.context);
+
+    const onlyIf = field.onlyIf;
+    delete field.onlyIf;
+    if (onlyIf) {
+      field.onlyIf = function () {
+        return onlyIf.call(settings.context, field.value && field.value());
+      };
+    }
   });
 };
 
