@@ -1,5 +1,8 @@
 # vulcanval
 
+[![npm version](https://badge.fury.io/js/vulcanval.svg)](https://badge.fury.io/js/vulcanval)
+[![Build Status](https://travis-ci.org/vulcan-estudios/vulcanval.svg?branch=master)](https://travis-ci.org/vulcan-estudios/vulcanval)
+
 > Vulcan Validator, validate data forms in client and server sides.
 
 A package to validate data objects (possibly extracted from HTML forms) in client and server sides and a customizable jQuery plugin to validate them in realtime.
