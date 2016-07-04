@@ -39,29 +39,35 @@
     opacity: 1; } }
 
 /* line 9, /home/romelperez/projects/vulcan/vulcanval/src/scss/_messages.scss */
-.vv-label {
+label.vv-label {
   transition: color 300ms, background-color 300ms, border-color 300ms; }
   /* line 12, /home/romelperez/projects/vulcan/vulcanval/src/scss/_messages.scss */
-  .vv-label.vv-label_error {
+  label.vv-label.vv-label_error {
     color: #ec5840; }
 
 /* line 17, /home/romelperez/projects/vulcan/vulcanval/src/scss/_messages.scss */
-.vv-field {
+input.vv-field,
+select.vv-field,
+textarea.vv-field {
   transition: color 300ms, background-color 300ms, border-color 300ms; }
-  /* line 20, /home/romelperez/projects/vulcan/vulcanval/src/scss/_messages.scss */
-  .vv-field.vv-field_error:not(:focus) {
+  /* line 22, /home/romelperez/projects/vulcan/vulcanval/src/scss/_messages.scss */
+  input.vv-field.vv-field_error:not(:focus),
+  select.vv-field.vv-field_error:not(:focus),
+  textarea.vv-field.vv-field_error:not(:focus) {
     color: #0a0a0a;
     border-color: #ec5840;
     background-color: rgba(236, 88, 64, 0.1); }
-  /* line 26, /home/romelperez/projects/vulcan/vulcanval/src/scss/_messages.scss */
-  .vv-field.vv-field_error:focus {
+  /* line 28, /home/romelperez/projects/vulcan/vulcanval/src/scss/_messages.scss */
+  input.vv-field.vv-field_error:focus,
+  select.vv-field.vv-field_error:focus,
+  textarea.vv-field.vv-field_error:focus {
     border-color: #ec5840; }
 
-/* line 33, /home/romelperez/projects/vulcan/vulcanval/src/scss/_messages.scss */
+/* line 35, /home/romelperez/projects/vulcan/vulcanval/src/scss/_messages.scss */
 .vv-display {
   transition: color 300ms, background-color 300ms, border-color 300ms;
   display: none; }
-  /* line 37, /home/romelperez/projects/vulcan/vulcanval/src/scss/_messages.scss */
+  /* line 39, /home/romelperez/projects/vulcan/vulcanval/src/scss/_messages.scss */
   .vv-display.vv-display_error {
     display: block;
     margin: 0 0 1rem 0;
@@ -69,7 +75,7 @@
     font-weight: bold;
     -webkit-animation: vvDisplayShow 300ms linear 0s 1 alternate;
             animation: vvDisplayShow 300ms linear 0s 1 alternate; }
-  /* line 45, /home/romelperez/projects/vulcan/vulcanval/src/scss/_messages.scss */
+  /* line 47, /home/romelperez/projects/vulcan/vulcanval/src/scss/_messages.scss */
   .vv-display.vv-display_error-update {
     -webkit-animation: vvDisplayUpdate 300ms linear 0s 1 alternate;
             animation: vvDisplayUpdate 300ms linear 0s 1 alternate; }
