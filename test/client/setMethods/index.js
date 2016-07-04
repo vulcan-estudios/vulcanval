@@ -9,21 +9,23 @@ describe('Set Methods', function () {
     fields: [{
       name: 'name',
       $el: 'element',
-      onlyIf () {
-        return this.prop === 10;
+      onlyIf (value) {
+        if (this.prop === 10 && value === 'good') return 'good';
+        return 'bad';
       },
       value ($el) {
-        return this.prop === 10 && $el === 'element';
+        if (this.prop === 10 && $el === 'element') return 'good';
+        return 'bad';
       }
     }]
   };
   setMethods(settings);
 
   it('Field value()', function () {
-    assert.isTrue(settings.fields[0].value());
+    assert.equal(settings.fields[0].value(), 'good');
   });
 
   it('Field onlyIf()', function () {
-    assert.isTrue(settings.fields[0].onlyIf());
+    assert.equal(settings.fields[0].onlyIf(), 'good');
   });
 });
