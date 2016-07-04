@@ -4,16 +4,20 @@ const utils = require('./utils');
 const convertMapTo = require('./convertMapTo');
 
 /**
- * Clean a map.
+ * Clean a map from properties outside the validation process.
+ *
+ * This is done by removing all properties which are not present in the fields
+ * list of validation and the fields which are disabled or intented to be
+ * only used in client side.
  *
  * @static
  * @method module:vulcanval.cleanMap
  *
- * @param  {Boolean} isPlain
- * @param  {map} map
- * @param  {settings} settings
+ * @param  {Boolean} isPlain - If the {@link map} is plain. `false` for nested.
+ * @param  {map} map - The map to clean.
+ * @param  {settings} settings - The validation settings.
  *
- * @return {map}
+ * @return {map} - The cleaned map.
  */
 module.exports = function (isPlain, map, settings) {
   'use strict';

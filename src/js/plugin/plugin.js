@@ -22,7 +22,7 @@ const getMap =        require('./getMap');
 const methods = { inspect, validate, reset, getMap };
 
 /**
- * @summary jQuery plugin to set the validators in forms.
+ * @summary jQuery plugin to instantiate the validators in forms.
  *
  * @description
  * Defines validation functionalities over form elements.

@@ -12,7 +12,7 @@
       isURL: 'Bitte geben Sie eine gültige URL-Adresse.',
       isDate: 'Bitte geben Sie ein gültiges Datum.',
       // ...
-      // the validator names in the package https://github.com/chriso/validator.js
+      // the validator names in the package https://www.npmjs.com/package/validator
       // are available and your custom validator names
     }
   };

@@ -3,6 +3,8 @@ const utils = require('../utils');
 const rawValidation = require('../rawValidation');
 
 /**
+ * ***Invoke over instantiated elements.***
+ *
  * Inspect the validation status of the `<form>` or specific field in it.
  *
  * @function external:"jQuery.fn".vulcanval

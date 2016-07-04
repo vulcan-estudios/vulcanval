@@ -2,6 +2,8 @@ const log = require('../log');
 const utils = require('../utils');
 
 /**
+ * ***Invoke over instantiated elements.***
+ *
  * Validate visually complete `<form>` or specific field in it.
  *
  * @function external:"jQuery.fn".vulcanval

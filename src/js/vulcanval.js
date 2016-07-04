@@ -23,10 +23,16 @@ const validateField = require('./validateField');
  */
 
 /**
- * This is a reference to the {@link module:vulcanval}.
+ * window object.
+ * @external window
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Window}
+ */
+
+/**
+ * This is a reference to the {@link module:vulcanval vulcanval}.
  *
  * @name vulcanval
- * @memberof external:jQuery
+ * @memberof external:window
  * @type {Object}
  * @see {@link module:vulcanval}
  */
@@ -51,6 +57,8 @@ const validateField = require('./validateField');
  */
 const vulcanval = {
 
+  version: '1.0.0-beta',
+
   validator,
   rawValidation,
   convertMapTo,
@@ -61,6 +69,8 @@ const vulcanval = {
   /**
    * Extend validators messages in an specific localization. If it does not exist,
    * it will be created.
+   *
+   * @memberof module:vulcanval
    *
    * @param  {Object} locale - A plain object describing the locale.
    * @param  {String} locale.id - The identifier of the locale. It should be like:
@@ -94,6 +104,8 @@ const vulcanval = {
    * already installed with the {@link module:vulcanval.extendLocale vulcanval.extendLocale}
    * method.
    *
+   * @memberof module:vulcanval
+   *
    * @param {String} locale - The locale identifier.
    *
    * @example
@@ -112,6 +124,8 @@ const vulcanval = {
    *
    * All validators in the package {@link https://www.npmjs.com/package/validator validator}
    * are installed and ready to use.
+   *
+   * @memberof module:vulcanval
    *
    * @param {String} name - An alphanumeric validator name.
    * @param {Function} validator - The validator function. Receives as a first parameter
@@ -155,6 +169,8 @@ const vulcanval = {
 
   /**
    * Change the debug level.
+   *
+   * @memberof module:vulcanval
    *
    * @param  {Boolean|Number} isDebug - A `true` value to display all messages.
    * A number to describe the scale of debug logs using the

@@ -73,6 +73,16 @@ const settings = {
    *
    * HTML tag classes to add to specific elements in form on error.
    * @type {Object}
+   * @property {Object} [defaults] - Static classes.
+   * @property {String} [defaults.form] - Form classes.
+   * @property {String} [defaults.field] - Field classes.
+   * @property {String} [defaults.label] - Field related label classes.
+   * @property {String} [defaults.display] - Display classes.
+   * @property {Object} [error] - On error classes.
+   * @property {String} [error.form] - Form classes.
+   * @property {String} [error.field] - Field classes.
+   * @property {String} [error.label] - Field related label classes.
+   * @property {String} [error.display] - Display classes.
    */
   classes: {
     defaults: {
@@ -112,6 +122,7 @@ const settings = {
    * nested maps to plain maps when this property is enabled.
    *
    * @type {Boolean}
+   * @default false
    *
    * @example
    * // Using a form like this:
@@ -135,9 +146,17 @@ const settings = {
   enableNestedMaps: false,
 
   /**
-   * List of custom validators.
+   * **List of custom validators.**
    *
-   * @see To add new custom validators {@link module:vulcanval.addValidator vulcanval.addValidator}.
+   * All of them recieve two parameters, the first one is the field value and the
+   * second one the options gave to it when configured. Only if the user configured
+   * a validator with an string, number or object value, it is received.
+   *
+   * The context of the validators is {@link fieldSettings} so don't use arrow functions.
+   *
+   * @namespace
+   * @see {@link module:vulcanval.addValidator vulcanval.addValidator()} to see how to add new ones.
+   * @see {@link fieldSettings.validators} to see how to implement them.
    * @type {Object}
    */
   validators: {},
@@ -244,6 +263,8 @@ const settings = {
 
   /**
    * The form fields to configure.
+   *
+   * The main property to configure validation.
    *
    * @type {Array}
    * @default [ ]

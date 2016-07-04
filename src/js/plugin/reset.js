@@ -3,6 +3,8 @@ const utils = require('../utils');
 const ui = require('./_ui');
 
 /**
+ * ***Invoke over instantiated elements.***
+ *
  * Reset the form or specific field validation state.
  *
  * @function external:"jQuery.fn".vulcanval

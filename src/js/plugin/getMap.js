@@ -3,6 +3,8 @@ const fieldSettings = require('../fieldSettings');
 const ui = require('./_ui');
 
 /**
+ * ***Invoke over instantiated or `<form>` elements.***
+ *
  * Get the data {@link map} extracted from the `<form>`.
  *
  * If the instance was configured with the setting {@link settings.enableNestedMaps}

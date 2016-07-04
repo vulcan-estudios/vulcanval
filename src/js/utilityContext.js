@@ -5,9 +5,6 @@
  * @description
  * This is the function context used in some methods/functions in validations
  * processes.
- *
- * Currently is available in custom validators functions, onlyIf gates, fields
- * value methods and this.get().
  */
 const utilityContext = {
 
