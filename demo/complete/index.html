@@ -4,137 +4,58 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Normal demo | jQuery vulcanval</title>
-    <meta name="description" content="jQuery Plugin for validating forms and custom user inputs">
-    <link rel="stylesheet" href="../lib/foundation.min.css">
-    <link rel="stylesheet" href="../dist/vulcanval.js">
-    <link rel="stylesheet" href="./assets/styles.css">
+    <title>Complete | vulcanval</title>
+    <link rel="stylesheet" href="../../lib/foundation-3.0.3.min.css">
+    <link rel="stylesheet" href="../../dist/vulcanval.css">
+    <link rel="stylesheet" href="./../assets/styles.css">
   </head>
   <body>
 
-    <div class="row">
-      <div class="column small-12">
-        <h2>Normal demo | jQuery vulcanval</h2>
-      </div>
-    </div>
+    <h2>Complete | vulcanval</h2>
+    <p>Complete example of validation from client to server.</p>
 
-    <form novalidate>
+    <pre><code>// Try to hack by writing this on the console:
+$.ajax({
+  url: '/api/login',
+  type: 'post',
+  data: {
+    email: 'no email',
+    pass: 'no pass'
+  }
+});</code></pre>
 
-      <!-- NAME & EMAIL -->
-      <div class="row">
-        <div class="column small-6">
-          <label for="name">Name</label>
-          <input id="name" name="name" type="text" placeholder="First and last name"
-                 required maxlength="255" pattern="\w+\s+\w+" data-vv-msg="Type at least your first and last name">
-        </div>
-        <div class="column small-6">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="Email"
-                 required maxlength="255">
-        </div>
-      </div>
+    <form>
 
-      <!-- WEBSITE & AGE -->
-      <div class="row">
-        <div class="column small-6">
-          <label for="website">Website</label>
-          <input id="website" name="website" type="url" placeholder="Website" maxlength="255">
-        </div>
-        <div class="column small-6">
-          <label for="age">Age</label>
-          <input id="age" name="age" type="number" placeholder="Age"
-                 min="18" max="200" maxlength="3" required disabled>
-        </div>
-      </div>
-
-      <!-- JOB -->
       <div class="row">
         <div class="column small-12">
-          <label for="job">Job</label>
-          <select id="job" name="job" required>
-            <option value="">-- Job --</option>
-            <option value="engineer">Engineer</option>
-            <option value="designer">Designer</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- PASSWORD & REPEAT PASSWORD -->
-      <div class="row">
-        <div class="column small-6">
-          <label for="pass">Password</label>
-          <input id="pass" name="pass" type="password" placeholder="Password" required maxlength="255">
-        </div>
-        <div class="column small-6">
-          <label for="pass2">Repeat password</label>
-          <input id="pass2" name="pass2" type="password" placeholder="Repeat password" required>
-        </div>
-      </div>
-
-      <!-- MARRIED -->
-      <div class="row">
-        <div class="column small-12">
-          <label>Are you married?</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="column small-12" data-vv-group data-vv-msgsel="married-msgs">
-          <input id="married1" name="married" type="radio" required value="yes">
-          <label for="married1">Married</label>
-          <input id="married2" name="married" type="radio" required value="no">
-          <label for="married2">Not Married</label>
-          <div id="married-msgs"></div>
-        </div>
-      </div>
-
-      <!-- BIO -->
-      <div class="row">
-        <div class="column small-12">
-          <label for="bio">Bio</label>
-          <textarea id="bio" name="bio" rows="5" placeholder="Bio" maxlength="1024"></textarea>
-        </div>
-      </div>
-
-      <!-- BIRTHDAY -->
-      <div class="row">
-        <div class="column small-12">
-          <label for="bd-mm">Birthday</label>
-        </div>
-      </div>
-      <div class="row" data-vv-group>
-        <div class="column small-4">
-          <input id="bd-mm" name="bd-mm" type="number" placeholder="MM" min="1" max="12" maxlength="2" required>
-        </div>
-        <div class="column small-4">
-          <input name="bd-dd" type="number" placeholder="DD" min="1" max="31" maxlength="2" required>
-        </div>
-        <div class="column small-4">
-          <input name="bd-yyyy" type="number" placeholder="YYYY" min="1900" max="2100" maxlength="4" required>
-        </div>
-      </div>
-
-      <!-- TERMS -->
-      <div class="row">
-        <div class="column small-12">
-          <input id="terms" name="terms" type="checkbox" required>
-          <label for="terms">Do you agree the terms of service and privacy policy?</label>
+          <label for="email">Your Email</label>
+          <input id="email" name="email" type="email" placeholder="Your Email" data-vv-display="#email-msgs">
+          <div id="email-msgs"></div>
         </div>
       </div>
 
       <div class="row">
         <div class="column small-12">
-          <input name="hidden" type="hidden" value="A hidden value">
-          <input class="button" type="submit" value="Register">
+          <label for="pass">Your Password</label>
+          <input id="pass" name="pass" type="password" placeholder="Your Password" data-vv-display="#pass-msgs">
+          <div id="pass-msgs"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="column small-6">
+          <input class="button" type="submit" value="Login">
+        </div>
+        <div class="column small-6">
+          <input class="button secondary" type="reset" value="Reset">
         </div>
       </div>
 
     </form>
 
-    <script src="../lib/jquery-3.0.0.min.js"></script>
-    <script src="../dist/vulcanval.js"></script>
-    <script src="./assets/scripts.js"></script>
-    <script>
-      $('form').vulcanval();
-    </script>
+    <script src="../../lib/jquery-3.0.0.min.js"></script>
+    <script src="../../dist/vulcanval.js"></script>
+    <script src="./settings.js"></script>
+    <script src="./client.js"></script>
   </body>
 </html>
