@@ -20,6 +20,7 @@ const lang = {
     isLowercase: 'This field should only contain lowercase text.',
     isUppercase: 'This field should only contain uppercase text.',
     isDivisibleBy: 'The number should be divisible by {{option}}.',
+    isBoolean: 'This field should be boolean.',
   }
 };
 
