@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="utilityContext.html">utilityContext</a></li>
+					<li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="settings.validators.html">settings.validators</a></li><li><a href="utilityContext.html">utilityContext</a></li>
 				</ul>
 			</li>
 			
@@ -47,7 +47,7 @@
 			<li class="dropdown">
 				<a href="externals.list.html" class="dropdown-toggle" data-toggle="dropdown">Externals<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="external-_jQuery.fn_.html">jQuery.fn</a></li><li><a href="external-jQuery.html">jQuery</a></li>
+					<li><a href="external-_jQuery.fn_.html">jQuery.fn</a></li><li><a href="external-jQuery.html">jQuery</a></li><li><a href="external-window.html">window</a></li>
 				</ul>
 			</li>
 			
@@ -325,7 +325,7 @@ configuration.</p></div>
     <div class="description">
         <p>Only client-side.</p>
 <p>The element where to set the current field message error. If not specified,
-the messages won't be shown on UI.</p>
+the messages won't be shown on UI. This is a jQuery selector.</p>
     </div>
     
 
@@ -368,13 +368,6 @@ the messages won't be shown on UI.</p>
 
 	
 
-	
-	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
-	<dd class="tag-default">
-		<ul class="dummy">
-			<li>null</li>
-		</ul>
-	</dd>
 	
 
 
@@ -451,7 +444,7 @@ the messages won't be shown on UI.</p>
 	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
 	<dd class="tag-default">
 		<ul class="dummy">
-			<li>'blur change'</li>
+			<li>Inherited from <a href="settings.html">settings</a></li>
 		</ul>
 	</dd>
 	
@@ -556,20 +549,15 @@ elements states and trigger events.</p>
         
             
 <hr>
-<dt class="name" id=".onlyIf">
-    <h4><span class="type-signature">&lt;static> </span>onlyIf<span class="type-signature"> :function</span></h4>
+<dt class="name" id=".name">
+    <h4><span class="type-signature">&lt;static> </span>name<span class="type-signature"> :String</span></h4>
 
     
 </dt>
 <dd>
     
     <div class="description">
-        <p>A condition gate to verify if the field will be validated. Receives
-the field value as first parameter and has to return a boolean, if <code>true</code>
-the validation will procced as normal, otherwise the validation will halt.</p>
-<p>This is a function
-with the <a href="utilityContext.html">utility context</a> as function context so don't use
-<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions">arrow functions</a>.</p>
+        <p>The field name. This property is always required.</p>
     </div>
     
 
@@ -578,7 +566,79 @@ with the <a href="utilityContext.html">utility context</a> as function context s
         <ul>
             <li>
                 
-<span class="param-type">function</span>
+<span class="param-type">String</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".onlyUI">
+    <h4><span class="type-signature">&lt;static> </span>onlyUI<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Only client-side.</p>
+<p>Ignore field in validation in server side.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
 
 
 
@@ -616,7 +676,7 @@ with the <a href="utilityContext.html">utility context</a> as function context s
 	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
 	<dd class="tag-default">
 		<ul class="dummy">
-			<li>null</li>
+			<li>false</li>
 		</ul>
 	</dd>
 	
@@ -776,7 +836,7 @@ then this will pass over all validators.</p>
 	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
 	<dd class="tag-default">
 		<ul class="dummy">
-			<li>'input blur change'</li>
+			<li>Inherited from <a href="settings.html">settings</a></li>
 		</ul>
 	</dd>
 	
@@ -858,13 +918,6 @@ package.</p>
 	
 
 	
-	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
-	<dd class="tag-default">
-		<ul class="dummy">
-			<li>null</li>
-		</ul>
-	</dd>
-	
 
 
 
@@ -891,6 +944,109 @@ package.</p>
             
 <hr>
 <dt>
+    <h4 class="name" id=".onlyIf"><span class="type-signature">&lt;static> </span>onlyIf()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>A condition gate to verify if the field will be validated. Receives
+the field value as first parameter and has to return a boolean, if <code>true</code>
+the validation will procced as normal, otherwise the validation will halt.</p>
+<p>This is a function
+with the <a href="utilityContext.html">utility context</a> as function context so don't use
+<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions">arrow functions</a>.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
     <h4 class="name" id=".value"><span class="type-signature">&lt;static> </span>value($field)</h4>
     
     
@@ -903,7 +1059,7 @@ package.</p>
 <p>Method to get the value of the field. This will have the <a href="utilityContext.html">utilty context</a>
 so don't use
 <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions">arrow functions</a>.</p>
-<p>By default this can retrieve the value of <code>&lt;input&gt;</code>s of any kind except <code>submit</code>
+<p>By default this can retrieve the value of <code>&lt;input&gt;</code>s of any kind except <code>submit</code>, 'reset'
 and <code>button</code>, <code>&lt;textarea&gt;</code>s and <code>&lt;select&gt;</code>s.</p>
 <p>You can overwrite this to create your own custom field value getter.</p>
     </div>
@@ -1093,7 +1249,7 @@ and <code>button</code>, <code>&lt;textarea&gt;</code>s and <code>&lt;select&gt;
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-06-25T15:34:51-05:00
+		on 2016-07-04T00:06:00-05:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

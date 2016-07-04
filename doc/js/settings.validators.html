@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Namespace: map</title>
+	<title>Documentation Namespace: validators</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -77,13 +77,15 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Namespace: map</h1>
+	<h1 class="page-title">Namespace: validators</h1>
 <section>
 
 <header>
     
         <h2>
-        map
+            <span class="ancestors"><a href="settings.html">settings</a>.</span>
+        
+        validators
         </h2>
         
     
@@ -94,18 +96,11 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>A plain object as a data map extracted from a <code>&lt;form&gt;</code>.</p>
-<p>This is basically an plain object with keys as form fields names and values
-as their respective values.</p>
-<p>The values can be strings, numbers or booleans. Currently there is no support
-for arrays.</p>
-<p>The keys can be simple alphanumeric values but can be used to describe a nested
-or deep map if they are dots in the string in plain maps. The dots are to describe
-<code>&lt;fieldset&gt;</code>s in the form and improve the structure of complex forms.</p>
-<p>If the map is plain and its keys have dots in the strings, it can be converted
-to a nested map. The inverse is the same, if the map is nested and has possibly
-many levels of deep objects, it can be converted to a plain map with dots
-in the keys describing the deep fields.</p></div>
+            <div class="description"><p><strong>List of custom validators.</strong></p>
+<p>All of them recieve two parameters, the first one is the field value and the
+second one the options gave to it when configured. Only if the user configured
+a validator with an string, number or object value, it is received.</p>
+<p>The context of the validators is <a href="fieldSettings.html">fieldSettings</a> so don't use arrow functions.</p></div>
         
 
         
@@ -146,45 +141,15 @@ in the keys describing the deep fields.</p></div>
 	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
 	<dd class="tag-see">
 		<ul>
-			<li>The <a href="settings.html#.enableNestedMaps">settings.enableNestedMaps</a> which is used in the validation
-methods to determine how to treat the data map. Mainly used in server-side.</li>
+			<li><a href="module-vulcanval.html#.addValidator">vulcanval.addValidator()</a> to see how to add new ones.</li>
 			
-			<li>The <a href="external-_jQuery.fn_.html#.vulcanval">jQuery.fn.vulcanval</a> `getMap`
-method which extracts a data map from the form or fields used in validation.
-Used in client-side.</li>
+			<li><a href="fieldSettings.html#.validators">fieldSettings.validators</a> to see how to implement them.</li>
 			</ul>
 	</dd>
 	
 
 	
 </dl>
-
-
-        
-            <h3>Example</h3>
-            
-    <pre class="sunlight-highlight-javascript">// Plain map.
-const plainMap = {
-  normal: &#x27;value0&#x27;,
-  another: true,
-  &#x27;using.dots.inside&#x27;: 100
-};
-
-// Nested map.
-const nestedMap = {
-  name: &#x27;Romel Pérez&#x27;,
-  age: 22,
-  like: {
-    apple: true,
-    watermelon: true,
-    pumpkin: false
-  },
-  favourite: {
-    fruit: &#x27;Cantaloupe&#x27;,
-    book: &#x27;Spice and Wolf&#x27;,
-    game: &#x27;World of Warcraft&#x27;
-  }
-};</pre>
 
 
         
@@ -203,6 +168,169 @@ const nestedMap = {
 
     
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id=".isAlphanumericText"><span class="type-signature">&lt;static> </span>isAlphanumericText()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>This is the same as the validator <code>isAlphanumeric</code> except that this cleans
+spaces and line endings before validating so the field needs to have valid
+alphanumeric strings.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".isEqualToField"><span class="type-signature">&lt;static> </span>isEqualToField()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>This field value has to be the same as another field the form. The name of
+the comparing field should be set as a string parameter.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        </dl>
     
 
     

@@ -1,18 +1,17 @@
 # vulcanval
 
-Vulcan Validator, a jQuery plugin for form validations.
+> Vulcan Validator, validate data forms in client and server sides.
 
-@TODO: Normal client-side validation.
+A package to validate data objects (possibly extracted from HTML forms) in client and server sides and a customizable jQuery plugin to validate them in realtime.
 
-@TODO: Complex client-side validation.
+## TODO
 
-@TODO: How to use in server side.
-
-@TODO: How to install a new language pack.
-
-@TODO: Links to demos.
-
-@TODO: Links to API.
+- Normal client-side validation.
+- Complex client-side validation.
+- How to use in server side.
+- How to install a new language pack.
+- Links to demos.
+- Links to API.
 
 ## License
 
