@@ -15,11 +15,10 @@ const convertMapTo = require('./convertMapTo');
  *
  * @param  {Boolean} isPlain - If the {@link map} is plain. `false` for nested.
  * @param  {map} map - The map to clean.
- * @param  {settings} settings - The validation settings.
  *
  * @return {map} - The cleaned map.
  */
-module.exports = function (isPlain, map, settings) {
+module.exports = function (isPlain, map) {
   'use strict';
 
   if (!isPlain) {
@@ -28,7 +27,7 @@ module.exports = function (isPlain, map, settings) {
 
   const newMap = {};
 
-  settings.fields.forEach(field => {
+  this.settings.fields.forEach(field => {
     if (field.disabled || field.onlyUI) return;
     newMap[field.name] = map[field.name];
   });
