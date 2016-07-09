@@ -3,6 +3,7 @@ const validator = require('validator');
 const utils = {
 
   walkObject (obj, callback, context) {
+    'use strict';
 
     if (!context) context = obj;
 
@@ -16,6 +17,7 @@ const utils = {
   },
 
   everyInObject (obj, callback, context) {
+    'use strict';
 
     if (!context) context = obj;
 
@@ -32,6 +34,7 @@ const utils = {
   },
 
   findInObject (obj, callback, context) {
+    'use strict';
 
     if (!context) context = obj;
 
@@ -48,6 +51,7 @@ const utils = {
   },
 
   find (arr, callback, context) {
+    'use strict';
 
     if (!context) context = arr;
 
@@ -74,20 +78,24 @@ const utils = {
     return arr;
   },
 
+  formatWalk (obj, list, i) {
+    'use strict';
+
+    if (!list[i]) return;
+
+    if (typeof obj[list[i]] === 'object') {
+      return formatWalk(obj[list[i]], list, i+1);
+    }
+    else {
+      return obj[list[i]];
+    }
+  },
+
   format (str, params) {
     'use strict';
 
     str = String(str);
     params = params || {};
-
-    const walk = (obj, list, i) => {
-      if (!list[i]) return;
-      if (typeof obj[list[i]] === 'object') {
-        return walk(obj[list[i]], list, i+1);
-      } else {
-        return obj[list[i]];
-      }
-    };
 
     let name, value;
     let props = str.match(/\{\{\w+(\w|\.\w+)*\}\}/g);
@@ -98,7 +106,7 @@ const utils = {
       props = props.map(p => p.replace('{{', '').replace('}}', '').split('.'));
 
       for (var i=0; i<props.length; i++) {
-        value = walk(params, props[i], 0);
+        value = utils.formatWalk(params, props[i], 0);
         if (value) {
           name = props[i].join('.');
           str = str.replace(new RegExp(`{{${name}}}`, 'g'), value);
