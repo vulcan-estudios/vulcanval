@@ -1,13 +1,11 @@
 require('./pre');
 
-const chai = require('chai');
+const assert = require('chai').assert;
+const expect = require('chai').expect;
 const utils = require('../../src/js/utils');
 
 
-const assert = chai.assert;
-
-
-describe('utils', function () {
+describe('utils{}', function () {
 
   describe('walkObject()', function () {
 
@@ -90,13 +88,29 @@ describe('utils', function () {
       assert.equal(formatted, 'You, right you, are great!');
     });
 
-    it('many variables with duplicated names', function () {
+    it('many variables with equal names outside as text', function () {
       const formatted = utils.format('num {{num}}, str "{{str}}", bool {{bool}}', {
         num: -10.5,
         str: 'an str',
         bool: true
       });
       assert.equal(formatted, 'num -10.5, str "an str", bool true');
+    });
+
+    it('nested variables in objects', function () {
+      const formatted = utils.format('a.b {{a.b}} a.c "{{a.c}}" and d {{d}}.', {
+        a: { b: 'great', c: 'good' },
+        d: 'excellent'
+      });
+      assert.equal(formatted, 'a.b great a.c "good" and d excellent.');
+    });
+
+    it('duplicated variables', function () {
+      const formatted = utils.format(
+        '1 {{a.b}} 2 {{d}} 3 {{a.b}} 4 {{d}} 5 {{d}}',
+        { a: { b: 'AB' }, d: 'D' }
+      );
+      assert.equal(formatted, '1 AB 2 D 3 AB 4 D 5 D');
     });
   });
 });
