@@ -16,6 +16,7 @@ doc
 NOTES.md
 gulpfile.js
 karma.conf.js
+karma-desktop.conf.js
 .gitignore
 .npmignore
 .editorconfig
