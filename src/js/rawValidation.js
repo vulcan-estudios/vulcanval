@@ -7,6 +7,8 @@ const browser = require('./browser');
 /**
  * rawValidation method.
  *
+ * @private
+ *
  * @param  {String} fieldName
  *
  * @return {String|Boolean} `false` if valid, otherwise the error message.
@@ -128,8 +130,17 @@ module.exports = function (fieldName) {
       if (valType !== 'object') {
         return log.error('fields validator "matches" must be a plain object or RegExp');
       }
-      hasMsg = !(val instanceof RegExp) && val.msgs;
-      pattern = hasMsg ? val.pattern : val;
+      if (val instanceof RegExp) {
+        pattern = val;
+        hasMsg = false;
+      }
+      else if (val.pattern instanceof RegExp) {
+        pattern = val.pattern;
+        hasMsg = val.msgs;
+      }
+      else {
+        return log.error('matches validator needs a RegExp');
+      }
       if (!validator.matches(field.value, pattern)) {
         err = getMsg(hasMsg, hasMsg ? val.msgs : 'general', val);
       }
