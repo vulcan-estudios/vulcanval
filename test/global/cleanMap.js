@@ -1,12 +1,11 @@
 require('./pre');
 
-const chai = require('chai');
-const vulcanval = require('../../src/js/main');
+const assert = require('chai').assert;
+const expect = require('chai').expect;
+const vulcanval = require('../../src/js/vulcanval');
 
 
-const assert = chai.assert;
-
-var map, converted, expected, settings;
+var vv, map, converted, expected;
 
 
 describe('Method cleanMap()', function () {
@@ -30,7 +29,7 @@ describe('Method cleanMap()', function () {
       d: 'str2',
       'fieldset.field1': 'a random value'
     };
-    settings = {
+    vv = vulcanval({
       fields: [{
         name: 'a',
         onlyUI: true
@@ -44,8 +43,8 @@ describe('Method cleanMap()', function () {
       }, {
         name: 'fieldset.field1'
       }]
-    };
-    converted = vulcanval.cleanMap(true, map, settings);
+    });
+    converted = vv.cleanMap(true, map);
     assert.deepEqual(converted, expected);
   });
 
@@ -76,7 +75,7 @@ describe('Method cleanMap()', function () {
         field5: 'str3'
       }
     };
-    settings = {
+    vv = vulcanval({
       fields: [
         { name: 'set1.field1', disabled: true },
         { name: 'set1.field2' },
@@ -84,8 +83,8 @@ describe('Method cleanMap()', function () {
         { name: 'set2.set3.field4' },
         { name: 'set2.field5' }
       ]
-    };
-    converted = vulcanval.cleanMap(false, map, settings);
+    });
+    converted = vv.cleanMap(false, map);
     assert.deepEqual(converted, expected);
   });
 });

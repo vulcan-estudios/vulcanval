@@ -1,10 +1,9 @@
 require('./pre');
 
-const chai = require('chai');
-const vulcanval = require('../../src/js/main');
+const assert = require('chai').assert;
+const expect = require('chai').expect;
+const vulcanval = require('../../src/js/vulcanval');
 
-
-const assert = chai.assert;
 
 var map, converted, expected;
 
