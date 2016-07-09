@@ -1,14 +1,14 @@
+const fs =           require('fs');
 const del =          require('del');
 const requireDir =   require('require-dir');
 const gulp =         require('gulp');
 const rename =       require('gulp-rename');
 const gutil =        require('gulp-util');
+const uglify =       require('gulp-uglify');
+const cleanCSS =     require('gulp-clean-css');
 const source =       require('vinyl-source-stream');
 const browserify =   require('browserify');
-const uglify =       require('gulp-uglify');
-const sass =         require('gulp-sass');
-const autoprefixer = require('gulp-autoprefixer');
-const cleanCSS =     require('gulp-clean-css');
+const sass =         require('node-sass');
 const sassdoc =      require('sassdoc');
 const jsdoc =        require('gulp-jsdoc3');
 
@@ -54,39 +54,23 @@ gulp.task('browserify-compress', ['browserify'], function () {
 });
 
 gulp.task('sass', function () {
-  return gulp.src(['./src/scss/**/*.scss'])
-    .pipe(
-      sass({
-        sourceComments: true
-      })
-      .on('error', sass.logError)
-    )
-    .pipe(autoprefixer({
-      browsers: [
-        'last 5 versions',
-        'ie >= 8'
-      ]
-    }))
-    .pipe(rename({
-      dirname: '',
-      basename: 'vulcanval'
-    }))
-    .pipe(gulp.dest('./dist/', {
-        overwrite: true
-    }));
-});
 
-gulp.task('sass-compress', ['sass'], function () {
-  return gulp.src('./dist/vulcanval.css')
-    .pipe(cleanCSS({
-      compatibility: 'ie8'
-    }))
+  // bundle
+  const result = sass.renderSync({
+    file: './src/scss/_vulcanval.scss',
+    outFile: './dist/vulcanval.css'
+  });
+  fs.writeFileSync(__dirname +'/dist/vulcanval.css', result.css);
+
+  // compress
+  return gulp.src(['./dist/vulcanval.css'])
+    .pipe(cleanCSS())
     .pipe(rename({
       dirname: '',
       basename: 'vulcanval.min'
     }))
     .pipe(gulp.dest('./dist', {
-        overwrite: true
+      overwrite: true
     }));
 });
 
@@ -126,6 +110,6 @@ gulp.task('doc-sass', ['doc-sass-clean'], function () {
 });
 
 
-gulp.task('build', ['browserify', 'browserify-compress', 'sass', 'sass-compress']);
+gulp.task('build', ['browserify', 'browserify-compress', 'sass']);
 gulp.task('doc', ['doc-js', 'doc-sass']);
 gulp.task('default', ['build', 'doc']);
