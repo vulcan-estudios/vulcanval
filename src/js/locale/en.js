@@ -24,9 +24,4 @@ const lang = {
   }
 };
 
-browser.perform(false, function () {
-  window.vulcanval.extendLocale(lang);
-  window.vulcanval.setLocale(lang.id);
-});
-
 module.exports = lang;

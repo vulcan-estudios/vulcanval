@@ -26,7 +26,7 @@ const lang = {
 
 browser.perform(false, function () {
   window.vulcanval.extendLocale(lang);
-  window.vulcanval.setLocale(lang.id);
+  window.vulcanval.settings.locale = lang.id;
 });
 
 module.exports = lang;
