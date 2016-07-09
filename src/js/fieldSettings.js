@@ -6,8 +6,12 @@ const utils = require('./utils');
  * @type {Object}
  *
  * @description
- * The default properties and methods for a field in vulcanval {@link settings.fields}
- * configuration.
+ * The default properties and methods for a field.
+ *
+ * This is configured in {@link settings.fields} array property.
+ *
+ * Each field settings can be affected by the main {@link settings} and by the
+ * {@link fieldsetSettings}.
  */
 const fieldSettings = {
 
@@ -36,42 +40,6 @@ const fieldSettings = {
    * @default false
    */
   required: null,
-
-  /**
-   * The validators list. This is an object with keys as the validators names and
-   * values as their configuration. If the value is simply a boolean `true`,
-   * the validator will be invoked without options. It it is string, number or
-   * object it will be send as validator options. If value is `false`, the validator
-   * will not be used.
-   *
-   * These won't be used if the field value is boolean.
-   *
-   * You can use all validators from the {@link https://www.npmjs.com/package/validator validator}
-   * package.
-   *
-   * @type {Object}
-   */
-  validators: null,
-
-  /**
-   * Only client-side.
-   *
-   * What event to listen to trigger the first validation on field.
-   *
-   * @type {String}
-   * @default Inherited from {@link settings}
-   */
-  firstValidationEvent: null,
-
-  /**
-   * Only client-side.
-   *
-   * After first validation, what events to listen to re-validate field.
-   *
-   * @type {String}
-   * @default Inherited from {@link settings}
-   */
-  validationEvents: null,
 
   /**
    * Only client-side.
@@ -110,6 +78,67 @@ const fieldSettings = {
   /**
    * Only client-side.
    *
+   * What event to listen to trigger the first validation on field.
+   *
+   * @type {String}
+   * @default Inherited from {@link settings}
+   */
+  firstValidationEvent: null,
+
+  /**
+   * Only client-side.
+   *
+   * After first validation, what events to listen to re-validate field.
+   *
+   * @type {String}
+   * @default Inherited from {@link settings}
+   */
+  validationEvents: null,
+
+  /**
+   * The validators list. This is an object with keys as the validators names and
+   * values as their configuration. If the value is simply a boolean `true`,
+   * the validator will be invoked without options. It it is string, number or
+   * object it will be send as validator options. If value is `false`, the validator
+   * will not be used.
+   *
+   * These won't be used if the field value is boolean.
+   *
+   * You can use all validators from the {@link https://www.npmjs.com/package/validator validator}
+   * package.
+   *
+   * @type {Object}
+   */
+  validators: null,
+
+  /**
+   * Only client-side.
+   *
+   * Field jQuery element.
+   *
+   * The field node element saves the jQuery data states:
+   * - {undefined|Boolean} vv-modified - If the field has been modified by the user
+   *   after the validation process has been set. undefined if it's unknown.
+   * - {undefined|Boolean} vv-valid - If the field is valid. undefined if it's unknown.
+   * - {Boolean|String} vv-msg - The error message if field is invalid. false if
+   *   field is valid.
+   *
+   * The field node element triggers an event called `vv-modify` to inform about
+   * a change in the field which affects the validation process. This event
+   * receives an object parameter describing:
+   * - {String} name - Field name.
+   * - {*} value - Field value.
+   * - {Boolean} valid - Field status.
+   * - {Boolean|String} msg - If field is invalid the error, otherwise false.
+   *
+   * @private
+   * @type {external:jQuery}
+   */
+  $el: null,
+
+  /**
+   * Only client-side.
+   *
    * The element where to set the current field message error. If not specified,
    * the messages won't be shown on UI. This is a jQuery selector.
    *
@@ -136,31 +165,6 @@ const fieldSettings = {
    * @type {external:jQuery}
    */
   $labels: null,
-
-  /**
-   * Only client-side.
-   *
-   * Field jQuery element.
-   *
-   * The field node element saves the jQuery data states:
-   * - {undefined|Boolean} vv-modified - If the field has been modified by the user
-   *   after the validation process has been set. undefined if it's unknown.
-   * - {undefined|Boolean} vv-valid - If the field is valid. undefined if it's unknown.
-   * - {Boolean|String} vv-msg - The error message if field is invalid. false if
-   *   field is valid.
-   *
-   * The field node element triggers an event called `vv-modify` to inform about
-   * a change in the field which affects the validation process. This event
-   * receives an object parameter describing:
-   * - {String} name - Field name.
-   * - {*} value - Field value.
-   * - {Boolean} valid - Field status.
-   * - {Boolean|String} msg - If field is invalid the error, otherwise false.
-   *
-   * @private
-   * @type {external:jQuery}
-   */
-  $el: null,
 
   /**
    * Only client-side.
@@ -260,7 +264,7 @@ const fieldSettings = {
    * @return {Object}
    */
   extend (custom) {
-    return extend(true, {}, this, custom);
+    return extend(Object.create(fieldSettings), custom);
   }
 };
 
