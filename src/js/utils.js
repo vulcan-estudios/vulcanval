@@ -94,7 +94,7 @@ const utils = {
     if (!list[i]) return;
 
     if (typeof obj[list[i]] === 'object') {
-      return formatWalk(obj[list[i]], list, i+1);
+      return utils.formatWalk(obj[list[i]], list, i+1);
     }
     else {
       return obj[list[i]];
