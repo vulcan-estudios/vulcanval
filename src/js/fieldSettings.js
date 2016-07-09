@@ -24,7 +24,7 @@ const fieldSettings = {
    * @type {Boolean}
    * @default false
    */
-  disabled: false,
+  disabled: null,
 
   /**
    * Field is required and cannot be undefined. If the field is not required but
@@ -35,7 +35,7 @@ const fieldSettings = {
    * @type {Boolean}
    * @default false
    */
-  required: false,
+  required: null,
 
   /**
    * The validators list. This is an object with keys as the validators names and
@@ -81,7 +81,7 @@ const fieldSettings = {
    * @type {Boolean}
    * @default false
    */
-  autostart: false,
+  autostart: null,
 
   /**
    * Only client-side.
@@ -95,7 +95,7 @@ const fieldSettings = {
    * @type {Boolean}
    * @default false
    */
-  intern: false,
+  intern: null,
 
   /**
    * Only client-side.
@@ -105,7 +105,7 @@ const fieldSettings = {
    * @type {Boolean}
    * @default false
    */
-  onlyUI: false,
+  onlyUI: null,
 
   /**
    * Only client-side.

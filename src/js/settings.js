@@ -43,7 +43,7 @@ const settings = {
    * @type {Boolean}
    * @default false
    */
-  autostart: false,
+  autostart: null,
 
   /**
    * Only client-side. Overwritten by {@link fieldSettings}.
@@ -55,7 +55,7 @@ const settings = {
    * @type {Boolean}
    * @default false
    */
-  intern: false,
+  intern: null,
 
   /**
    * Only client-side. Only for `<form>`.
@@ -66,7 +66,7 @@ const settings = {
    * @type {Boolean}
    * @default false
    */
-  disableHTML5Validation: false,
+  disableHTML5Validation: null,
 
   /**
    * Only client-side. Only for `<form>`.
@@ -143,7 +143,7 @@ const settings = {
    *
    * @see {@link external:"jQuery.fn".vulcanval}
    */
-  enableNestedMaps: false,
+  enableNestedMaps: null,
 
   /**
    * **List of custom validators.**
