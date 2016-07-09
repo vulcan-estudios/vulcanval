@@ -5,38 +5,24 @@ const utils = require('./utils');
 const browser = require('./browser');
 
 /**
- * vulcanval.rawValidation()
+ * rawValidation method.
  *
- * @private
+ * @param  {String} fieldName
  *
- * @param  {Object} conf
- * @param  {Object} conf.field
- * @param  {String} conf.field.name
- * @param  {*}      conf.field.value
- * @param  {settings} conf.settings
- * @param  {utilityContext} conf.context
- *
- * @return {String|Boolean} `false` if invalid, otherwise the error message.
+ * @return {String|Boolean} `false` if valid, otherwise the error message.
  */
-module.exports = function (conf) {
+module.exports = function (fieldName) {
   'use strict';
 
-  if (typeof conf !== 'object') {
-    return log.error('parameter must be an object');
-  }
+  const settings = this.settings;
+  const field = {
+    name: fieldName,
+    value: settings.context.get(fieldName)
+  };
 
-  log.debug(`validating field ${conf.field.name}="${conf.field.value}"`);
+  log.debug(`validating field: ${field.name}="${field.value}"`);
 
-  const field = conf.field;
-  const settings = conf.settings;
-  const context = conf.context;
-
-  field.rules = utils.find(settings.fields, vals => {
-    if (typeof vals !== 'object') {
-      return log.error('a field can only have an object to describe its validation');
-    }
-    return vals.name === field.name;
-  });
+  field.rules = utils.find(settings.fields, vals => vals.name === field.name);
 
   if (!field.rules) {
     log.warn('field to validate does not have validators');
@@ -62,7 +48,7 @@ module.exports = function (conf) {
   }
 
   // condition
-  if (field.rules.onlyIf && !field.rules.onlyIf.call(context, field.value)) {
+  if (field.rules.onlyIf && !field.rules.onlyIf()) {
     return false;
   }
 
@@ -108,7 +94,7 @@ module.exports = function (conf) {
 
     // There is already an error.
     if (err) {
-      return true;
+      return false;
     }
 
     // Validator disabled.
@@ -152,7 +138,7 @@ module.exports = function (conf) {
 
     // Custom validator.
     else if (settings.validators[valName]) {
-      if (!settings.validators[valName].call(context, field.value, valOpts)) {
+      if (!settings.validators[valName].call(settings.context, field.value, valOpts)) {
         err = getMsg(false, valName, val);
       }
       return true;
@@ -172,7 +158,9 @@ module.exports = function (conf) {
     }
   });
 
-  log.info(`invalid field ${conf.field.name}="${conf.field.value}":`, err);
+  if (err) {
+    log.info(`invalid field ${field.name}="${field.value}":`, err);
+  }
 
   return !err ? false : err;
 };
