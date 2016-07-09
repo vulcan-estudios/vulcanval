@@ -1,3 +1,5 @@
+const validator = require('validator');
+
 /**
  * @namespace utilityContext
  * @type {Object}
@@ -5,6 +7,9 @@
  * @description
  * This is the function context used in some methods/functions in validations
  * processes.
+ *
+ * Also, this object has all the methods in the {@link https://www.npmjs.com/package/validator validator}
+ * package.
  */
 const utilityContext = {
 
@@ -27,7 +32,20 @@ const utilityContext = {
    *
    * @type {Function}
    */
-  get: null
+  get: null,
+
+  /**
+   * Extend utility context.
+   *
+   * @private
+   * @return {Object}
+   */
+  extend () {
+    const F = function () {};
+    F.prototype = validator;
+    F.prototype.validator = validator;
+    return new F();
+  }
 };
 
 module.exports = utilityContext;
