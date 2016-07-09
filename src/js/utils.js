@@ -50,6 +50,16 @@ const utils = {
     return obj;
   },
 
+  pick (root, props) {
+    const newProps = {};
+    props.forEach(function (prop) {
+      if (root.hasOwnProperty(prop)) {
+        newProps[prop] = root[prop];
+      }
+    });
+    return newProps;
+  },
+
   find (arr, callback, context) {
     'use strict';
 
@@ -118,6 +128,7 @@ const utils = {
   },
 
   validateFieldName (name) {
+    if (typeof name !== 'string') return false;
     return name.split('.').every(function (part) {
       return /^[-_a-zA-Z0-9]{1,}$/.test(part) &&
         !validator.isInt(part.charAt(0)) && !!part.length;
