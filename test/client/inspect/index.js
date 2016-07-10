@@ -2,7 +2,7 @@ fixture.setBase('test/client/inspect');
 $(fixture.load('forms.html')).appendTo('body');
 
 
-describe('Inspect', function () {
+describe('Method inspect()', function () {
 
   const $form = $('#inspect1');
   $form.vulcanval({
@@ -43,27 +43,5 @@ describe('Inspect', function () {
     $form.find('[name=email]').val('mail@mail.com');
     result = $form.vulcanval('inspect');
     assert.isFalse(result);
-  });
-
-  it('Valid field (part1)', function () {
-    result = $form.vulcanval('inspect', 'email');
-    assert.isFalse(result);
-  });
-
-  it('Valid field (part2)', function () {
-    result = $form.vulcanval('inspect', 'creditcard');
-    assert.isFalse(result);
-  });
-
-  it('Invalid field (part1)', function () {
-    $form.find('[name=email]').val('invalid mail');
-    result = $form.vulcanval('inspect', 'email');
-    assert.isString(result);
-  });
-
-  it('Invalid field (part2)', function () {
-    $form.find('[name=creditcard]').val('invalid credit card');
-    result = $form.vulcanval('inspect', 'creditcard');
-    assert.isString(result);
   });
 });
