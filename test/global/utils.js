@@ -113,4 +113,83 @@ describe('utils{}', function () {
       assert.equal(formatted, '1 AB 2 D 3 AB 4 D 5 D');
     });
   });
+
+  describe('mergeCollections()', function () {
+
+    it('Empty arrays should return empty array', function () {
+      const merged = utils.mergeCollections('id', [], []);
+      assert.sameDeepMembers(merged, []);
+    });
+
+    it('Merge unique items', function () {
+      const col1 = [{ id:1, v:'a' }];
+      const col2 = [{ id:2, v:'b' }];
+      const merged = utils.mergeCollections('id', col1, col2);
+      const expected = [
+        { id:1, v:'a' },
+        { id:2, v:'b' }
+      ];
+      assert.sameDeepMembers(merged, expected);
+    });
+
+    it('Shared items', function () {
+      const col1 = [
+        { id:1, v:'a' },
+        { id:2, v:'b' },
+        { id:3, v:'c' }
+      ];
+      const col2 = [
+        { id:1, v:'x' },
+        { id:2, v:'y' },
+        { id:4, v:'d' }
+      ];
+      const merged = utils.mergeCollections('id', col1, col2);
+      const expected = [
+        { id:1, v:'x' },
+        { id:2, v:'y' },
+        { id:3, v:'c' },
+        { id:4, v:'d' }
+      ];
+      assert.sameDeepMembers(merged, expected);
+    });
+
+    it('Shared deep items', function () {
+      const col1 = [
+        { id:1, v:{p:1,q:2} },
+        { id:2, v:{p:3,q:4} },
+        { id:3, v:{p:5,q:6} }
+      ];
+      const col2 = [
+        { id:2, v:{p:7} },
+        { id:3, v:{q:10} }
+      ];
+      const merged = utils.mergeCollections('id', col1, col2);
+      const expected = [
+        { id:1, v:{p:1,q:2} },
+        { id:2, v:{p:7,q:4} },
+        { id:3, v:{p:5,q:10} }
+      ];
+      assert.sameDeepMembers(merged, expected);
+    });
+
+    it('Repeated items', function () {
+      const col1 = [
+        { id:1, v:'a' },
+        { id:1, v:'m' },
+        { id:2, v:'b' },
+        { id:2, v:'n' },
+      ];
+      const col2 = [
+        { id:2, v:'x' },
+        { id:3, v:'y' }
+      ];
+      const merged = utils.mergeCollections('id', col1, col2);
+      const expected = [
+        { id:1, v:'m' },
+        { id:2, v:'x' },
+        { id:3, v:'y' }
+      ];
+      assert.sameDeepMembers(merged, expected);
+    });
+  });
 });
