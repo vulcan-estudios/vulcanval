@@ -1,6 +1,3 @@
-const validator =     require('validator');
-const extend =        require('extend');
-const settings =      require('./settings');
 const log =           require('./log');
 const utils =         require('./utils');
 const convertMapTo =  require('./convertMapTo');
@@ -52,15 +49,19 @@ module.exports = function (fieldName, map) {
   'use strict';
 
   if (typeof map !== 'object') {
-    return log.error('second parameter (map) must be an object');
+    log.error('second parameter (map) must be an object');
   }
 
   if (this.settings.enableNestedMaps) {
     map = convertMapTo('plain', map);
   }
 
+  if (!utils.find(this.settings.fields, f => f.name === fieldName)) {
+    log.error(`field "${fieldName}" was not found`);
+  }
+
   this.settings.context.get = function (name) {
-    if (map[name]) {
+    if (map[name] !== undefined) {
       return map[name];
     } else {
       log.warn(`field "${name}" not found in map`);
