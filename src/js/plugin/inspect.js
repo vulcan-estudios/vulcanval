@@ -1,6 +1,5 @@
 const log = require('../log');
 const utils = require('../utils');
-const rawValidation = require('../rawValidation');
 
 /**
  * ***Invoke over instantiated elements.***
@@ -16,32 +15,19 @@ const rawValidation = require('../rawValidation');
  * the fieldName is sent, it will return an error message if field is invalid,
  * otherwise `false`.
  */
-const inspect = function (fieldName) {
+const inspect = function () {
 
-  const settings = this.data('vv-settings');
+  const vv = this.data('vv');
+  const settings = vv.settings;
 
-  if (fieldName) {
-    const field = utils.find(settings.fields, f => f.name === fieldName);
-    if (!field) log.error(`field "${fieldName}" not found`);
-    return rawValidation({
-      settings,
-      context: settings.context,
-      field: { name: field.name, value: field.value() }
-    });
-  }
+  const errors = {};
 
-  else {
-    const errors = {};
-    settings.fields.forEach(function (field) {
-      const invalid = rawValidation({
-        settings,
-        context: settings.context,
-        field: { name: field.name, value: field.value() }
-      });
-      if (invalid) errors[field.name] = invalid;
-    });
-    return Object.keys(errors).length ? errors : false;
-  }
+  settings.fields.forEach(function (field) {
+    const invalid = vv.rawValidation(field.name);
+    if (invalid) errors[field.name] = invalid;
+  });
+
+  return Object.keys(errors).length ? errors : false;
 };
 
 module.exports = inspect;
