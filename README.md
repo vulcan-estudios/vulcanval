@@ -1,26 +1,36 @@
-# vulcanval
+# [VulcanVal](http://vulcan-estudios.github.io/vulcanval)
 
 [![npm version](https://badge.fury.io/js/vulcanval.svg)](https://badge.fury.io/js/vulcanval)
 [![Build Status](https://travis-ci.org/vulcan-estudios/vulcanval.svg?branch=master)](https://travis-ci.org/vulcan-estudios/vulcanval)
 
 > Vulcan Validator, validate data forms in client and server sides.
 
+**Currently working in this project. Feel free to test it.**
+
 A package to validate data objects (possibly extracted from HTML forms) in client and server sides and a customizable jQuery plugin to validate them in realtime.
+
+## Install
+
+```bash
+npm install --save vulcanval
+```
 
 ## Features
 
 - Define universal validation configuration to validate in client and server sides in a really similar way.
 - Use of the [validator.js](https://github.com/chriso/validator.js) package validators so we implement well tested string validators.
+- Customizable interface.
+- Highly configurable.
+- Dynamic validation process.
 - Ability to add custom validators functions.
 - Ability to add custom fields different from form elements.
-- Customizable interface.
-- HTML5 integration.
 - Extract data from forms elements as data maps.
-- Support for internationalization.
+- Internationalization support.
+- HTML5 integration.
 - API to integrate with your own libraries.
 - And more.
 
-## Aditionals
+## Additionals
 
 - You can add certain support to browser input autofill with this package [github.com/tbosch/autofill-event](https://github.com/tbosch/autofill-event).
 
