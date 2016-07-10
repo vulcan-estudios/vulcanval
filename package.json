@@ -1,6 +1,6 @@
 {
   "name": "vulcanval",
-  "version": "1.0.0-beta.2",
+  "version": "2.0.0",
   "description": "Validate data forms in client and server sides",
   "keywords": [
     "validation",
@@ -30,6 +30,7 @@
   "devDependencies": {
     "babel-preset-es2015": "^6.5.0",
     "babelify": "^7.2.0",
+    "benchmark": "^2.1.0",
     "body-parser": "^1.15.2",
     "browserify": "^13.0.0",
     "chai": "^3.5.0",
@@ -52,6 +53,7 @@
     "karma-html2js-preprocessor": "^1.0.0",
     "karma-json-fixtures-preprocessor": "0.0.6",
     "karma-mocha": "^1.1.1",
+    "karma-mocha-reporter": "^2.0.4",
     "karma-phantomjs-launcher": "^1.0.1",
     "mocha": "^2.5.3",
     "node-sass": "^3.8.0",
@@ -63,10 +65,10 @@
   },
   "main": "src/js/main.js",
   "scripts": {
-    "test": "npm run test-server && npm run test-client",
-    "test-desktop": "npm run test-server && npm run test-client-desktop",
-    "test-server": "NODE_ENV=test mocha test/global",
-    "test-client": "NODE_ENV=test karma start karma.conf.js",
+    "test": "npm run test-global && npm run test-client",
+    "test-desktop": "npm run test-global && npm run test-client-desktop",
+    "test-global": "NODE_ENV=test mocha test/global && karma start karma-global.conf.js",
+    "test-client": "NODE_ENV=test karma start karma-client.conf.js",
     "test-client-desktop": "NODE_ENV=test karma start karma-desktop.conf.js",
     "doc": "gulp doc",
     "build": "gulp build",
