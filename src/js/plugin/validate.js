@@ -12,39 +12,26 @@ const utils = require('../utils');
  * @param  {String} [fieldName] - Only limite validation to the field.
  * @return {external:jQuery} The same jQuery object.
  */
-const validate = function (fieldName) {
+const validate = function () {
   'use strict';
 
-  const settings = this.data('vv-settings');
+  const vv = this.data('vv');
+  const settings = vv.settings;
 
-  if (fieldName) {
-    const field = utils.find(settings.fields, f => f.name === fieldName);
-    if (!field) log.error(`field "${fieldName}" not found`);
+  let invalid;
+  let first = true;
+
+  settings.fields.forEach(field => {
 
     field.$el.trigger('vv-change');
 
-    field.$el.trigger('focus');
-  }
+    invalid = vv.rawValidation(field.name);
 
-  else {
-
-    let invalid;
-    let first = true;
-
-    settings.fields.forEach(function (field) {
-
-      if (!field.$el) return;
-
-      field.$el.trigger('vv-change');
-
-      invalid = field.$el.vulcanval('inspect', field.name);
-
-      if (invalid && first) {
-        first = false;
-        field.$el.trigger('focus');
-      }
-    });
-  }
+    if (invalid && first) {
+      first = false;
+      field.$el.trigger('focus');
+    }
+  });
 
   return this;
 };
