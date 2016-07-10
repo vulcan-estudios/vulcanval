@@ -1,10 +1,12 @@
-fixture.setBase('test/client/reset');
+fixture.setBase('test/client/resetField');
 $(fixture.load('forms.html')).appendTo('body');
 
 
-describe('Method reset()', function () {
+describe('Method resetField()', function () {
 
-  const $form = $('#reset1');
+  const $form = $('#resetField1');
+  const $input1 = $form.find('[name=name]');
+  const $input2 = $form.find('[name=email]');
 
   $form.vulcanval({
     autostart: true,  // note the autostart
@@ -15,6 +17,15 @@ describe('Method reset()', function () {
       name: 'email',
       required: true
     }]
+  });
+
+  it('Should validate field name', function () {
+    assert.throws(function () {
+      $form.vulcanval('resetField');
+    });
+    assert.throws(function () {
+      $form.vulcanval('resetField', 'unknown');
+    });
   });
 
   it('Fields initialized with errors (class)', function () {
@@ -32,18 +43,18 @@ describe('Method reset()', function () {
   });
 
   it('Reset fields', function () {
-    $form.vulcanval('reset');
+    $form.vulcanval('resetField', 'email');
   });
 
   it('Fields reseted (class)', function () {
-    assert.isFalse($form.hasClass('vv-form_error'));
-    assert.isTrue($form.find('input[class*=_error]').length === 0);
+    assert.isTrue($form.hasClass('vv-form_error'));
+    assert.isTrue($input1.hasClass('vv-field_error'));
+    assert.isFalse($input2.hasClass('vv-field_error'));
   });
 
   it('Fields reseted (state)', function () {
-    assert.isUndefined($form.data('vv-valid'));
-    $form.find('input').each((i, inp) => {
-      assert.isUndefined($(inp).data('vv-valid'));
-    });
+    assert.isFalse($form.data('vv-valid'));
+    assert.isFalse($input1.data('vv-valid'));
+    assert.isUndefined($input2.data('vv-valid'));
   });
 });
