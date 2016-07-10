@@ -9,8 +9,10 @@ const change = require('./_change');
  * @private
  * @param {settings} settings
  */
-const setEvents = function (settings) {
+const setEvents = function (vv) {
   'use strict';
+
+  const settings = vv.settings;
 
   // Form.
   if (settings.$form) {
@@ -35,13 +37,14 @@ const setEvents = function (settings) {
 
     if (!field.$el || field.disabled) return;
 
-    const isTextField = !!field.$el.filter('input[type!=checkbox][type!=radio], textarea').length;
-    const firstEvent = (field.firstValidationEvent || settings.firstValidationEvent) +' vv-change';
-    const normalEvent = (field.validationEvents || settings.validationEvents) +' vv-change';
-    const initial = isTextField && typeof field.$el.val() === 'string' && field.$el.val().length;
+    const isNormalTextField = !!field.$el.filter('input[type!=checkbox][type!=radio][type!=password], textarea').length;
+    const couldBeInitialized = !!field.$el.filter('input[type!=checkbox][type!=radio], textarea, select').length;
+    const initial = couldBeInitialized && typeof field.$el.val() === 'string' && field.$el.val().length;
+    const firstEvent = field.firstValidationEvent +' vv-change';
+    const normalEvent = field.validationEvents +' vv-change';
 
     field.onChange = function (ev) {
-      change(settings, field, ev);
+      change(vv, field, ev);
     };
 
     field.onFirstChange = function (e) {
@@ -52,7 +55,7 @@ const setEvents = function (settings) {
 
     // @FIXIT: Make this run with an option.
     field.onBlur = function (e) {
-      if (isTextField) {
+      if (isNormalTextField) {
         field.$el.val(utils.trimSpaces(field.$el.val()));
       }
     };
@@ -60,7 +63,7 @@ const setEvents = function (settings) {
     field.$el.on('blur', field.onBlur);
     field.$el.on(firstEvent, field.onFirstChange);
 
-    if (initial || field.autostart || settings.autostart) {
+    if (initial || field.autostart) {
       field.$el.trigger('vv-change');
     }
   });

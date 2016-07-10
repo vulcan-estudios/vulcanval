@@ -1,3 +1,4 @@
+const extend =          require('extend');
 const validator =       require('validator');
 
 const log =             require('../log');
@@ -7,7 +8,6 @@ const fieldSettings =   require('../fieldSettings');
 
 const ui =              require('./_ui');
 const fetchUISettings = require('./_fetchUISettings.js');
-const createSettings =  require('./_createSettings');
 const setAttrs =        require('./_setAttrs');
 const setHTML =         require('./_setHTML');
 const setEvents =       require('./_setEvents');
@@ -80,7 +80,9 @@ const plugin = function (customSettings) {
     return this;
   }
 
+  //
   // Validate elements.
+  //
   let $fields;
   if ($el[0].tagName === 'FORM') {
     $fields = ui.filterFields(ui.findFields($el));
@@ -89,7 +91,8 @@ const plugin = function (customSettings) {
   }
 
   if (!$fields.length) {
-    log.error('only <form>; <input>, <textarea> and <select> with valid attr "name"; and elements with valid attr "data-vv-name"');
+    log.error('only <form>; <input>, <textarea> and <select> with valid attr "name"; '+
+      'and elements with valid attr "data-vv-name"');
   }
 
   $fields.each(function (i, field) {
@@ -99,20 +102,58 @@ const plugin = function (customSettings) {
     }
   });
 
-  // Fetch UI elements settings configured as nodes attributes and properties.
-  let fetchedSettings = fetchUISettings($el, $fields);
-
+  //
   // Create settings.
+  //
+  const fetchedSettings = fetchUISettings($el, $fields);
   customSettings = customSettings ? customSettings : {};
-  const settings = createSettings($el, fetchedSettings, customSettings);
+
+  // Merge fields settings. We don't merge fieldset settings because from UI
+  // we don't extract fieldsets information.
+  customSettings.fields = utils.mergeCollections(
+    'name',
+    fetchedSettings.fields,
+    customSettings.fields
+  );
+  delete fetchedSettings.fields;
+
+  // All fields have to have an element.
+  customSettings.fields.forEach(field => {
+    if (!field.$el) {
+      log.error(`field "${field.name}" does not have DOM element`);
+    }
+  });
+
+  extend(true, fetchedSettings, customSettings);
+
+  //
+  // Instance.
+  //
+  const vv = window.vulcanval(fetchedSettings);
+  const settings = vv.settings;
 
   if (settings.disabled) {
-    log.warn('complete form is disabled');
+    log.warn('form is disabled, vulcanval will not operate');
     return this;
   }
 
-  // Create vulcanval instance.
-  const vv = window.vulcanval(settings);
+  if ($el[0].tagName === 'FORM') {
+    settings.$form = $el;
+  }
+
+  // Set method to get form data maps.
+  vv.settings.context.get = function (getFieldName) {
+    const getField = utils.find(vv.settings.fields, f => f.name === getFieldName);
+    if (getField) {
+      return getField.value && getField.value();
+    } else {
+      log.warn(`field "${getFieldName}" was not found in form`);
+    }
+  };
+
+  //
+  // UI configuration.
+  //
 
   // Set parsed settings attributes in current HTML.
   setAttrs(vv);

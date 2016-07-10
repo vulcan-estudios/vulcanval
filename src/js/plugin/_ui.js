@@ -57,17 +57,24 @@ const ui = {
    * - input type checkbox
    * - input type radio
    * - input type hidden
-   * - input type to exclude: submit, button and reset
+   * - input type to exclude: file, image, submit, button and reset
    * - textarea
    * - select
    * - custom entries (* with attr data-vv-name)
    */
   filterFields ($fields) {
-    return $fields.filter('input[name][type!=button][type!=submit][type!=reset], select[name], textarea[name], [data-vv-name]');
+    return $fields.filter([
+      'input[name][type!=image][type!=button][type!=submit][type!=reset][type!=file]',
+      'select[name]',
+      'textarea[name]',
+      '[data-vv-name]'
+    ].join(','));
   },
 
   getAttr (el, attr) {
-    return $(el).attr(attr) !== void 0 ? $(el).attr(attr) : $(el).data(`vv-${attr}`);
+    return $(el).attr(attr) !== void 0 ?
+      $(el).attr(attr) :
+      $(el).data(`vv-${attr}`);
   },
 
   getProp (el, prop) {

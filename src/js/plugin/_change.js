@@ -4,13 +4,12 @@ const ui = require('./_ui');
  * On field change.
  *
  * @private
- * @param  {settings} settings
- * @param  {fieldSettings} field
  */
-const change = function (settings, field) {
+const change = function (vv, field) {
   'use strict';
 
-  const invalid = field.$el.vulcanval('inspect', field.name);
+  const settings = vv.settings;
+  const invalid = vv.rawValidation(field.name);
   const wasInvalid = field.$el.data('vv-valid') === false;
   const lastMsg = field.$el.data('vv-msg');
 
@@ -24,7 +23,7 @@ const change = function (settings, field) {
   if (invalid) {
     field.$el.data('vv-valid', false);
 
-    if (!field.intern && !settings.intern && field.$display) {
+    if (!field.intern && field.$display) {
       field.$display.html(invalid);
     }
 

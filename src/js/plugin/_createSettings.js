@@ -1,3 +1,4 @@
+const extend = require('extend');
 const validator = require('validator');
 const settings = require('../settings');
 const utils = require('../utils');
@@ -17,59 +18,24 @@ const ui = require('./_ui');
 const createSettings = function ($el, fetched, custom) {
   'use strict';
 
-  // Extend every specific field settings.
-  const fetchedFields = fetched.fields || [];
+  // Merge fields settings. We don't merge fieldset settings because from UI
+  // we don't extract fieldsets information.
+  custom.fields = utils.mergeCollections('name', fetched.fields, custom.fields);
   delete fetched.fields;
 
-  const customFields = custom.fields || [];
-  delete custom.fields;
-
-  const newFields = [];
-
-  customFields.forEach(customField => {
-    const fetchedField = utils.find(fetchedFields, field => field.name === customField.name);
-
-    if (fetchedField) {
-      $.extend(true, fetchedField, customField);
-      newFields.push(fieldSettings.extend(fetchedField));
-    } else {
-      newFields.push(fieldSettings.extend(customField));
+  // All fields have to have an element.
+  custom.fields.forEach(field => {
+    if (!field.$el) {
+      log.error(`field "${field.name}" does not have DOM element`);
     }
   });
 
-  fetchedFields.forEach(fetchedField => {
-    if (!utils.find(newFields, nf => nf.name === fetchedField.name)) {
-      newFields.push(fieldSettings.extend(fetchedField));
-    }
-  });
-
-  newFields.forEach(f => {
-    if (!f.$el) log.warn(`field "${f.name}" does not have DOM element`);
-  });
-
-  // Extend base settings with fetched and custom settings.
-  let newSettings = settings.extend(fetched);
-  newSettings = newSettings.extend(custom);
-
-  newSettings.fields = newFields;
+  extend(true, fetched, custom);
+  const newSettings = settings.extend(fetched);
 
   if ($el[0].tagName === 'FORM') {
     newSettings.$form = $el;
   }
-
-  // Create an utility context. This will be used in all methods using the
-  // '../utilityContext.js' function context.
-  newSettings.context = {
-    validator,
-    get (getFieldName) {
-      const getField = utils.find(newSettings.fields, f => f.name === getFieldName);
-      if (getField) {
-        return getField.value && getField.value();
-      } else {
-        log.warn(`field "${getFieldName}" not found`);
-      }
-    }
-  };
 
   return newSettings;
 };
