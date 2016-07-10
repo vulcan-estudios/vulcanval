@@ -17,7 +17,9 @@ const MSG_LENGTH_MAX_EN = 'msg length en max';
 const MSG_LENGTH_MAX_ES = 'msg length es max';
 
 const customSettings1 = {
-  //default locale: en
+  //default locale is 'en' but in client side when we install another language
+  //pack, we set it as default so we have to rewrite it
+  locale: 'en',
   msgs: {
     isEmail: MSG_EMAIL,
     isFloat: {
@@ -339,6 +341,10 @@ describe('settings{}', function () {
               value () { return 'my value'; }
             }]
           });
+          const map = {
+            'a': 'my value'
+          };
+          ns.context.get = name => map[name];
           assert.isTrue(ns.fields[0].onlyIf());
         });
 
@@ -363,6 +369,11 @@ describe('settings{}', function () {
               value () { return 'VALUE'; }
             }]
           });
+          const map = {
+            'a': 'my value',
+            'b': 'VALUE'
+          };
+          ns.context.get = name => map[name];
           assert.isFalse(ns.fields[0].onlyIf());
           assert.isTrue(ns.fields[1].onlyIf());
         });
