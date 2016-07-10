@@ -1,6 +1,6 @@
-const vulcanval = require('../../src/js/main');
+const vulcanval = require('../../src/js/vulcanval');
 const localeES = require('../../src/js/locale/es');
 
-vulcanval.debug(1);
+vulcanval.log.setLevel(2);
 
 vulcanval.extendLocale(localeES);
