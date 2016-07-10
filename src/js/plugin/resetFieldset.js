@@ -13,13 +13,26 @@ const ui = require('./_ui');
  * @param  {String} [fieldName] - Only limite reset to specified field.
  * @return {external:jQuery} The same jQuery object.
  */
-const reset = function () {
+const resetFieldset = function (fieldsetName) {
   'use strict';
 
   const vv = this.data('vv');
   const settings = vv.settings;
 
-  settings.fields.forEach(function (field) {
+  if (!fieldsetName) {
+    log.error('a valid fieldset name is required');
+  }
+
+  const fieldset = utils.find(settings.fieldsets, fs => fs.name === fieldsetName);
+
+  if (!fieldset) {
+    log.error(`fieldset "${fieldsetName}" was not found`);
+  }
+
+  let field;
+
+  fieldset.fields.forEach(function (fieldName) {
+    field = utils.find(settings.fields, f => f.name === fieldName);
     ui.removeFieldErrorClasses(settings, field);
     field.$el.data({
       'vv-modified': void 0,
@@ -37,7 +50,8 @@ const reset = function () {
     });
   }
 
-  settings.fields.forEach(function (field) {
+  fieldset.fields.forEach(function (fieldName) {
+    field = utils.find(settings.fields, f => f.name === fieldName);
     field.$el.trigger('vv-modify', {
       name: field.name,
       value: field.value(),
@@ -49,4 +63,4 @@ const reset = function () {
   return this;
 };
 
-module.exports = reset;
+module.exports = resetFieldset;
