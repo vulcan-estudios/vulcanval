@@ -7,11 +7,14 @@ const ui = require('./_ui');
  * @private
  * @param {settings} settings
  */
-const setAttrs = function (settings) {
+const setAttrs = function (vv) {
   'use strict';
+
+  const settings = vv.settings;
 
   if (settings.$form) {
 
+    settings.$form.data('vv', vv);
     settings.$form.data('vv-settings', settings);
 
     if (settings.disabled)               settings.$form.attr('disabled', 'disabled');
@@ -22,6 +25,7 @@ const setAttrs = function (settings) {
 
     if (!field.$el) return;
 
+    field.$el.data('vv', vv);
     field.$el.data('vv-settings', settings);
 
     if (field.disabled) field.$el.attr('disabled', 'disabled');

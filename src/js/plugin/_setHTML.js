@@ -7,8 +7,10 @@ const ui = require('./_ui');
  * @private
  * @param {settings} settings
  */
-const setHTML = function (settings) {
+const setHTML = function (vv) {
   'use strict';
+
+  const settings = vv.settings;
 
   if (!settings.intern) {
 
