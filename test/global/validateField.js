@@ -68,10 +68,16 @@ const vv = vulcanval({
 
 describe('Method validateField()', function () {
 
-  it('Validation', function () {
+  it('Validate map', function () {
     assert.throws(function () {
       vv.validateField('name');
     }, 'second parameter (map) must be an object');
+  });
+
+  it('Validate field name', function () {
+    assert.throws(function () {
+      vv.validateField('unknown', {});
+    }, 'field "unknown" was not found');
   });
 
   it('Sharing values', function () {

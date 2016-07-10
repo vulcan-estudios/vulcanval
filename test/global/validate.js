@@ -28,18 +28,24 @@ describe('Method validate()', function () {
 
   describe('Plain map', function () {
 
+    const RULE_A = '10.10.10.10';
     const map = {
-      a: '10.10.10.10',
+      a: RULE_A,
       c: '-7.4'
     };
     const vv1 = vulcanval({
+      validators: {
+        hasSharedValues () {
+          return this.get('a') === RULE_A;
+        }
+      },
       fields: [{
         name: 'a',
         required: true,
         validators: { isIP: true }
       }, {
         name: 'b',
-        validators: { isEmail: true }
+        validators: { isEmail: true, hasSharedValues: true }
       }, {
         name: 'c',
         required: true,
@@ -51,7 +57,7 @@ describe('Method validate()', function () {
       }]
     });
 
-    it('Should validate a normal map (even without fields in map)', function () {
+    it('Should validate a normal map (even without fields in map) (and shared values)', function () {
       assert.isFalse(vv1.validate(map));
     });
 
@@ -77,15 +83,24 @@ describe('Method validate()', function () {
 
   describe('Nested map', function () {
 
+    const RULE_D = '7.4';
     const map = {
       a: {
         b: '7.7.7.7'
       },
-      d: '7.4',
-      e: '2016-07-10 04:20:30'
+      d: RULE_D,
+      e: '2016-07-10T04:20:30Z'
     };
     const vv2 = vulcanval({
       enableNestedMaps: true,
+      validators: {
+        hasSharedValues () {
+          return this.get('d') === RULE_D;
+        }
+      },
+      msgs: {
+        hasSharedValues: 'Does not have shared values.'
+      },
       fields: [{
         name: 'a.b',
         required: true,
@@ -102,7 +117,7 @@ describe('Method validate()', function () {
       }, {
         name: 'e',
         required: true,
-        validators: { isISO8601: true }
+        validators: { isISO8601: true, hasSharedValues: true }
       }]
     });
 
@@ -118,14 +133,15 @@ describe('Method validate()', function () {
       assert.isString(result['a.b']);
     });
 
-    it('Should fail at many invalid items and should return a plain map', function () {
+    it('Should fail at many invalid items and should return a plain map (and shared values)', function () {
       map.a.b = 'wrong';
       map.d = 'wrong';
       result = vv2.validate(map);
       assert.isObject(result);
-      assert.lengthOf(Object.keys(result), 2);
+      assert.lengthOf(Object.keys(result), 3);
       assert.isString(result['a.b']);
       assert.isString(result.d);
+      assert.isString(result.e);
     });
   });
 });
