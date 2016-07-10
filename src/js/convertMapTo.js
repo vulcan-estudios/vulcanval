@@ -60,7 +60,8 @@ const toPlain = function (map) {
   const run = (n, o, p) => {
     if (o.hasOwnProperty(p)) {
       n += '.'+ p;
-      if (typeof o[p] === 'string' || typeof o[p] === 'number' || typeof o[p] === 'boolean') {
+      if (typeof o[p] === 'string' || typeof o[p] === 'number' || typeof o[p] === 'boolean' ||
+      o[p] === undefined || o[p] === null) {
         n = n.substring(1);
         form[n] = o[p];
       } else {
