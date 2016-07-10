@@ -16,15 +16,14 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'lib/jquery-3.0.0.min.js',
-      'dist/vulcanval.js',
-      'test/client/**/*.html',
-      'test/client/**/*.json',
-      'test/client/**/*.js'
+      'test/global/*.js'
     ],
 
 
     // list of files to exclude
     exclude: [
+      'test/global/index.js',
+      'src/js/plugin/**/*.js'
     ],
 
 
@@ -32,9 +31,9 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'src/js/**/*.js': ['browserify'],
-      'test/client/**/*.js': ['browserify'],
-      'test/client/**/*.html': ['html2js'],
-      'test/client/**/*.json': ['json_fixtures']
+      'test/global/**/*.js': ['browserify'],
+      'test/global/**/*.html': ['html2js'],
+      'test/global/**/*.json': ['json_fixtures']
     },
 
 
@@ -56,7 +55,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['mocha'],
 
 
     // web server port
