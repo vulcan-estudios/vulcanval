@@ -1,25 +1,35 @@
-const validator =     require('validator');
+const validator =       require('validator');
 
-const log =           require('../log');
-const utils =         require('../utils');
-const browser =       require('../browser');
-const fieldSettings = require('../fieldSettings');
+const log =             require('../log');
+const utils =           require('../utils');
+const browser =         require('../browser');
+const fieldSettings =   require('../fieldSettings');
 
 const ui =              require('./_ui');
 const fetchUISettings = require('./_fetchUISettings.js');
 const createSettings =  require('./_createSettings');
 const setAttrs =        require('./_setAttrs');
 const setHTML =         require('./_setHTML');
-const setMethods =      require('./_setMethods');
 const setEvents =       require('./_setEvents');
 const change =          require('./_change');
 
-const inspect =       require('./inspect');
-const validate =      require('./validate');
-const reset =         require('./reset');
-const getMap =        require('./getMap');
+const inspect =         require('./inspect');
+const inspectFieldset = require('./inspectFieldset');
+const inspectField =    require('./inspectField');
+const validate =        require('./validate');
+const validateFieldset =require('./validateFieldset');
+const validateField =   require('./validateField');
+const reset =           require('./reset');
+const resetFieldset =   require('./resetFieldset');
+const resetField =      require('./resetField');
+const getMap =          require('./getMap');
 
-const methods = { inspect, validate, reset, getMap };
+const methods = {
+  inspect, inspectFieldset, inspectField,
+  validate, validateFieldset, validateField,
+  reset, resetFieldset, resetField,
+  getMap
+};
 
 /**
  * @summary jQuery plugin to instantiate the validators in forms.
@@ -56,7 +66,7 @@ const plugin = function (customSettings) {
   if (typeof customSettings === 'string') {
     if (methods[customSettings]) {
       if (!methods[customSettings].free && !$el.data('vv-settings')) {
-        log.error(`element not instantiated yet`);
+        log.error(`element needs to be instantiated`);
       } else {
         const args = Array.prototype.slice.call(arguments, 1);
         return methods[customSettings].apply($el, args);
@@ -101,17 +111,17 @@ const plugin = function (customSettings) {
     return this;
   }
 
+  // Create vulcanval instance.
+  const vv = window.vulcanval(settings);
+
   // Set parsed settings attributes in current HTML.
-  setAttrs(settings);
+  setAttrs(vv);
 
   // Update form elements.
-  setHTML(settings);
-
-  // Set settings methods.
-  setMethods(settings);
+  setHTML(vv);
 
   // Set elements events.
-  setEvents(settings);
+  setEvents(vv);
 
   return $el;
 };
