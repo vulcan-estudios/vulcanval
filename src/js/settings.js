@@ -450,13 +450,18 @@ const settings = {
       // value() will only be used in client side so field.$el will be available.
       if (field.value) {
         newField.value = field.value.bind(custom.context, field.$el);
+      } else {
+        newField.value = fieldSettings.value.bind(custom.context, field.$el);
       }
 
       if (field.onlyIf) {
         const onlyIf = field.onlyIf;
         delete field.onlyIf;
         newField.onlyIf = function () {
-          return onlyIf.call(custom.context, newField.value && newField.value());
+          return onlyIf.call(
+            custom.context,
+            custom.context.get && custom.context.get(field.name)
+          );
         };
       }
 
@@ -474,11 +479,10 @@ const settings = {
               const onlyIf = newField.onlyIf;
               const fsOnlyIf = fieldset.onlyIf;
               delete newField.onlyIf;
-              delete fieldset.onlyIf;
               newField.onlyIf = function () {
                 return (onlyIf ? onlyIf() : true) && fsOnlyIf.call(
                   custom.context,
-                  newField.value && newField.value()
+                  custom.context.get && custom.context.get(field.name)
                 );
               };
             }

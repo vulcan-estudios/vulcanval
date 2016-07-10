@@ -1,32 +1,26 @@
-const extend =        require('extend');
-const validator =     require('validator');
-const settings =      require('./settings');
-const log =           require('./log');
-const utils =         require('./utils');
-const browser =       require('./browser');
-const rawValidation = require('./rawValidation');
-const convertMapTo =  require('./convertMapTo');
-const cleanMap =      require('./cleanMap');
-const validateMap =   require('./validateMap');
-const validateField = require('./validateField');
+// Import the plugin in the package.
+require('./plugin/plugin');
 
-/**
- * jQuery object.
- * @external jQuery
- * @see {@link http://api.jquery.com/jQuery/}
- */
+const extend =    require('extend');
+const validator = require('validator');
 
-/**
- * The jQuery plugin namespace.
- * @external "jQuery.fn"
- * @see {@link http://docs.jquery.com/Plugins/Authoring The jQuery Plugin Guide}
- */
+const log =       require('./log');
+const utils =     require('./utils');
+const browser =   require('./browser');
+const localeEN =  require('./locale/en');
 
-/**
- * window object.
- * @external window
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Window}
- */
+const settings =          require('./settings');
+const extendLocale =      require('./extendLocale');
+const convertMapTo =      require('./convertMapTo');
+const cleanMap =          require('./cleanMap');
+const addValidator =      require('./addValidator');
+const rawValidation =     require('./rawValidation');
+const validate =          require('./validate');
+const validateField =     require('./validateField');
+const validateFieldset =  require('./validateFieldset');
+
+const isEqualToField =      require('./validators/isEqualToField');
+const isAlphanumericText =  require('./validators/isAlphanumericText');
 
 /**
  * This is a reference to the {@link module:vulcanval vulcanval}.
@@ -36,6 +30,17 @@ const validateField = require('./validateField');
  * @type {Object}
  * @see {@link module:vulcanval}
  */
+
+/**
+ * Proto
+ */
+const vulcanvalProto = {
+  cleanMap,
+  rawValidation,
+  validate,
+  validateFieldset,
+  validateField
+};
 
 /**
  * The vulcan validator (vulcanval) object.
@@ -55,135 +60,30 @@ const validateField = require('./validateField');
  *
  * @module vulcanval
  */
-const vulcanval = {
-
-  version: '1.0.0-beta',
-
-  validator,
-  rawValidation,
-  convertMapTo,
-  cleanMap,
-  validateField,
-  validateMap,
-
-  /**
-   * Extend validators messages in an specific localization. If it does not exist,
-   * it will be created.
-   *
-   * @memberof module:vulcanval
-   *
-   * @param  {Object} locale - A plain object describing the locale.
-   * @param  {String} locale.id - The identifier of the locale. It should be like:
-   * `'en'`, `'es'`, `'jp'` or similar.
-   * @param  {Object} locale.msgs - A plain object with validators names as keys
-   * and messages formats as values. It should have a default value with the key
-   * `general`, which will be used when there is no message for an specific validator
-   * on error.
-   *
-   * @example
-   * const locale = {
-   *   id: 'jp',
-   *   msgs: {
-   *
-   *     // Default error message: "Invalid form field error".
-   *     general: '無効なフォームフィールド。',
-   *
-   *     // Message: "Form field has to be alphanumeric error message."
-   *     isAlphanumeric: 'フォームフィールドは、英数字である必要があります。'
-   *   }
-   * };
-   *
-   * vulcanval.extendLocale(locale);
-   */
-  extendLocale (locale) {
-    settings.msgs[locale.id] = extend(true, {}, settings.msgs[locale.id], locale.msgs);
-  },
-
-  /**
-   * Set an specific locale as default in validations. The locale has to be
-   * already installed with the {@link module:vulcanval.extendLocale vulcanval.extendLocale}
-   * method.
-   *
-   * @memberof module:vulcanval
-   *
-   * @param {String} locale - The locale identifier.
-   *
-   * @example
-   * // Configuring messages in Japanese.
-   * vulcanval.setLocale('jp');
-   */
-  setLocale (locale) {
-    if (!settings.msgs[locale]) {
-      return log.error(`the locale "${locale}" does not exist`);
-    }
-    settings.locale = locale;
-  },
-
-  /**
-   * Add a custom validator.
-   *
-   * All validators in the package {@link https://www.npmjs.com/package/validator validator}
-   * are installed and ready to use.
-   *
-   * @memberof module:vulcanval
-   *
-   * @param {String} name - An alphanumeric validator name.
-   * @param {Function} validator - The validator function. Receives as a first parameter
-   * the value of the field and has to return a
-   * {@link https://developer.mozilla.org/en-US/docs/Glossary/Truthy truthy value}.
-   * This function will have the {@link utilityContext utility context} as
-   * function context. Don't pass
-   * {@link https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions arrow functions}
-   * or it won't be available.
-   *
-   * @example
-   * vulcanval.addValidator('isGreat', function (value) {
-   *   return value.length > 4 && value.indexOf('great') >= 0;
-   * });
-   *
-   * const map = {
-   *   field0: 'normal value'
-   * };
-   *
-   * const settings = {
-   *   msgs: {
-   *     isGreat: 'This field needs to be great!'
-   *   },
-   *   fields: [{
-   *     name: 'field0',
-   *     validators: {
-   *       isGreat: true
-   *     }
-   *   }]
-   * };
-   *
-   * const field0Valid = vulcanval.validateField('field0', map, settings);
-   * console.log(field0Valid); // 'This field needs to be great!'
-   *
-   * @see In the example is used the {@link module:vulcanval.validateField vulcanval.validateField}
-   * static method to test the new validator.
-   */
-  addValidator (name, validator) {
-    settings.validators[name] = validator;
-  },
-
-  /**
-   * Change the debug level.
-   *
-   * @memberof module:vulcanval
-   *
-   * @param  {Boolean|Number} isDebug - A `true` value to display all messages.
-   * A number to describe the scale of debug logs using the
-   * {@link https://github.com/romelperez/prhone-log prhone-log} module to log
-   * events. By default the log scale is `2`.
-   */
-  debug (isDebug) {
-    if (isDebug !== undefined) {
-      log.settings.scale = typeof isDebug === 'number' ? isDebug : isDebug ? 10 : 1;
-    }
-  }
+const vulcanval = function (custom) {
+  return extend(Object.create(vulcanvalProto), {
+    settings: settings.extend(custom)
+  });
 };
 
+vulcanval.version = '2.0.0';
+vulcanval.log = log;
+vulcanval.utils = utils;
+vulcanval.validator = validator;
+vulcanval.settings = settings;
+vulcanval.extendLocale = extendLocale;
+vulcanval.addValidator = addValidator;
+vulcanval.convertMapTo = convertMapTo;
+
+// Install the English language.
+vulcanval.extendLocale(localeEN);
+vulcanval.settings.locale = 'en';
+
+// Install custom validators.
+vulcanval.addValidator('isEqualToField', isEqualToField);
+vulcanval.addValidator('isAlphanumericText', isAlphanumericText);
+
+// Install module in browser if client side.
 browser.perform(false, function () {
   window.vulcanval = vulcanval;
 });

@@ -27,7 +27,7 @@ module.exports = function (fieldName) {
   field.rules = utils.find(settings.fields, vals => vals.name === field.name);
 
   if (!field.rules) {
-    log.warn('field to validate does not have validators');
+    log.warn(`field "${field.name}" to validate does not have validators`);
     return false;
   }
 

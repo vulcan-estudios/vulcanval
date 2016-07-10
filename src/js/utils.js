@@ -1,3 +1,4 @@
+const extend = require('extend');
 const validator = require('validator');
 
 const utils = {
@@ -70,6 +71,45 @@ const utils = {
         return arr[i];
       }
     }
+  },
+
+  mergeCollections (id, arr1, arr2) {
+    'use strict';
+
+    id = id ? id : 0;
+    arr1 = arr1 ? arr1 : [];
+    arr2 = arr2 ? arr2 : [];
+
+    var arr = [];
+    var temp1, temp2;
+
+    arr1.forEach(a1 => {
+
+      temp1 = utils.find(arr, a => a[id] === a1[id]);
+      if (temp1) {
+        extend(true, temp1, a1);
+      }
+
+      temp2 = utils.find(arr2, a2 => a2[id] === a1[id]);
+      if (temp1) {
+        extend(temp1, temp2);
+      }
+      else if (temp2) {
+        arr.push(extend(true, {}, a1, temp2));
+      }
+      else {
+        arr.push(a1);
+      }
+    });
+
+    arr2.forEach(a2 => {
+      temp1 = utils.find(arr, a => a[id] === a2[id]);
+      if (!temp1) {
+        arr.push(a2);
+      }
+    });
+
+    return arr;
   },
 
   removeArrayDuplicates (arr) {
