@@ -15,7 +15,6 @@ const rawValidation = require('./rawValidation');
  * @param  {String} fieldName - The field name in data map. If the {@link map} is nested,
  * the field name is set as in plain map. Ex: `{user: {name: 'romel'}}` will be `'user.name'`.
  * @param  {map} map - The data map (plain or nested).
- * @param  {settings} settings - The validation settings.
  *
  * @return {Boolean|String} If it is valid, `false` will be returned. Otherwise
  * there will be an string message describing the error.
@@ -49,42 +48,24 @@ const rawValidation = require('./rawValidation');
  * const ageResult = vulcanval.validateField('age', map, settings);
  * console.log(ageResult); // false
  */
-module.exports = function (fieldName, map, customSettings) {
+module.exports = function (fieldName, map) {
   'use strict';
 
   if (typeof map !== 'object') {
     return log.error('second parameter (map) must be an object');
   }
-  if (typeof customSettings !== 'object') {
-    return log.error('third parameter (settings) must be an object');
-  }
 
-  customSettings = settings.extend(customSettings);
-
-  if (customSettings.enableNestedMaps) {
+  if (this.settings.enableNestedMaps) {
     map = convertMapTo('plain', map);
   }
 
-  // Creating the './utilityContext' for this validation.
-  const context = {
-    validator,
-    get (name) {
-      if (map[name]) {
-        return map[name];
-      } else {
-        log.warn(`field "${name}" not found in map`);
-      }
+  this.settings.context.get = function (name) {
+    if (map[name]) {
+      return map[name];
+    } else {
+      log.warn(`field "${name}" not found in map`);
     }
   };
 
-  const isValidField = rawValidation({
-    field: {
-      name: fieldName,
-      value: map[fieldName]
-    },
-    settings: customSettings,
-    context
-  });
-
-  return isValidField;
+  return this.rawValidation(fieldName);
 };
