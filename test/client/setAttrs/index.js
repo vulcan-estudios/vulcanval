@@ -15,7 +15,7 @@ describe('Set Attrs', function () {
     const raw = $item.html().replace(/\s{2,}/g, ' ').replace(/\n/g, '');
 
     const settings = { $form, fields: [] };
-    setAttrs(settings);
+    setAttrs({ settings });
     $item.html($form.clone());
     const edited = $item.html().replace(/\s{2,}/g, ' ').replace(/\n/g, '');
 
@@ -25,7 +25,7 @@ describe('Set Attrs', function () {
   it('Form settings', function () {
     const $form = $('#setAttrs2');
     const settings = { $form, fields: [], disableHTML5Validation: true, disabled: true };
-    setAttrs(settings);
+    setAttrs({ settings });
     assert.isDefined($form.attr('disabled'));
     assert.isDefined($form.attr('novalidate'));
   });
@@ -41,7 +41,7 @@ describe('Set Attrs', function () {
         required: true
       }]
     };
-    setAttrs(settings);
+    setAttrs({ settings });
     assert.isDefined($form.find('[name=name]').attr('required'));
     assert.isDefined($form.find('[name=name]').attr('disabled'));
   });
@@ -56,7 +56,7 @@ describe('Set Attrs', function () {
         validators: { isLength: { min: 10, max: 20 } }
       }]
     };
-    setAttrs(settings);
+    setAttrs({ settings });
     assert.equal($form.find('[name=name]').attr('minlength'), '10');
     assert.equal($form.find('[name=name]').attr('maxlength'), '20');
   });
@@ -71,7 +71,7 @@ describe('Set Attrs', function () {
         validators: { matches: /ab[a-z]{1,4}cd/gi }  // regexp flags not supported
       }]
     };
-    setAttrs(settings);
+    setAttrs({ settings });
     assert.equal($form.find('[name=name]').attr('pattern'), 'ab[a-z]{1,4}cd');
   });
 
@@ -85,7 +85,7 @@ describe('Set Attrs', function () {
         validators: { isFloat: { min: 2, max: 4 } }
       }]
     };
-    setAttrs(settings);
+    setAttrs({ settings });
     assert.equal($form.find('[name=name]').attr('min'), '2');
     assert.equal($form.find('[name=name]').attr('max'), '4');
   });

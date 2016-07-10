@@ -24,7 +24,7 @@ describe('Set HTML', function () {
       const $form = $('#setHTML1');
       const settings = createSettings($form);
       settings.intern = true;
-      setHTML(settings);
+      setHTML({ settings });
       assert.isUndefined($form.attr('class'));
       assert.isUndefined($form.find('input').attr('class'));
     });
@@ -32,7 +32,7 @@ describe('Set HTML', function () {
     it('Default classes', function () {
       const $form = $('#setHTML2');
       const settings = createSettings($form);
-      setHTML(settings);
+      setHTML({ settings });
       assert.equal($form.attr('class'), 'vv-form');
     });
 
@@ -40,7 +40,7 @@ describe('Set HTML', function () {
       const $form = $('#setHTML3');
       const settings = createSettings($form);
       settings.classes.defaults = { form: 'user-form' };
-      setHTML(settings);
+      setHTML({ settings });
       assert.equal($form.attr('class'), 'vv-form user-form');
     });
   });
@@ -51,7 +51,7 @@ describe('Set HTML', function () {
       const $form = $('#setHTML4');
       const settings = createSettings($form);
       settings.fields[0].disabled = true;
-      setHTML(settings);
+      setHTML({ settings });
       assert.isUndefined($form.find('input').attr('class'));
     });
 
@@ -59,14 +59,14 @@ describe('Set HTML', function () {
       const $form = $('#setHTML5');
       const settings = createSettings($form);
       settings.fields[0].intern = true;
-      setHTML(settings);
+      setHTML({ settings });
       assert.isUndefined($form.find('input').attr('class'));
     });
 
     describe('Default field and related classes', function () {
       const $form = $('#setHTML6');
       const settings = createSettings($form);
-      setHTML(settings);
+      setHTML({ settings });
 
       it('Fields', function () {
         assert.isDefined(settings.fields[0].$el);
@@ -92,7 +92,7 @@ describe('Set HTML', function () {
         label: 'user-label',
         display: 'user-display'
       };
-      setHTML(settings);
+      setHTML({ settings });
 
       it('Fields', function () {
         assert.isDefined(settings.fields[0].$el);
