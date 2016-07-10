@@ -68,25 +68,13 @@ describe('Method getMap()', function () {
 
   it('Get form data with groups fields', function () {
     const $form = $('#getMap5');
-    const settings = {
-      fields: [{
-        name: 'birthdate',
-        value: function () {
-          const y = this.get('year');
-          const m = this.get('month');
-          const d = this.get('day');
-          return y +'-'+ m +'-'+ d;
-        }
-      }]
-    };
-    $form.vulcanval(settings);
+    $form.vulcanval();
     const expected = {
       name: 'romel',
       website: 'http://site.com',
       year: '1900',
       month: '12',
-      day: '01',
-      birthdate: '1900-12-01'
+      day: '01'
     };
     const map = $form.vulcanval('getMap');
     assert.deepEqual(map, expected);
