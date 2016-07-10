@@ -3,8 +3,6 @@ const fieldSettings = require('../fieldSettings');
 const ui = require('./_ui');
 
 /**
- * ***Invoke over instantiated or `<form>` elements.***
- *
  * Get the data {@link map} extracted from the `<form>`.
  *
  * If the instance was configured with the setting {@link settings.enableNestedMaps}
@@ -18,10 +16,12 @@ const ui = require('./_ui');
 const getMap = function () {
   'use strict';
 
-  const settings = this.data('vv-settings');
+  const vv = this.data('vv');
+  const settings = vv && vv.settings;
 
   let map = {};
 
+  // Instantiated form.
   if (settings) {
     settings.fields.forEach(function (field) {
       if (field.onlyUI || field.disabled) return;
@@ -31,6 +31,8 @@ const getMap = function () {
       map = convertMapTo('nested', map);
     }
   }
+
+  // Normal form.
   else if (this[0].tagName === 'FORM') {
     const $form = this;
     ui.filterFields(ui.findFields($form)).each(function (i, field) {
