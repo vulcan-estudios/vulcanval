@@ -1,4 +1,4 @@
-fixture.setBase('test/client/inspectFieldset');
+fixture.setBase('test/jquery/inspectFieldset');
 $(fixture.load('forms.html')).appendTo('body');
 
 

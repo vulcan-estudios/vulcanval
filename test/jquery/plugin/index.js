@@ -1,7 +1,8 @@
-describe('Plugin', function () {
+fixture.setBase('test/jquery/plugin');
+$(fixture.load('forms.html')).appendTo('body');
 
-  fixture.setBase('test/client/plugin');
-  $(fixture.load('forms.html')).appendTo('body');
+
+describe('Plugin', function () {
 
   it('There has to be valid items on instance', function () {
     assert.throws(function () {

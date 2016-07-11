@@ -1,6 +1,6 @@
-const setAttrs = require('../../../src/js/plugin/_setAttrs');
+const setAttrs = require('../../../src/js/jquery/_setAttrs');
 
-fixture.setBase('test/client/setAttrs');
+fixture.setBase('test/jquery/setAttrs');
 $(fixture.load('forms.html')).appendTo('body');
 
 

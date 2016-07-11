@@ -1,4 +1,4 @@
-fixture.setBase('test/client/getMap');
+fixture.setBase('test/jquery/getMap');
 $(fixture.load('forms.html')).appendTo('body');
 
 

@@ -1,4 +1,4 @@
-fixture.setBase('test/client/resetField');
+fixture.setBase('test/jquery/resetField');
 $(fixture.load('forms.html')).appendTo('body');
 
 

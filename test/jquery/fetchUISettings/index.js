@@ -1,6 +1,6 @@
-const fetchUISettings = require('../../../src/js/plugin/_fetchUISettings');
+const fetchUISettings = require('../../../src/js/jquery/_fetchUISettings');
 
-fixture.setBase('test/client/fetchUISettings');
+fixture.setBase('test/jquery/fetchUISettings');
 $(fixture.load('forms.html')).appendTo('body');
 
 

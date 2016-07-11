@@ -1,6 +1,6 @@
-const setHTML = require('../../../src/js/plugin/_setHTML');
+const setHTML = require('../../../src/js/jquery/_setHTML');
 
-fixture.setBase('test/client/setHTML');
+fixture.setBase('test/jquery/setHTML');
 $(fixture.load('forms.html')).appendTo('body');
 
 

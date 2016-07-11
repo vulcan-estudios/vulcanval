@@ -1,4 +1,4 @@
-fixture.setBase('test/client/validateField');
+fixture.setBase('test/jquery/validateField');
 $(fixture.load('forms.html')).appendTo('body');
 
 
