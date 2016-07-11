@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>VulcanVal | Validate data forms in client and server sides seamlessly</title>
+    <meta name="description" content="A package to validate data objects (possibly extracted from HTML forms) in client and server sides and a customizable jQuery plugin to validate them in realtime">
+    <script src="../../site/js/webcomponents-lite.min.js"></script>
+    <link rel="shortcut icon" href="/site/favicon.png">
+    <link rel="import" href="../../site/polymers/vv-all.html">
+
+    <!-- VulcanVal jQuery plugin styles -->
+    <link rel="stylesheet" href="../../dist/vulcanval-jquery.css">
+  </head>
+  <body>
+    <vv-header></vv-header>
+    <vv-main>
+
+      <h3>Basic HTML configuration</h3>
+      <p>A validation form configured by HTML attributes.</p>
+      <p><a href="../index.html">Demos index</a></p>
+
+      <form novalidate method="post" action="#">
+
+        <h4>Login Form</h4>
+
+        <div class="row">
+          <div class="column small-12">
+            <label for="email">Your Email</label>
+            <input id="email" name="email" type="email" placeholder="Your Email"
+                   required minlength="4" maxlength="32" data-vv-display="#email-msgs">
+            <div id="email-msgs"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="column small-12">
+            <label for="pass">Your Password</label>
+            <input id="pass" name="pass" type="password" placeholder="Your Password"
+                   required minlength="4" maxlength="32" data-vv-display="#pass-msgs">
+            <div id="pass-msgs"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="column small-12">
+            <input class="button" type="submit" value="Login">
+            <input class="button secondary" type="reset" value="Reset">
+          </div>
+        </div>
+
+      </form>
+
+    </vv-main>
+    <vv-footer></vv-footer>
+
+    <script src="../../lib/jquery-3.0.0.min.js"></script>
+    <script src="../../dist/vulcanval.js"></script>
+    <script src="../../dist/vulcanval-jquery.js"></script>
+    <script src="./scripts.js"></script>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<link rel="import" href="./polymer.html">
+
+<dom-module id="vv-wrap">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+      }
+      .vv-wrap-content {
+        margin: 0 auto;
+        padding: 20px;
+        max-width: 800px;
+      }
+    </style>
+
+    <div class="vv-wrap-content">
+      <div class="row">
+        <content></content>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'vv-wrap'
+    });
+  </script>
+
+</dom-module>

@@ -1,0 +1,30 @@
+<link rel="import" href="./polymer.html">
+<link rel="import" href="./vv-wrap.html">
+
+<dom-module id="vv-main">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <main>
+      <vv-wrap>
+        <div class="column small-12">
+          <content></content>
+        </div>
+      </vv-wrap>
+    </main>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'vv-main'
+    });
+  </script>
+
+</dom-module>
