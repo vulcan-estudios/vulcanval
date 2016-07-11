@@ -28,7 +28,7 @@ const settings = {
    * @type {Boolean}
    * @default false
    */
-  disableHTML5Validation: null,
+  //disableHTML5Validation: null,
 
   /**
    * When a map of fields is created out of a form, should it be converted to a
@@ -59,7 +59,7 @@ const settings = {
    *
    * @see {@link external:"jQuery.fn".vulcanval}
    */
-  enableNestedMaps: null,
+  //enableNestedMaps: null,
 
   /**
    * Form will not be instantiated.
@@ -67,7 +67,7 @@ const settings = {
    * @type {Boolean}
    * @default false
    */
-  disabled: null,
+  //disabled: null,
 
   /**
    * *Only client-side.*
@@ -77,7 +77,7 @@ const settings = {
    * @type {Boolean}
    * @default false
    */
-  autostart: null,
+  //autostart: null,
 
   /**
    * *Only client-side.*
@@ -89,7 +89,7 @@ const settings = {
    * @type {Boolean}
    * @default false
    */
-  intern: null,
+  //intern: null,
 
   /**
    * *Only client-side.*
@@ -385,7 +385,7 @@ const settings = {
 
     // Create context.
     // @NOTE: The .get() method the context has will be set on this object
-    // when the instance on client or server side is made is made.
+    // when the instance on client or server side is made.
     custom.context = utilityContext.extend();
 
     // Process fieldsets.
@@ -465,8 +465,9 @@ const settings = {
         };
       }
 
+      const fromBaseSettings = utils.pick(settings, inheritFromSettings);
       const fromSettings = utils.pick(custom, inheritFromSettings);
-      extend(newField, fromSettings);
+      extend(newField, fromBaseSettings, fromSettings);
 
       if (custom.fieldsets) {
         custom.fieldsets.forEach(fieldset => {

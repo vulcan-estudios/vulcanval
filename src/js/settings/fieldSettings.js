@@ -28,7 +28,7 @@ const fieldSettings = {
    * @type {Boolean}
    * @default false
    */
-  disabled: null,
+  //disabled: null,
 
   /**
    * Field is required and cannot be undefined. If the field is not required but
@@ -39,7 +39,7 @@ const fieldSettings = {
    * @type {Boolean}
    * @default false
    */
-  required: null,
+  //required: null,
 
   /**
    * Only client-side.
@@ -49,7 +49,7 @@ const fieldSettings = {
    * @type {Boolean}
    * @default false
    */
-  autostart: null,
+  //autostart: null,
 
   /**
    * Only client-side.
@@ -63,7 +63,7 @@ const fieldSettings = {
    * @type {Boolean}
    * @default false
    */
-  intern: null,
+  //intern: null,
 
   /**
    * Only client-side.
@@ -73,7 +73,7 @@ const fieldSettings = {
    * @type {Boolean}
    * @default false
    */
-  onlyUI: null,
+  //onlyUI: null,
 
   /**
    * Only client-side.
@@ -83,7 +83,7 @@ const fieldSettings = {
    * @type {String}
    * @default Inherited from {@link settings}
    */
-  firstValidationEvent: null,
+  //firstValidationEvent: null,
 
   /**
    * Only client-side.
@@ -93,7 +93,7 @@ const fieldSettings = {
    * @type {String}
    * @default Inherited from {@link settings}
    */
-  validationEvents: null,
+  //validationEvents: null,
 
   /**
    * The validators list. This is an object with keys as the validators names and

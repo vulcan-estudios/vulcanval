@@ -56,11 +56,13 @@ const utils = {
     return obj;
   },
 
-  pick (root, props) {
+  pick (root, props, deep) {
     const newProps = {};
     props.forEach(function (prop) {
-      if (root.hasOwnProperty(prop)) {
-        newProps[prop] = root[prop];
+      if (deep || root.hasOwnProperty(prop)) {
+        if (root[prop] !== undefined) {
+          newProps[prop] = root[prop];
+        }
       }
     });
     return newProps;
