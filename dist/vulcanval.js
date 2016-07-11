@@ -87,6 +87,7 @@ module.exports = function extend() {
 
 
 },{}],2:[function(require,module,exports){
+(function (global){
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
     define(["prhone-log"], function () {
@@ -99,7 +100,7 @@ module.exports = function extend() {
   }
 }(this, function () {
 
-  /**
+  /*
    * Simple extend object. Receives many objects.
    * @param  {Object} obj - The object to extend.
    * @return {Object} - `obj` extended.
@@ -117,36 +118,17 @@ module.exports = function extend() {
     return obj;
   };
 
-  /**
-   * Log levels. Each level is a log method.
-   * @type {Array}
+  /*
+   * Is this node.js?
+   * @type {Object}
    */
-  const levels = [
-    {
-      name: 'DEBUG',
-      scale: 4,
-      method: 'debug',
-      'console': 'debug'
-    },
-    {
-      name: 'INFO',
-      scale: 3,
-      method: 'info',
-      'console': 'info'
-    },
-    {
-      name: 'WARN',
-      scale: 2,
-      method: 'warn',
-      'console': 'warn'
-    },
-    {
-      name: 'ERROR',
-      scale: 1,
-      method: 'error',
-      'console': 'error'
-    }
-  ];
+  var isNode = (function () {
+    var isNodejs = false;
+    try {
+      isNodejs = Object.prototype.toString.call(global.process) === '[object process]';
+    } catch(e) {}
+    return isNodejs;
+  })();
 
   /**
    * The logger class.
@@ -154,6 +136,11 @@ module.exports = function extend() {
    * @param {Object} [settings] - An optional configuration to overwrite defaults.
    */
   var Log = function (namespace, settings) {
+
+    if (typeof namespace !== 'string' || !namespace.length) {
+      throw new Error('a valid string namespace is required as first parameter');
+    }
+
     this.namespace = namespace;
     this.history = [];
     this.settings = extend({}, Log.defaults, settings);
@@ -170,7 +157,30 @@ module.exports = function extend() {
     display: true,  // Display messages in console.
     displayTime: false,  // Display the time in messages.
     displayLevel: true,  // Display the level in messages.
-    displayNamespace: true  // Display the namespace in messages.
+    displayNamespace: true,  // Display the namespace in messages.
+    colors: true  // Enable colors on display for node.js.
+  };
+
+  /**
+   * All registered levels.
+   * @type {Object}
+   */
+  Log.LEVEL = {};
+
+  /**
+   * Colors to display.
+   * @type {Object}
+   */
+  Log.COLOR = {
+    RED:      '\x1b[31m',
+    GREEN:    '\x1b[32m',
+    YELLOW:   '\x1b[33m',
+    BLUE:     '\x1b[34m',
+    MAGENTA:  '\x1b[35m',
+    CYAN:     '\x1b[36m',
+    BLACK:    '\x1b[30m',
+    WHITE:    '\x1b[37m',
+    END:      '\x1b[0m'
   };
 
   /**
@@ -181,12 +191,12 @@ module.exports = function extend() {
    * @param {String} [level.method] - The method logger. Default to 'log'.
    * @param {String} [level.console] - The console method used to display. Default 'log'.
    */
-  Log.addLevel = function (level) {
+   Log.addLevel = Log.prototype.addLevel = function (level) {
 
     if (!level || typeof level !== 'object') {
       throw new Error('The first parameter must be an object describing the level');
     }
-    if (typeof level.name !== 'string') {
+    if (typeof level.name !== 'string' && !level.name.length) {
       throw new Error('The level object must have a name property');
     }
 
@@ -194,12 +204,32 @@ module.exports = function extend() {
       name: null,
       scale: 0,
       method: 'log',
-      'console': 'log'
+      'console': 'log',
+      color: false
     }, level);
+
+    if (this.LEVEL[level.name]) {
+      throw new Error('The level name "'+ level.name +'" already exists');
+    }
+
+    this.LEVEL[level.name] = level;
 
     this.prototype[level.method] = function () {
       this._exec(level, arguments);
     };
+  };
+
+  /**
+   * Set an specific level as the scale of messages to display.
+   * @param {Number|Object} level - The number scale to set or the reference to the
+   * level object to set.
+   */
+  Log.setLevel = Log.prototype.setLevel = function (level) {
+    if (typeof level === 'object' && Log.LEVEL[level.name]) {
+      this.settings.scale = level.scale;
+    } else {
+      this.settings.scale = level;
+    }
   };
 
   /**
@@ -270,6 +300,9 @@ module.exports = function extend() {
   Log.prototype._log = function (level, msg) {
     if (this.settings.display) {
       if (console && console.log) {
+        if (this.settings.colors && isNode) {
+          msg = (level.color ? level.color : '') + msg + (level.color ? Log.COLOR.END : '');
+        }
         if (console[level.console] && typeof console[level.console] === 'function') {
           console[level.console](msg);
         } else {
@@ -313,7 +346,38 @@ module.exports = function extend() {
     }
   };
 
-  // Initialize default levels.
+  // Initial levels.
+  const levels = [
+    {
+      name: 'DEBUG',
+      scale: 4,
+      method: 'debug',
+      'console': 'debug',
+      color: false
+    },
+    {
+      name: 'INFO',
+      scale: 3,
+      method: 'info',
+      'console': 'info',
+      color: Log.COLOR.BLUE
+    },
+    {
+      name: 'WARN',
+      scale: 2,
+      method: 'warn',
+      'console': 'warn',
+      color: Log.COLOR.YELLOW
+    },
+    {
+      name: 'ERROR',
+      scale: 1,
+      method: 'error',
+      'console': 'error',
+      color: Log.COLOR.RED
+    }
+  ];
+
   for (var l=0; l<levels.length; l++) {
     Log.addLevel(levels[l]);
   }
@@ -321,6 +385,7 @@ module.exports = function extend() {
   return Log;
 }));
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],3:[function(require,module,exports){
 'use strict';
 
@@ -2574,6 +2639,59 @@ function whitelist(str, chars) {
 }
 module.exports = exports['default'];
 },{"./util/assertString":62}],66:[function(require,module,exports){
+'use strict';
+
+var settings = require('./settings/settings');
+
+/**
+ * Add a custom validator.
+ *
+ * All validators in the package {@link https://www.npmjs.com/package/validator validator}
+ * are installed and ready to use.
+ *
+ * @memberof module:vulcanval
+ *
+ * @param {String} name - An alphanumeric validator name.
+ * @param {Function} validator - The validator function. Receives as a first parameter
+ * the value of the field and has to return a
+ * {@link https://developer.mozilla.org/en-US/docs/Glossary/Truthy truthy value}.
+ * This function will have the {@link utilityContext utility context} as
+ * function context. Don't pass
+ * {@link https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions arrow functions}
+ * or it won't be available.
+ *
+ * @example
+ * vulcanval.addValidator('isGreat', function (value) {
+ *   return value.length > 4 && value.indexOf('great') >= 0;
+ * });
+ *
+ * const map = {
+ *   field0: 'normal value'
+ * };
+ *
+ * const settings = {
+ *   msgs: {
+ *     isGreat: 'This field needs to be great!'
+ *   },
+ *   fields: [{
+ *     name: 'field0',
+ *     validators: {
+ *       isGreat: true
+ *     }
+ *   }]
+ * };
+ *
+ * const field0Valid = vulcanval.validateField('field0', map, settings);
+ * console.log(field0Valid); // 'This field needs to be great!'
+ *
+ * @see In the example is used the {@link module:vulcanval.validateField vulcanval.validateField}
+ * static method to test the new validator.
+ */
+module.exports = function addValidator(name, validator) {
+  settings.validators[name] = validator;
+};
+
+},{"./settings/settings":76}],67:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2601,7 +2719,7 @@ var browser = {
 module.exports = browser;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 'use strict';
 
 var extend = require('extend');
@@ -2621,11 +2739,10 @@ var convertMapTo = require('./convertMapTo');
  *
  * @param  {Boolean} isPlain - If the {@link map} is plain. `false` for nested.
  * @param  {map} map - The map to clean.
- * @param  {settings} settings - The validation settings.
  *
  * @return {map} - The cleaned map.
  */
-module.exports = function (isPlain, map, settings) {
+module.exports = function (isPlain, map) {
   'use strict';
 
   if (!isPlain) {
@@ -2634,7 +2751,7 @@ module.exports = function (isPlain, map, settings) {
 
   var newMap = {};
 
-  settings.fields.forEach(function (field) {
+  this.settings.fields.forEach(function (field) {
     if (field.disabled || field.onlyUI) return;
     newMap[field.name] = map[field.name];
   });
@@ -2646,7 +2763,7 @@ module.exports = function (isPlain, map, settings) {
   return newMap;
 };
 
-},{"./convertMapTo":68,"./log":73,"./utils":90,"extend":1}],68:[function(require,module,exports){
+},{"./convertMapTo":69,"./log":72,"./utils":78,"extend":1}],69:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2716,7 +2833,7 @@ var toPlain = function toPlain(map) {
   var run = function run(n, o, p) {
     if (o.hasOwnProperty(p)) {
       n += '.' + p;
-      if (typeof o[p] === 'string' || typeof o[p] === 'number' || typeof o[p] === 'boolean') {
+      if (typeof o[p] === 'string' || typeof o[p] === 'number' || typeof o[p] === 'boolean' || o[p] === undefined || o[p] === null) {
         n = n.substring(1);
         form[n] = o[p];
       } else {
@@ -2765,54 +2882,296 @@ module.exports = function (to, map) {
   }
 };
 
-},{"./log":73,"./utils":90}],69:[function(require,module,exports){
+},{"./log":72,"./utils":78}],70:[function(require,module,exports){
 'use strict';
 
-/**
- * @name isAlphanumericText
- * @memberof settings.validators
- * @function
- *
- * @description
- * This is the same as the validator `isAlphanumeric` except that this cleans
- * spaces and line endings before validating so the field needs to have valid
- * alphanumeric strings.
- */
-module.exports = function isAlphanumericText(value, locale) {
-  value = value.replace(/\s/g, '').replace(/\r?\n/g, '');
-  locale = typeof locale === 'string' ? locale : undefined;
-  return this.validator.isAlphanumeric(value, locale);
-};
-
-},{}],70:[function(require,module,exports){
-"use strict";
+var extend = require('extend');
+var settings = require('./settings/settings');
 
 /**
- * @name isEqualToField
- * @memberof settings.validators
- * @function
+ * Extend validators messages in an specific localization. If it does not exist,
+ * it will be created.
  *
- * @description
- * This field value has to be the same as another field the form. The name of
- * the comparing field should be set as a string parameter.
+ * @memberof module:vulcanval
+ *
+ * @param  {Object} locale - A plain object describing the locale.
+ * @param  {String} locale.id - The identifier of the locale. It should be like:
+ * `'en'`, `'es'`, `'jp'` or similar.
+ * @param  {Object} locale.msgs - A plain object with validators names as keys
+ * and messages formats as values. It should have a default value with the key
+ * `general`, which will be used when there is no message for an specific validator
+ * on error.
+ *
+ * @example
+ * const locale = {
+ *   id: 'jp',
+ *   msgs: {
+ *
+ *     // Default error message: "Invalid form field error".
+ *     general: '無効なフォームフィールド。',
+ *
+ *     // Message: "Form field has to be alphanumeric error message."
+ *     isAlphanumeric: 'フォームフィールドは、英数字である必要があります。'
+ *   }
+ * };
+ *
+ * vulcanval.extendLocale(locale);
  */
-module.exports = function isEqualToField(value, field) {
-  return value === this.get(field);
+module.exports = function extendLocale(locale) {
+  settings.msgs[locale.id] = extend(true, {}, settings.msgs[locale.id], locale.msgs);
 };
 
-},{}],71:[function(require,module,exports){
+},{"./settings/settings":76,"extend":1}],71:[function(require,module,exports){
+'use strict';
+
+var browser = require('../browser');
+
+var lang = {
+  id: 'en',
+  msgs: {
+    general: 'Please fill out this field.',
+    isEqualToField: 'The field has to be the same.',
+    isAlphanumericText: 'Please type only alphanumeric text.',
+    'isLength.min': 'The field should contain at least {{min}} characters.',
+    'isLength.max': 'The field should contain at most {{max}} characters.',
+    contains: 'This field should contain the text "{{option}}".',
+    equals: 'This field should be equal to "{{option}}".',
+    isAlpha: 'This field should only contain letters.',
+    isAlphanumeric: 'Please type only alphanumeric characters.',
+    isBoolean: 'This field should be boolean.',
+    isCreditCard: 'Please type a valid credit card number.',
+    isCurrency: 'Please type a valid currency amount.',
+    isDate: 'Please type a valid date.',
+    isDecimal: 'Please type a valid decimal number.',
+    isDivisibleBy: 'The number should be divisible by {{option}}.',
+    isEmail: 'Please type a valid email address.',
+    isFQDN: 'Please type a fully qualified domain name (e.g. domain.com).',
+    isFloat: 'Please type a valid number.',
+    isHexColor: 'Please type a valid hexadecimal color.',
+    isHexadecimal: 'Please type a valid hexadecimal number.',
+    isIP: 'Please type a valid IP address (version 4 or 6).',
+    isISBN: 'Please type a valid ISBN (version 10 or 13).',
+    isISIN: 'Please type a valid ISIN (International Securities Identification Number).',
+    isISO8601: 'Please type a valid date.',
+    isInt: 'Please type a valid integer number.',
+    isJSON: 'Please type a valid JSON string.',
+    isLowercase: 'This field should only contain lowercase text.',
+    isMobilePhone: 'Please type a valid mobile phone number.',
+    isNumeric: 'Please type a valid number.',
+    isURL: 'Please type a valid URL address.',
+    isUppercase: 'This field should only contain uppercase text.'
+  }
+};
+
+module.exports = lang;
+
+},{"../browser":67}],72:[function(require,module,exports){
+'use strict';
+
+var Log = require('prhone-log');
+
+module.exports = new Log('vulcanval', {
+  history: false,
+  scale: 2,
+  throwErrors: true
+});
+
+},{"prhone-log":2}],73:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var extend = require('extend');
+var validator = require('validator');
+var log = require('./log');
+var utils = require('./utils');
+var browser = require('./browser');
+
+/**
+ * rawValidation method.
+ *
+ * @private
+ *
+ * @param  {String} fieldName
+ *
+ * @return {String|Boolean} `false` if valid, otherwise the error message.
+ */
+module.exports = function (fieldName) {
+  'use strict';
+
+  var settings = this.settings;
+  var field = {
+    name: fieldName,
+    value: settings.context.get(fieldName)
+  };
+
+  log.debug('validating field: ' + field.name + '="' + field.value + '"');
+
+  field.rules = utils.find(settings.fields, function (vals) {
+    return vals.name === field.name;
+  });
+
+  if (!field.rules) {
+    log.warn('field "' + field.name + '" to validate does not have validators');
+    return false;
+  }
+
+  // If the value is boolean, we don't go until validators.
+  // The package `validator` only accepts strings, if the value is numeric,
+  // convert it to string.
+  // Void values will be converted to empty strings.
+  field.type = _typeof(field.value);
+  field.value = field.type === 'number' ? String(field.value) : field.value;
+  field.value = field.value === undefined || field.value === null ? '' : field.value;
+
+  // disabled
+  if (field.rules.disabled) {
+    return false;
+  }
+
+  // used only in client side
+  if (browser.isNodejs && field.rules.onlyUI) {
+    return false;
+  }
+
+  // condition
+  if (field.rules.onlyIf && !field.rules.onlyIf()) {
+    return false;
+  }
+
+  // Get a message according to error and error parameters.
+  var getMsg = function getMsg(custom, id, opts) {
+
+    id = id ? id : 'general';
+
+    var value = field.value;
+    var option = typeof opts === 'string' || typeof opts === 'number' ? opts : '';
+    var options = (typeof opts === 'undefined' ? 'undefined' : _typeof(opts)) === 'object' ? opts : null;
+    var params = extend({}, { value: value, option: option }, options);
+
+    // If it is custom, the message can be by locales or can be universal.
+    if (custom) {
+      return utils.format((typeof id === 'undefined' ? 'undefined' : _typeof(id)) === 'object' ? id[settings.locale] : id, params);
+    } else {
+      return utils.format(settings.getMsgTemplate(id), params);
+    }
+  };
+
+  var err = null;
+
+  // required
+  if (field.rules.required) {
+    if (field.type === 'boolean') {
+      if (field.value) {
+        return false;
+      } else {
+        err = getMsg();
+      }
+    } else if (field.value === '') {
+      err = getMsg();
+    }
+  } else {
+    if (field.value === '' || field.type === 'boolean') {
+      return false;
+    }
+  }
+
+  utils.everyInObject(field.rules.validators, function (val, valName) {
+
+    // There is already an error.
+    if (err) {
+      return false;
+    }
+
+    // Validator disabled.
+    if (val === false) {
+      return true;
+    }
+
+    var hasMsg, pattern;
+
+    var valType = typeof val === 'undefined' ? 'undefined' : _typeof(val);
+    var valOpts = valType === 'object' || valType === 'string' || valType === 'number' ? val : undefined;
+
+    // isLength validator.
+    if (valName === 'isLength') {
+      if (valType !== 'object' || !(typeof val.min === 'number' || val.max)) {
+        return log.error('fields validator "isLength" must be a plain object if defined');
+      }
+      if (field.value.length < (valOpts.min || 0)) {
+        err = getMsg(false, 'isLength.min', val);
+      } else if (valOpts.max && field.value.length > valOpts.max) {
+        err = getMsg(false, 'isLength.max', val);
+      }
+      return true;
+    }
+
+    // matches validator (accepts a plain object and a regular expression)
+    else if (valName === 'matches') {
+        if (valType !== 'object') {
+          return log.error('fields validator "matches" must be a plain object or RegExp');
+        }
+        if (val instanceof RegExp) {
+          pattern = val;
+          hasMsg = false;
+        } else if (val.pattern instanceof RegExp) {
+          pattern = val.pattern;
+          hasMsg = val.msgs;
+        } else {
+          return log.error('matches validator needs a RegExp');
+        }
+        if (!validator.matches(field.value, pattern)) {
+          err = getMsg(hasMsg, hasMsg ? val.msgs : 'general', val);
+        }
+        return true;
+      }
+
+      // Custom validator.
+      else if (settings.validators[valName]) {
+          if (!settings.validators[valName].call(settings.context, field.value, valOpts)) {
+            err = getMsg(false, valName, val);
+          }
+          return true;
+        }
+
+        // `validator` validator.
+        else if (validator[valName]) {
+            if (!validator[valName](field.value, valOpts)) {
+              err = getMsg(false, valName, val);
+            }
+            return true;
+          }
+
+          // Not found.
+          else {
+              return log.error('validator "' + valName + '" was not found');
+            }
+  });
+
+  if (err) {
+    log.info('invalid field ' + field.name + '="' + field.value + '":', err);
+  }
+
+  return !err ? false : err;
+};
+
+},{"./browser":67,"./log":72,"./utils":78,"extend":1,"validator":3}],74:[function(require,module,exports){
 'use strict';
 
 var _extend = require('extend');
-var utils = require('./utils');
+var utils = require('../utils');
 
 /**
  * @namespace fieldSettings
  * @type {Object}
  *
  * @description
- * The default properties and methods for a field in vulcanval {@link settings.fields}
- * configuration.
+ * The default properties and methods for a field.
+ *
+ * This is configured in {@link settings.fields} array property.
+ *
+ * Each field settings can be affected by the main {@link settings} and by the
+ * {@link fieldsetSettings}.
  */
 var fieldSettings = {
 
@@ -2829,7 +3188,7 @@ var fieldSettings = {
    * @type {Boolean}
    * @default false
    */
-  disabled: false,
+  //disabled: null,
 
   /**
    * Field is required and cannot be undefined. If the field is not required but
@@ -2840,7 +3199,61 @@ var fieldSettings = {
    * @type {Boolean}
    * @default false
    */
-  required: false,
+  //required: null,
+
+  /**
+   * Only client-side.
+   *
+   * Validate field elements on instance time.
+   *
+   * @type {Boolean}
+   * @default false
+   */
+  //autostart: null,
+
+  /**
+   * Only client-side.
+   *
+   * When a field is validated, don't show changes visually nor show messages.
+   * This is used to know whether they are valid or not, update the fields
+   * elements states and trigger events.
+   *
+   * If the field is an `<input>` type `hidden`, this will be set as `true`.
+   *
+   * @type {Boolean}
+   * @default false
+   */
+  //intern: null,
+
+  /**
+   * Only client-side.
+   *
+   * Ignore field in validation in server side.
+   *
+   * @type {Boolean}
+   * @default false
+   */
+  //onlyUI: null,
+
+  /**
+   * Only client-side.
+   *
+   * What event to listen to trigger the first validation on field.
+   *
+   * @type {String}
+   * @default Inherited from {@link settings}
+   */
+  //firstValidationEvent: null,
+
+  /**
+   * Only client-side.
+   *
+   * After first validation, what events to listen to re-validate field.
+   *
+   * @type {String}
+   * @default Inherited from {@link settings}
+   */
+  //validationEvents: null,
 
   /**
    * The validators list. This is an object with keys as the validators names and
@@ -2861,56 +3274,27 @@ var fieldSettings = {
   /**
    * Only client-side.
    *
-   * What event to listen to trigger the first validation on field.
+   * Field jQuery element.
    *
-   * @type {String}
-   * @default Inherited from {@link settings}
+   * The field node element saves the jQuery data states:
+   * - {undefined|Boolean} vv-modified - If the field has been modified by the user
+   *   after the validation process has been set. undefined if it's unknown.
+   * - {undefined|Boolean} vv-valid - If the field is valid. undefined if it's unknown.
+   * - {Boolean|String} vv-msg - The error message if field is invalid. false if
+   *   field is valid.
+   *
+   * The field node element triggers an event called `vv-modify` to inform about
+   * a change in the field which affects the validation process. This event
+   * receives an object parameter describing:
+   * - {String} name - Field name.
+   * - {*} value - Field value.
+   * - {Boolean} valid - Field status.
+   * - {Boolean|String} msg - If field is invalid the error, otherwise false.
+   *
+   * @private
+   * @type {external:jQuery}
    */
-  firstValidationEvent: null,
-
-  /**
-   * Only client-side.
-   *
-   * After first validation, what events to listen to re-validate field.
-   *
-   * @type {String}
-   * @default Inherited from {@link settings}
-   */
-  validationEvents: null,
-
-  /**
-   * Only client-side.
-   *
-   * Validate field elements on instance time.
-   *
-   * @type {Boolean}
-   * @default false
-   */
-  autostart: false,
-
-  /**
-   * Only client-side.
-   *
-   * When a field is validated, don't show changes visually nor show messages.
-   * This is used to know whether they are valid or not, update the fields
-   * elements states and trigger events.
-   *
-   * If the field is an `<input>` type `hidden`, this will be set as `true`.
-   *
-   * @type {Boolean}
-   * @default false
-   */
-  intern: false,
-
-  /**
-   * Only client-side.
-   *
-   * Ignore field in validation in server side.
-   *
-   * @type {Boolean}
-   * @default false
-   */
-  onlyUI: false,
+  $el: null,
 
   /**
    * Only client-side.
@@ -2941,31 +3325,6 @@ var fieldSettings = {
    * @type {external:jQuery}
    */
   $labels: null,
-
-  /**
-   * Only client-side.
-   *
-   * Field jQuery element.
-   *
-   * The field node element saves the jQuery data states:
-   * - {undefined|Boolean} vv-modified - If the field has been modified by the user
-   *   after the validation process has been set. undefined if it's unknown.
-   * - {undefined|Boolean} vv-valid - If the field is valid. undefined if it's unknown.
-   * - {Boolean|String} vv-msg - The error message if field is invalid. false if
-   *   field is valid.
-   *
-   * The field node element triggers an event called `vv-modify` to inform about
-   * a change in the field which affects the validation process. This event
-   * receives an object parameter describing:
-   * - {String} name - Field name.
-   * - {*} value - Field value.
-   * - {Boolean} valid - Field status.
-   * - {Boolean|String} msg - If field is invalid the error, otherwise false.
-   *
-   * @private
-   * @type {external:jQuery}
-   */
-  $el: null,
 
   /**
    * Only client-side.
@@ -3061,1265 +3420,125 @@ var fieldSettings = {
    * @return {Object}
    */
   extend: function extend(custom) {
-    return _extend(true, {}, this, custom);
+    return _extend(Object.create(fieldSettings), custom);
   }
 };
 
 module.exports = fieldSettings;
 
-},{"./utils":90,"extend":1}],72:[function(require,module,exports){
+},{"../utils":78,"extend":1}],75:[function(require,module,exports){
 'use strict';
-
-var browser = require('../browser');
-
-var lang = {
-  id: 'en',
-  msgs: {
-    general: 'Please fill out this field.',
-    isEqualToField: 'The field has to be the same.',
-    isAlphanumericText: 'Please type only alphanumeric text.',
-    'isLength.min': 'The field should contain at least {{min}} characters.',
-    'isLength.max': 'The field should contain at most {{max}} characters.',
-    isEmail: 'Please type a valid email address.',
-    isNumeric: 'Please type a valid positive number.',
-    isFloat: 'Please type a valid number.',
-    isInt: 'Please type a valid integer number.',
-    isURL: 'Please type a valid URL address.',
-    isDate: 'Please type a valid date.',
-    contains: 'This field should contain the text "{{option}}".',
-    isAlphanumeric: 'Please type only alphanumeric characters.',
-    isCreditCard: 'Please type a valid credit card number.',
-    isLowercase: 'This field should only contain lowercase text.',
-    isUppercase: 'This field should only contain uppercase text.',
-    isDivisibleBy: 'The number should be divisible by {{option}}.',
-    isBoolean: 'This field should be boolean.'
-  }
-};
-
-browser.perform(false, function () {
-  window.vulcanval.extendLocale(lang);
-  window.vulcanval.setLocale(lang.id);
-});
-
-module.exports = lang;
-
-},{"../browser":66}],73:[function(require,module,exports){
-'use strict';
-
-var Log = require('prhone-log');
-
-module.exports = new Log('vulcanval', {
-  scale: 2,
-  throwErrors: true
-});
-
-},{"prhone-log":2}],74:[function(require,module,exports){
-'use strict';
-
-var log = require('./log');
-var utils = require('./utils');
-var vulcanval = require('./vulcanval');
-var plugin = require('./plugin/plugin');
-var localeEN = require('./locale/en');
-var isEqualToField = require('./customValidators/isEqualToField');
-var isAlphanumericText = require('./customValidators/isAlphanumericText');
-
-// Install the English language.
-vulcanval.extendLocale(localeEN);
-vulcanval.setLocale('en');
-
-// Install custom validators.
-vulcanval.addValidator('isEqualToField', isEqualToField);
-vulcanval.addValidator('isAlphanumericText', isAlphanumericText);
-
-module.exports = vulcanval;
-
-},{"./customValidators/isAlphanumericText":69,"./customValidators/isEqualToField":70,"./locale/en":72,"./log":73,"./plugin/plugin":85,"./utils":90,"./vulcanval":93}],75:[function(require,module,exports){
-'use strict';
-
-var ui = require('./_ui');
-
-/**
- * On field change.
- *
- * @private
- * @param  {settings} settings
- * @param  {fieldSettings} field
- */
-var change = function change(settings, field) {
-  'use strict';
-
-  var invalid = field.$el.vulcanval('inspect', field.name);
-  var wasInvalid = field.$el.data('vv-valid') === false;
-  var lastMsg = field.$el.data('vv-msg');
-
-  // Field general.
-  field.$el.data({
-    'vv-modified': true,
-    'vv-msg': invalid
-  });
-
-  // Field invalid.
-  if (invalid) {
-    field.$el.data('vv-valid', false);
-
-    if (!field.intern && !settings.intern && field.$display) {
-      field.$display.html(invalid);
-    }
-
-    ui.addFieldErrorClasses(settings, field);
-
-    if (wasInvalid && lastMsg !== invalid) {
-      ui.updateFieldErrorClasses(settings, field);
-    }
-  }
-
-  // Field valid.
-  else {
-      field.$el.data('vv-valid', true);
-      ui.removeFieldErrorClasses(settings, field);
-    }
-
-  ui.refreshFormState(settings);
-
-  field.$el.trigger('vv-modify', {
-    name: field.name,
-    value: field.value(),
-    valid: !invalid,
-    msg: invalid
-  });
-};
-
-module.exports = change;
-
-},{"./_ui":82}],76:[function(require,module,exports){
-'use strict';
-
-var validator = require('validator');
-var settings = require('../settings');
-var utils = require('../utils');
-var log = require('../log');
-var fieldSettings = require('../fieldSettings');
-var ui = require('./_ui');
-
-/**
- * Create final settings from fetched from UI and provided from user.
- *
- * @private
- * @param  {external:jQuery} $el
- * @param  {settings} fetched
- * @param  {settings} custom
- * @return {settings}
- */
-var createSettings = function createSettings($el, fetched, custom) {
-  'use strict';
-
-  // Extend every specific field settings.
-
-  var fetchedFields = fetched.fields || [];
-  delete fetched.fields;
-
-  var customFields = custom.fields || [];
-  delete custom.fields;
-
-  var newFields = [];
-
-  customFields.forEach(function (customField) {
-    var fetchedField = utils.find(fetchedFields, function (field) {
-      return field.name === customField.name;
-    });
-
-    if (fetchedField) {
-      $.extend(true, fetchedField, customField);
-      newFields.push(fieldSettings.extend(fetchedField));
-    } else {
-      newFields.push(fieldSettings.extend(customField));
-    }
-  });
-
-  fetchedFields.forEach(function (fetchedField) {
-    if (!utils.find(newFields, function (nf) {
-      return nf.name === fetchedField.name;
-    })) {
-      newFields.push(fieldSettings.extend(fetchedField));
-    }
-  });
-
-  newFields.forEach(function (f) {
-    if (!f.$el) log.warn('field "' + f.name + '" does not have DOM element');
-  });
-
-  // Extend base settings with fetched and custom settings.
-  var newSettings = settings.extend(fetched);
-  newSettings = newSettings.extend(custom);
-
-  newSettings.fields = newFields;
-
-  if ($el[0].tagName === 'FORM') {
-    newSettings.$form = $el;
-  }
-
-  // Create an utility context. This will be used in all methods using the
-  // '../utilityContext.js' function context.
-  newSettings.context = {
-    validator: validator,
-    get: function get(getFieldName) {
-      var getField = utils.find(newSettings.fields, function (f) {
-        return f.name === getFieldName;
-      });
-      if (getField) {
-        return getField.value && getField.value();
-      } else {
-        log.warn('field "' + getFieldName + '" not found');
-      }
-    }
-  };
-
-  return newSettings;
-};
-
-module.exports = createSettings;
-
-},{"../fieldSettings":71,"../log":73,"../settings":89,"../utils":90,"./_ui":82,"validator":3}],77:[function(require,module,exports){
-'use strict';
-
-var utils = require('../utils');
-var ui = require('./_ui');
-
-/**
- * Fetch UI elements settings configured as nodes attributes and properties.
- *
- * @private
- * @param  {external:jQuery} $el - Element on instance.
- * @param  {external:jQuery} $fields - Fields filtered.
- * @return {settings}
- */
-var fetchUISettings = function fetchUISettings($el, $fields) {
-  'use strict';
-
-  var fetched = {};
-  var elTag = $el[0].tagName;
-
-  // Fetch form settings.
-  if (elTag === 'FORM') {
-
-    var disabled = ui.getAttr($el, 'disabled');
-    var intern = ui.getAttr($el, 'intern') !== void 0;
-    var autostart = ui.getAttr($el, 'autostart') !== void 0;
-    var novalidate = ui.getAttr($el, 'novalidate') !== void 0;
-
-    if (disabled) fetched.disabled = true;
-    if (intern) fetched.intern = true;
-    if (autostart) fetched.autostart = true;
-    if (novalidate) fetched.disableHTML5Validation = true;
-
-    var locale = ui.getAttr($el, 'locale');
-    if (locale) fetched.locale = locale;
-  }
-
-  // Fetch fields settings.
-  var fields = [];
-
-  fetched.fields = fields;
-
-  $fields.each(function (i, f) {
-
-    var $f = $(f);
-    var name = ui.getAttr($f, 'name');
-    var type = ui.getAttr($f, 'type');
-
-    var field = { name: name, $el: $f };
-    var validators = {};
-
-    var disabled = ui.getAttr($f, 'disabled') !== void 0;
-    var required = ui.getAttr($f, 'required') !== void 0;
-    var autostart = ui.getAttr($f, 'autostart') !== void 0;
-    var intern = ui.getAttr($f, 'intern') !== void 0;
-
-    if (disabled) field.disabled = true;
-    if (required) field.required = true;
-    if (autostart) field.autostart = true;
-    if (intern) field.intern = true;
-
-    var display = ui.getAttr($f, 'display');
-    if (display) field.display = display;
-
-    var minlength = ui.getAttr($f, 'minlength');
-    var maxlength = ui.getAttr($f, 'maxlength');
-    if (minlength) {
-      if (!validators.isLength) validators.isLength = {};
-      validators.isLength.min = +minlength;
-    }
-    if (maxlength) {
-      if (!validators.isLength) validators.isLength = {};
-      validators.isLength.max = +maxlength;
-    }
-
-    var min = ui.getAttr($f, 'min');
-    var max = ui.getAttr($f, 'max');
-    if (type === 'number') {
-      validators.isFloat = true;
-      if (min) {
-        if (validators.isFloat === true) validators.isFloat = {};
-        validators.isFloat.min = +min;
-      }
-      if (max) {
-        if (validators.isFloat === true) validators.isFloat = {};
-        validators.isFloat.max = +max;
-      }
-    }
-
-    if (type === 'email') validators.isEmail = true;
-    if (type === 'url') validators.isURL = true;
-    if (type === 'datetime') validators.isDate = true;
-
-    var pattern = ui.getAttr($f, 'pattern');
-    var patternMsgs = ui.getAttr($f, 'pattern-msgs');
-    if (pattern) {
-      pattern = new RegExp(pattern);
-      validators.matches = pattern;
-      if (patternMsgs) validators.matches = { pattern: pattern, msgs: patternMsgs };
-    }
-
-    if (Object.keys(validators).length) {
-      field.validators = validators;
-    }
-    if (Object.keys(field).length > 1 || Object.keys(validators).length) {
-      fields.push(field);
-    }
-  });
-
-  return fetched;
-};
-
-module.exports = fetchUISettings;
-
-},{"../utils":90,"./_ui":82}],78:[function(require,module,exports){
-'use strict';
-
-var utils = require('../utils');
-var ui = require('./_ui');
-
-/**
- * Set HTML elements attributes according to final settings.
- *
- * @private
- * @param {settings} settings
- */
-var setAttrs = function setAttrs(settings) {
-  'use strict';
-
-  if (settings.$form) {
-
-    settings.$form.data('vv-settings', settings);
-
-    if (settings.disabled) settings.$form.attr('disabled', 'disabled');
-    if (settings.disableHTML5Validation) settings.$form.attr('novalidate', 'novalidate');
-  }
-
-  settings.fields.forEach(function (field) {
-
-    if (!field.$el) return;
-
-    field.$el.data('vv-settings', settings);
-
-    if (field.disabled) field.$el.attr('disabled', 'disabled');
-    if (field.required) field.$el.prop('required', true);
-
-    if (field.validators) {
-      utils.walkObject(field.validators, function (val, valName) {
-        switch (valName) {
-          case 'isLength':
-            if (val.min) field.$el.attr('minlength', val.min);
-            if (val.max) field.$el.attr('maxlength', val.max);
-            break;
-
-          // Modifiers/flags in RegExp are not supported in HTML input pattern attr.
-          case 'matches':
-            var pattern = val instanceof RegExp ? val : val.pattern;
-            field.$el.attr('pattern', pattern.toString().replace(/^\//, '').replace(/\/.{0,3}$/, ''));
-            break;
-          case 'isFloat':
-          case 'isInt':
-            if (val.min) field.$el.attr('min', val.min);
-            if (val.max) field.$el.attr('max', val.max);
-            break;
-        }
-      });
-    }
-  });
-};
-
-module.exports = setAttrs;
-
-},{"../utils":90,"./_ui":82}],79:[function(require,module,exports){
-'use strict';
-
-var validator = require('validator');
-var utils = require('../utils');
-var ui = require('./_ui');
-var change = require('./_change');
-
-/**
- * Set elements validation events.
- *
- * @private
- * @param {settings} settings
- */
-var setEvents = function setEvents(settings) {
-  'use strict';
-
-  // Form.
-
-  if (settings.$form) {
-
-    settings.onSubmit = function (e) {
-      settings.$form.vulcanval('validate');
-      if (settings.$form.data('vv-valid') !== true) {
-        e.preventDefault();
-        return false;
-      }
-    };
-    settings.$form.on('submit', settings.onSubmit);
-
-    settings.onReset = function (e) {
-      settings.$form.vulcanval('reset');
-    };
-    settings.$form.on('reset', settings.onReset);
-  }
-
-  // Fields.
-  settings.fields.forEach(function (field) {
-
-    if (!field.$el || field.disabled) return;
-
-    var isTextField = !!field.$el.filter('input[type!=checkbox][type!=radio], textarea').length;
-    var firstEvent = (field.firstValidationEvent || settings.firstValidationEvent) + ' vv-change';
-    var normalEvent = (field.validationEvents || settings.validationEvents) + ' vv-change';
-    var initial = isTextField && typeof field.$el.val() === 'string' && field.$el.val().length;
-
-    field.onChange = function (ev) {
-      change(settings, field, ev);
-    };
-
-    field.onFirstChange = function (e) {
-      field.$el.off(firstEvent, field.onFirstChange);
-      field.$el.on(normalEvent, field.onChange);
-      field.$el.trigger('vv-change');
-    };
-
-    // @FIXIT: Make this run with an option.
-    field.onBlur = function (e) {
-      if (isTextField) {
-        field.$el.val(utils.trimSpaces(field.$el.val()));
-      }
-    };
-
-    field.$el.on('blur', field.onBlur);
-    field.$el.on(firstEvent, field.onFirstChange);
-
-    if (initial || field.autostart || settings.autostart) {
-      field.$el.trigger('vv-change');
-    }
-  });
-};
-
-module.exports = setEvents;
-
-},{"../utils":90,"./_change":75,"./_ui":82,"validator":3}],80:[function(require,module,exports){
-'use strict';
-
-var utils = require('../utils');
-var ui = require('./_ui');
-
-/**
- * Set HTML elements and initial classes.
- *
- * @private
- * @param {settings} settings
- */
-var setHTML = function setHTML(settings) {
-  'use strict';
-
-  if (!settings.intern) {
-
-    // Form.
-    if (settings.$form) {
-      settings.$form.addClass('vv-form');
-      settings.$form.addClass(settings.classes.defaults.form);
-    }
-
-    // Fields.
-    settings.fields.forEach(function (field) {
-
-      if (!field.$el || field.disabled || field.intern) return;
-
-      var id = field.$el.attr('id');
-      if (id) {
-        field.$labels = $('label[for=' + id + ']');
-        field.$labels.addClass('vv-label');
-        field.$labels.addClass(settings.classes.defaults.label);
-      }
-
-      field.$el.addClass('vv-field');
-      field.$el.addClass(settings.classes.defaults.field);
-
-      if (field.display) {
-        field.$display = field.display && $(field.display);
-        field.$display.addClass('vv-display');
-        field.$display.addClass(settings.classes.defaults.display);
-      }
-    });
-  }
-};
-
-module.exports = setHTML;
-
-},{"../utils":90,"./_ui":82}],81:[function(require,module,exports){
-'use strict';
-
-var validator = require('validator');
-var utils = require('../utils');
-var ui = require('./_ui');
-var change = require('./_change');
-
-/**
- * Set settings static methods.
- *
- * @private
- * @param {settings} settings
- */
-var setMethods = function setMethods(settings) {
-  'use strict';
-
-  settings.fields.forEach(function (field) {
-
-    field.value = field.value && field.value.bind(settings.context, field.$el);
-
-    var onlyIf = field.onlyIf;
-    delete field.onlyIf;
-    if (onlyIf) {
-      field.onlyIf = function () {
-        return onlyIf.call(settings.context, field.value && field.value());
-      };
-    }
-  });
-};
-
-module.exports = setMethods;
-
-},{"../utils":90,"./_change":75,"./_ui":82,"validator":3}],82:[function(require,module,exports){
-'use strict';
-
-var ui = {
-  refreshFormState: function refreshFormState(settings) {
-    'use strict';
-
-    var unknown = void 0;
-    var valid = void 0;
-    var state = void 0;
-
-    if (settings.$form) {
-
-      unknown = false;
-
-      valid = settings.fields.every(function (field) {
-
-        if (!field.$el) return true;
-        if (field.disabled || field.onlyIf && !field.onlyIf()) return true;
-
-        state = field.$el.data('vv-valid');
-
-        if (state === void 0) {
-          unknown = true;
-          return true;
-        }
-
-        if (state === true) {
-          return true;
-        }
-      });
-
-      settings.$form.data({
-        'vv-modified': true,
-        'vv-valid': unknown ? void 0 : valid
-      });
-
-      if (!settings.intern) {
-        if (unknown || valid) {
-          settings.$form.removeClass('vv-form_error');
-          settings.$form.removeClass(settings.classes.error.form);
-        } else {
-          settings.$form.addClass('vv-form_error');
-          settings.$form.addClass(settings.classes.error.form);
-        }
-      }
-    }
-
-    return { valid: valid, unknown: unknown };
-  },
-  findFields: function findFields($form) {
-    return $form.find('input, select, textarea, [data-vv-name]');
-  },
-
-
-  /**
-   * Allow fields types:
-   * - input type text-like
-   * - input type checkbox
-   * - input type radio
-   * - input type hidden
-   * - input type to exclude: submit, button and reset
-   * - textarea
-   * - select
-   * - custom entries (* with attr data-vv-name)
-   */
-  filterFields: function filterFields($fields) {
-    return $fields.filter('input[name][type!=button][type!=submit][type!=reset], select[name], textarea[name], [data-vv-name]');
-  },
-  getAttr: function getAttr(el, attr) {
-    return $(el).attr(attr) !== void 0 ? $(el).attr(attr) : $(el).data('vv-' + attr);
-  },
-  getProp: function getProp(el, prop) {
-    var value1 = $(el).prop(prop);
-    var value2 = $(el).data('vv-' + prop);
-    return typeof value1 === 'boolean' || typeof value1 === 'string' ? true : value2 !== void 0 ? value2 : void 0;
-  },
-  addFieldErrorClasses: function addFieldErrorClasses(settings, field) {
-
-    if (field.$el && !field.intern && !settings.intern) {
-
-      field.$el.addClass('vv-field_error');
-      field.$el.addClass(settings.classes.error.field);
-
-      if (field.$display) {
-        field.$display.addClass('vv-display_error');
-        field.$display.addClass(settings.classes.error.display);
-      }
-
-      if (field.$labels) {
-        field.$labels.addClass('vv-label_error');
-        field.$labels.addClass(settings.classes.error.label);
-      }
-    }
-  },
-  updateFieldErrorClasses: function updateFieldErrorClasses(settings, field) {
-
-    if (field.$el && field.$display) {
-      field.$display.removeClass('vv-display_error-update');
-      setTimeout(function () {
-        return field.$display.addClass('vv-display_error-update');
-      }, 0);
-    }
-  },
-  removeFieldErrorClasses: function removeFieldErrorClasses(settings, field) {
-
-    if (field.$el && !field.intern && !settings.intern) {
-
-      field.$el.removeClass('vv-field_error');
-      field.$el.removeClass(settings.classes.error.field);
-
-      if (field.$display) {
-        field.$display.removeClass('vv-display_error vv-display_error-update');
-        field.$display.removeClass(settings.classes.error.display);
-      }
-
-      if (field.$labels) {
-        field.$labels.removeClass('vv-label_error');
-        field.$labels.removeClass(settings.classes.error.label);
-      }
-    }
-  }
-};
-
-module.exports = ui;
-
-},{}],83:[function(require,module,exports){
-'use strict';
-
-var convertMapTo = require('../convertMapTo');
-var fieldSettings = require('../fieldSettings');
-var ui = require('./_ui');
-
-/**
- * ***Invoke over instantiated or `<form>` elements.***
- *
- * Get the data {@link map} extracted from the `<form>`.
- *
- * If the instance was configured with the setting {@link settings.enableNestedMaps}
- * as `true`, the {@link map} returned will be nested. Otherwise it will be plain.
- *
- * @function external:"jQuery.fn".vulcanval
- *
- * @param  {String} getMap - With value `'getMap'`.
- * @return {map} The data {@link map}.
- */
-var getMap = function getMap() {
-  'use strict';
-
-  var settings = this.data('vv-settings');
-
-  var map = {};
-
-  if (settings) {
-    settings.fields.forEach(function (field) {
-      if (field.onlyUI || field.disabled) return;
-      map[field.name] = field.value();
-    });
-    if (settings.enableNestedMaps) {
-      map = convertMapTo('nested', map);
-    }
-  } else if (this[0].tagName === 'FORM') {
-    var $form = this;
-    ui.filterFields(ui.findFields($form)).each(function (i, field) {
-
-      var $field = $(field);
-      var name = $field.attr('name') || $field.data('vv-name');
-      var isDisabled = $field.prop('disabled');
-
-      if (isDisabled) return;
-
-      map[name] = fieldSettings.value($field);
-    });
-  }
-
-  return map;
-};
-
-getMap.free = true;
-
-module.exports = getMap;
-
-},{"../convertMapTo":68,"../fieldSettings":71,"./_ui":82}],84:[function(require,module,exports){
-'use strict';
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-var log = require('../log');
-var utils = require('../utils');
-var rawValidation = require('../rawValidation');
-
-/**
- * ***Invoke over instantiated elements.***
- *
- * Inspect the validation status of the `<form>` or specific field in it.
- *
- * @function external:"jQuery.fn".vulcanval
- *
- * @param  {String} inspect - With value `'inspect'`.
- * @param  {String} [fieldName] - Only limite inspection to the field.
- * @return {Object|String|Boolean} A plain object with keys as field names and values with
- * error messages if they have. If form is valid, `false` will be returned. If
- * the fieldName is sent, it will return an error message if field is invalid,
- * otherwise `false`.
- */
-var inspect = function inspect(fieldName) {
-
-  var settings = this.data('vv-settings');
-
-  if (fieldName) {
-    var field = utils.find(settings.fields, function (f) {
-      return f.name === fieldName;
-    });
-    if (!field) log.error('field "' + fieldName + '" not found');
-    return rawValidation({
-      settings: settings,
-      context: settings.context,
-      field: { name: field.name, value: field.value() }
-    });
-  } else {
-    var _ret = function () {
-      var errors = {};
-      settings.fields.forEach(function (field) {
-        var invalid = rawValidation({
-          settings: settings,
-          context: settings.context,
-          field: { name: field.name, value: field.value() }
-        });
-        if (invalid) errors[field.name] = invalid;
-      });
-      return {
-        v: Object.keys(errors).length ? errors : false
-      };
-    }();
-
-    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
-  }
-};
-
-module.exports = inspect;
-
-},{"../log":73,"../rawValidation":88,"../utils":90}],85:[function(require,module,exports){
-'use strict';
-
-var validator = require('validator');
-
-var log = require('../log');
-var utils = require('../utils');
-var browser = require('../browser');
-var fieldSettings = require('../fieldSettings');
-
-var ui = require('./_ui');
-var fetchUISettings = require('./_fetchUISettings.js');
-var createSettings = require('./_createSettings');
-var setAttrs = require('./_setAttrs');
-var setHTML = require('./_setHTML');
-var setMethods = require('./_setMethods');
-var setEvents = require('./_setEvents');
-var change = require('./_change');
-
-var inspect = require('./inspect');
-var validate = require('./validate');
-var reset = require('./reset');
-var getMap = require('./getMap');
-
-var methods = { inspect: inspect, validate: validate, reset: reset, getMap: getMap };
-
-/**
- * @summary jQuery plugin to instantiate the validators in forms.
- *
- * @description
- * Defines validation functionalities over form elements.
- *
- * This can be instantiated on forms or any form elements with a valid attribute `name`:
- *
- * - `<form>`
- * - `<input>` with `type` different than `submit`, `button` and `reset`
- * - `<textarea>`
- * - `<select>`
- *
- * Also, the plugin can be instantiated on any element with a valid input name in
- * attribute `data-vv-name` which will be treated as a normal `<input>`. This is
- * useful to create custom fields/entries.
- *
- * @function external:"jQuery.fn".vulcanval
- *
- * @param  {settings} settings - Instance settings. This is used to configure the
- * whole validation process.
- * @return {external:jQuery} The same jQuery object.
- */
-var plugin = function plugin(customSettings) {
-  'use strict';
-
-  if (!this.length) {
-    return this;
-  }
-
-  var $el = this.first();
-
-  if (typeof customSettings === 'string') {
-    if (methods[customSettings]) {
-      if (!methods[customSettings].free && !$el.data('vv-settings')) {
-        log.error('element not instantiated yet');
-      } else {
-        var args = Array.prototype.slice.call(arguments, 1);
-        return methods[customSettings].apply($el, args);
-      }
-    } else {
-      log.error('method unrecognized "' + customSettings + '"');
-    }
-  }
-
-  if ($el.data('vv-settings')) {
-    return this;
-  }
-
-  // Validate elements.
-  var $fields = void 0;
-  if ($el[0].tagName === 'FORM') {
-    $fields = ui.filterFields(ui.findFields($el));
-  } else {
-    $fields = ui.filterFields($el);
-  }
-
-  if (!$fields.length) {
-    log.error('only <form>; <input>, <textarea> and <select> with valid attr "name"; and elements with valid attr "data-vv-name"');
-  }
-
-  $fields.each(function (i, field) {
-    var name = ui.getAttr(field, 'name');
-    if (!utils.validateFieldName(name)) {
-      log.error('the field with attribute name "' + name + '" is invalid');
-    }
-  });
-
-  // Fetch UI elements settings configured as nodes attributes and properties.
-  var fetchedSettings = fetchUISettings($el, $fields);
-
-  // Create settings.
-  customSettings = customSettings ? customSettings : {};
-  var settings = createSettings($el, fetchedSettings, customSettings);
-
-  if (settings.disabled) {
-    log.warn('complete form is disabled');
-    return this;
-  }
-
-  // Set parsed settings attributes in current HTML.
-  setAttrs(settings);
-
-  // Update form elements.
-  setHTML(settings);
-
-  // Set settings methods.
-  setMethods(settings);
-
-  // Set elements events.
-  setEvents(settings);
-
-  return $el;
-};
-
-browser.perform(true, function () {
-  window.jQuery.fn.vulcanval = plugin;
-});
-
-module.exports = plugin;
-
-},{"../browser":66,"../fieldSettings":71,"../log":73,"../utils":90,"./_change":75,"./_createSettings":76,"./_fetchUISettings.js":77,"./_setAttrs":78,"./_setEvents":79,"./_setHTML":80,"./_setMethods":81,"./_ui":82,"./getMap":83,"./inspect":84,"./reset":86,"./validate":87,"validator":3}],86:[function(require,module,exports){
-'use strict';
-
-var log = require('../log');
-var utils = require('../utils');
-var ui = require('./_ui');
-
-/**
- * ***Invoke over instantiated elements.***
- *
- * Reset the form or specific field validation state.
- *
- * @function external:"jQuery.fn".vulcanval
- *
- * @param  {String} reset - With value `'reset'`.
- * @param  {String} [fieldName] - Only limite reset to specified field.
- * @return {external:jQuery} The same jQuery object.
- */
-var reset = function reset(fieldName) {
-  'use strict';
-
-  var settings = this.data('vv-settings');
-
-  // Specific field.
-  if (fieldName) {
-
-    var field = utils.find(settings.fields, function (f) {
-      return f.name === fieldName;
-    });
-    if (!field) log.error('field "' + fieldName + '" not found');
-
-    if (!field.$el) return;
-
-    ui.removeFieldErrorClasses(settings, field);
-
-    field.$el.data({
-      'vv-modified': void 0,
-      'vv-valid': void 0,
-      'vv-msg': void 0
-    });
-
-    ui.refreshFormState(settings);
-
-    settings.fields.every(function (f) {
-      if (!f.$el) return;
-      f.$el.trigger('vv-modify', {
-        name: f.name,
-        value: f.value(),
-        valid: void 0,
-        msg: void 0
-      });
-    });
-  }
-
-  // Form.
-  else {
-      settings.fields.forEach(function (f) {
-        if (!f.$el) return;
-        ui.removeFieldErrorClasses(settings, f);
-        f.$el.data({
-          'vv-modified': void 0,
-          'vv-valid': void 0,
-          'vv-msg': void 0
-        });
-      });
-
-      ui.refreshFormState(settings);
-
-      if (settings.$form) {
-        settings.$form.data({
-          'vv-modified': void 0,
-          'vv-valid': void 0
-        });
-      }
-
-      settings.fields.forEach(function (f) {
-        if (!f.$el) return;
-        f.$el.trigger('vv-modify', {
-          name: f.name,
-          value: f.value(),
-          valid: void 0,
-          msg: void 0
-        });
-      });
-    }
-
-  return this;
-};
-
-module.exports = reset;
-
-},{"../log":73,"../utils":90,"./_ui":82}],87:[function(require,module,exports){
-'use strict';
-
-var log = require('../log');
-var utils = require('../utils');
-
-/**
- * ***Invoke over instantiated elements.***
- *
- * Validate visually complete `<form>` or specific field in it.
- *
- * @function external:"jQuery.fn".vulcanval
- *
- * @param  {String} validate - With value `'validate'`.
- * @param  {String} [fieldName] - Only limite validation to the field.
- * @return {external:jQuery} The same jQuery object.
- */
-var validate = function validate(fieldName) {
-  'use strict';
-
-  var settings = this.data('vv-settings');
-
-  if (fieldName) {
-    var field = utils.find(settings.fields, function (f) {
-      return f.name === fieldName;
-    });
-    if (!field) log.error('field "' + fieldName + '" not found');
-
-    field.$el.trigger('vv-change');
-
-    field.$el.trigger('focus');
-  } else {
-    (function () {
-
-      var invalid = void 0;
-      var first = true;
-
-      settings.fields.forEach(function (field) {
-
-        if (!field.$el) return;
-
-        field.$el.trigger('vv-change');
-
-        invalid = field.$el.vulcanval('inspect', field.name);
-
-        if (invalid && first) {
-          first = false;
-          field.$el.trigger('focus');
-        }
-      });
-    })();
-  }
-
-  return this;
-};
-
-module.exports = validate;
-
-},{"../log":73,"../utils":90}],88:[function(require,module,exports){
-'use strict';
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-var extend = require('extend');
-var validator = require('validator');
-var log = require('./log');
-var utils = require('./utils');
-var browser = require('./browser');
-
-/**
- * vulcanval.rawValidation()
- *
- * @private
- *
- * @param  {Object} conf
- * @param  {Object} conf.field
- * @param  {String} conf.field.name
- * @param  {*}      conf.field.value
- * @param  {settings} conf.settings
- * @param  {utilityContext} conf.context
- *
- * @return {String|Boolean} `false` if invalid, otherwise the error message.
- */
-module.exports = function (conf) {
-  'use strict';
-
-  if ((typeof conf === 'undefined' ? 'undefined' : _typeof(conf)) !== 'object') {
-    return log.error('parameter must be an object');
-  }
-
-  log.debug('validating field ' + conf.field.name + '="' + conf.field.value + '"');
-
-  var field = conf.field;
-  var settings = conf.settings;
-  var context = conf.context;
-
-  field.rules = utils.find(settings.fields, function (vals) {
-    if ((typeof vals === 'undefined' ? 'undefined' : _typeof(vals)) !== 'object') {
-      return log.error('a field can only have an object to describe its validation');
-    }
-    return vals.name === field.name;
-  });
-
-  if (!field.rules) {
-    log.warn('field to validate does not have validators');
-    return false;
-  }
-
-  // If the value is boolean, we don't go until validators.
-  // The package `validator` only accepts strings, if the value is numeric,
-  // convert it to string.
-  // Void values will be converted to empty strings.
-  field.type = _typeof(field.value);
-  field.value = field.type === 'number' ? String(field.value) : field.value;
-  field.value = field.value === undefined || field.value === null ? '' : field.value;
-
-  // disabled
-  if (field.rules.disabled) {
-    return false;
-  }
-
-  // used only in client side
-  if (browser.isNodejs && field.rules.onlyUI) {
-    return false;
-  }
-
-  // condition
-  if (field.rules.onlyIf && !field.rules.onlyIf.call(context, field.value)) {
-    return false;
-  }
-
-  // Get a message according to error and error parameters.
-  var getMsg = function getMsg(custom, id, opts) {
-
-    id = id ? id : 'general';
-
-    var value = field.value;
-    var option = typeof opts === 'string' || typeof opts === 'number' ? opts : '';
-    var options = (typeof opts === 'undefined' ? 'undefined' : _typeof(opts)) === 'object' ? opts : null;
-    var params = extend({}, { value: value, option: option }, options);
-
-    // If it is custom, the message can be by locales or can be universal.
-    if (custom) {
-      return utils.format((typeof id === 'undefined' ? 'undefined' : _typeof(id)) === 'object' ? id[settings.locale] : id, params);
-    } else {
-      return utils.format(settings.getMsgTemplate(id), params);
-    }
-  };
-
-  var err = null;
-
-  // required
-  if (field.rules.required) {
-    if (field.type === 'boolean') {
-      if (field.value) {
-        return false;
-      } else {
-        err = getMsg();
-      }
-    } else if (field.value === '') {
-      err = getMsg();
-    }
-  } else {
-    if (field.value === '' || field.type === 'boolean') {
-      return false;
-    }
-  }
-
-  utils.everyInObject(field.rules.validators, function (val, valName) {
-
-    // There is already an error.
-    if (err) {
-      return true;
-    }
-
-    // Validator disabled.
-    if (val === false) {
-      return true;
-    }
-
-    var hasMsg, pattern;
-
-    var valType = typeof val === 'undefined' ? 'undefined' : _typeof(val);
-    var valOpts = valType === 'object' || valType === 'string' || valType === 'number' ? val : undefined;
-
-    // isLength validator.
-    if (valName === 'isLength') {
-      if (valType !== 'object' || !(typeof val.min === 'number' || val.max)) {
-        return log.error('fields validator "isLength" must be a plain object if defined');
-      }
-      if (field.value.length < (valOpts.min || 0)) {
-        err = getMsg(false, 'isLength.min', val);
-      } else if (valOpts.max && field.value.length > valOpts.max) {
-        err = getMsg(false, 'isLength.max', val);
-      }
-      return true;
-    }
-
-    // matches validator (accepts a plain object and a regular expression)
-    else if (valName === 'matches') {
-        if (valType !== 'object') {
-          return log.error('fields validator "matches" must be a plain object or RegExp');
-        }
-        hasMsg = !(val instanceof RegExp) && val.msgs;
-        pattern = hasMsg ? val.pattern : val;
-        if (!validator.matches(field.value, pattern)) {
-          err = getMsg(hasMsg, hasMsg ? val.msgs : 'general', val);
-        }
-        return true;
-      }
-
-      // Custom validator.
-      else if (settings.validators[valName]) {
-          if (!settings.validators[valName].call(context, field.value, valOpts)) {
-            err = getMsg(false, valName, val);
-          }
-          return true;
-        }
-
-        // `validator` validator.
-        else if (validator[valName]) {
-            if (!validator[valName](field.value, valOpts)) {
-              err = getMsg(false, valName, val);
-            }
-            return true;
-          }
-
-          // Not found.
-          else {
-              return log.error('validator "' + valName + '" was not found');
-            }
-  });
-
-  log.info('invalid field ' + conf.field.name + '="' + conf.field.value + '":', err);
-
-  return !err ? false : err;
-};
-
-},{"./browser":66,"./log":73,"./utils":90,"extend":1,"validator":3}],89:[function(require,module,exports){
-'use strict';
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 var _extend = require('extend');
-var log = require('./log');
-var utils = require('./utils');
+var utils = require('../utils');
+
+/**
+ * @namespace fieldsetSettings
+ * @type {Object}
+ *
+ * @description
+ * These properties and methods will affect the fields settings.
+ *
+ * This is configured in {@link settings.fieldsets} array property.
+ */
+var fieldsetSettings = {
+
+  /**
+   * Fieldset name. This will be used to identify this fieldset.
+   *
+   * @type {String}
+   */
+  name: null,
+
+  /**
+   * The fields this fieldset covers.
+   *
+   * This can be a RegExp to match against the fields names, a string that is
+   * the starting string of fields names or an array with the names of the fields.
+   *
+   * @type {RegExp|String|Array}
+   * @default null
+   */
+  fields: null,
+
+  /**
+   * Default {@link fieldSettings.disabled} value in fieldset.
+   */
+  //disabled: null,
+
+  /**
+   * Default {@link fieldSettings.required} value in fieldset.
+   */
+  //required: null,
+
+  /**
+   * Default {@link fieldSettings.autostart} value in fieldset.
+   */
+  //autostart: null,
+
+  /**
+   * Default {@link fieldSettings.intern} value in fieldset.
+   */
+  //intern: null,
+
+  /**
+   * Default {@link fieldSettings.onlyUI} value in fieldset.
+   */
+  //onlyUI: null,
+
+  /**
+   * Default {@link fieldSettings.firstValidationEvent} value in fieldset.
+   */
+  //firstValidationEvent: null,
+
+  /**
+   * Default {@link fieldSettings.validationEvents} value in fieldset.
+   */
+  //validationEvents: null,
+
+  /**
+   * Extends {@link fieldSettings.validators} value in fieldset.
+   */
+  validators: null,
+
+  /**
+   * Middleware {@link fieldSettings.onlyIf} value in fieldset.
+   */
+  onlyIf: null,
+
+  /**
+   * Extend fieldset settings default configuration.
+   *
+   * @private
+   * @param  {Object} custom
+   * @return {Object}
+   */
+  extend: function extend(custom) {
+    return _extend(Object.create(fieldsetSettings), custom);
+  }
+};
+
+module.exports = fieldsetSettings;
+
+},{"../utils":78,"extend":1}],76:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var validator = require('validator');
+var _extend = require('extend');
+var log = require('../log');
+var utils = require('../utils');
+var fieldSettings = require('./fieldSettings');
+var fieldsetSettings = require('./fieldsetSettings');
+var utilityContext = require('./utilityContext');
 
 /**
  * @namespace settings
  * @type {Object}
  *
  * @description
- * vulcanval validation settings by default.
+ * {@link module:vulcanval vulcanval} validation settings by default.
  *
  * When using validation methods you have to pass an object settings to
  * configure the validation process which will overwrite this settings used by
@@ -4328,49 +3547,7 @@ var utils = require('./utils');
 var settings = {
 
   /**
-   * Only client-side. Overwritten by {@link fieldSettings}.
-   *
-   * What event to listen to trigger the first validation on fields.
-   *
-   * @type {String}
-   * @default 'blur change'
-   */
-  firstValidationEvent: 'blur change',
-
-  /**
-   * Only client-side. Overwritten by {@link fieldSettings}.
-   *
-   * After first validation, what events to listen to re-validate fields.
-   *
-   * @type {String}
-   * @default 'input blur change'
-   */
-  validationEvents: 'input blur change',
-
-  /**
-   * Only client-side. Overwritten by {@link fieldSettings}.
-   *
-   * Validate field elements on instance time.
-   *
-   * @type {Boolean}
-   * @default false
-   */
-  autostart: false,
-
-  /**
-   * Only client-side. Overwritten by {@link fieldSettings}.
-   *
-   * When a field is validated, don't show changes visually nor show messages.
-   * This is used to know whether they are valid or not, update the fields
-   * elements states and trigger events.
-   *
-   * @type {Boolean}
-   * @default false
-   */
-  intern: false,
-
-  /**
-   * Only client-side. Only for `<form>`.
+   * *Only client-side.*
    *
    * Disable HTML5 validation with novalidate attribute when instanced on `<form>`.
    * This is enabled if attribute "novalidate" is present.
@@ -4378,53 +3555,7 @@ var settings = {
    * @type {Boolean}
    * @default false
    */
-  disableHTML5Validation: false,
-
-  /**
-   * Only client-side. Only for `<form>`.
-   *
-   * HTML tag classes to add to specific elements in form on error.
-   * @type {Object}
-   * @property {Object} [defaults] - Static classes.
-   * @property {String} [defaults.form] - Form classes.
-   * @property {String} [defaults.field] - Field classes.
-   * @property {String} [defaults.label] - Field related label classes.
-   * @property {String} [defaults.display] - Display classes.
-   * @property {Object} [error] - On error classes.
-   * @property {String} [error.form] - Form classes.
-   * @property {String} [error.field] - Field classes.
-   * @property {String} [error.label] - Field related label classes.
-   * @property {String} [error.display] - Display classes.
-   */
-  classes: {
-    defaults: {
-      form: '',
-      label: '',
-      field: '',
-      display: ''
-    },
-    error: {
-      form: '',
-      label: '',
-      field: '',
-      display: ''
-    }
-  },
-
-  /**
-   * Only client-side.
-   *
-   * jQuery `<form>` element.
-   *
-   * The form node element saves the jQuery data states:
-   * - {undefined|Boolean} vv-modified - If any field has been modified by the user
-   *   after the validation process has been set. undefined if it's unknown.
-   * - {undefined|Boolean} vv-valid - If all fields are valid. undefined if it's unknown.
-   *
-   * @private
-   * @type {external:jQuery}
-   */
-  $form: null,
+  //disableHTML5Validation: null,
 
   /**
    * When a map of fields is created out of a form, should it be converted to a
@@ -4455,7 +3586,96 @@ var settings = {
    *
    * @see {@link external:"jQuery.fn".vulcanval}
    */
-  enableNestedMaps: false,
+  //enableNestedMaps: null,
+
+  /**
+   * Form will not be instantiated.
+   *
+   * @type {Boolean}
+   * @default false
+   */
+  //disabled: null,
+
+  /**
+   * *Only client-side.*
+   *
+   * Validate field elements on instance time.
+   *
+   * @type {Boolean}
+   * @default false
+   */
+  //autostart: null,
+
+  /**
+   * *Only client-side.*
+   *
+   * When a field is validated, don't show changes visually nor show messages.
+   * This is used to know whether they are valid or not, update the fields
+   * elements states and trigger events.
+   *
+   * @type {Boolean}
+   * @default false
+   */
+  //intern: null,
+
+  /**
+   * *Only client-side.*
+   *
+   * What event to listen to trigger the first validation on fields.
+   *
+   * @type {String}
+   * @default 'blur change'
+   */
+  firstValidationEvent: 'blur change',
+
+  /**
+   * *Only client-side.*
+   *
+   * After first validation, what events to listen to re-validate fields.
+   *
+   * @type {String}
+   * @default 'input blur change'
+   */
+  validationEvents: 'input blur change',
+
+  /**
+   * Default messages locale.
+   *
+   * @type {String}
+   * @default 'en'
+   */
+  locale: 'en',
+
+  /**
+   * *Only client-side.*
+   *
+   * HTML tag classes to add to specific elements in form on error.
+   * @type {Object}
+   * @property {Object} [defaults] - Static classes.
+   * @property {String} [defaults.form] - Form classes.
+   * @property {String} [defaults.field] - Field classes.
+   * @property {String} [defaults.label] - Field related label classes.
+   * @property {String} [defaults.display] - Display classes.
+   * @property {Object} [error] - On error classes.
+   * @property {String} [error.form] - Form classes.
+   * @property {String} [error.field] - Field classes.
+   * @property {String} [error.label] - Field related label classes.
+   * @property {String} [error.display] - Display classes.
+   */
+  classes: {
+    defaults: {
+      form: '',
+      label: '',
+      field: '',
+      display: ''
+    },
+    error: {
+      form: '',
+      label: '',
+      field: '',
+      display: ''
+    }
+  },
 
   /**
    * **List of custom validators.**
@@ -4472,14 +3692,6 @@ var settings = {
    * @type {Object}
    */
   validators: {},
-
-  /**
-   * Default messages locale.
-   *
-   * @type {String}
-   * @default 'en'
-   */
-  locale: 'en',
 
   /**
    * Validators messages formats. This is an a plain object with keys as validator
@@ -4574,27 +3786,51 @@ var settings = {
   },
 
   /**
+   * *Only client-side.*
+   *
+   * Utility context.
+   *
+   * @private
+   * @see {@link utilityContext}
+   * @type {Object}
+   */
+  context: null,
+
+  /**
+   * The form fieldsets to configure.
+   *
+   * @see {@link fieldsetSettings}
+   * @type {Array}
+   * @default [ ]
+   */
+  fieldsets: [],
+
+  /**
    * The form fields to configure.
    *
-   * The main property to configure validation.
-   *
+   * @see {@link fieldSettings}
    * @type {Array}
    * @default [ ]
    */
   fields: [],
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
-   * Utility context. Makes reference to the {@link utilityContext}.
+   * jQuery `<form>` element.
+   *
+   * The form node element saves the jQuery data states:
+   * - {undefined|Boolean} vv-modified - If any field has been modified by the user
+   *   after the validation process has been set. undefined if it's unknown.
+   * - {undefined|Boolean} vv-valid - If all fields are valid. undefined if it's unknown.
    *
    * @private
-   * @type {Object}
+   * @type {external:jQuery}
    */
-  context: null,
+  $form: null,
 
   /**
-   * Only client-side. Only for `<form>`.
+   * *Only client-side.*
    *
    * On form submit event.
    *
@@ -4604,7 +3840,7 @@ var settings = {
   onSubmit: null,
 
   /**
-   * Only client-side. Only for `<form>`.
+   * *Only client-side.*
    *
    * On form reset event.
    *
@@ -4612,6 +3848,36 @@ var settings = {
    * @type {Function}
    */
   onReset: null,
+
+  /**
+   * Get a message template according to locale.
+   *
+   * @private
+   * @param  {String} id - Validator identifier.
+   * @return {String}
+   */
+  getMsgTemplate: function getMsgTemplate(id) {
+    'use strict';
+
+    // locale with validator
+
+    if (this.msgs[this.locale] && this.msgs[this.locale][id]) {
+      return this.msgs[this.locale][id];
+    }
+    // default with validator
+    else if (this.msgs.defaults[id]) {
+        return this.msgs.defaults[id];
+      }
+      // locale general
+      else if (this.msgs[this.locale] && this.msgs[this.locale].general) {
+          return this.msgs[this.locale].general;
+        }
+        // default general
+        else {
+            return this.msgs.defaults.general;
+          }
+  },
+
 
   /**
    * Extend settings.
@@ -4623,6 +3889,10 @@ var settings = {
   extend: function extend(custom) {
     'use strict';
 
+    if ((typeof custom === 'undefined' ? 'undefined' : _typeof(custom)) !== 'object') {
+      return log.error('a valid object is required to extend');
+    }
+
     custom = _extend(true, {}, custom);
 
     var locales = [];
@@ -4630,10 +3900,141 @@ var settings = {
       if (locale !== 'defaults') locales.push(locale);
     });
 
+    // Validate fields.
+    if (!Array.isArray(custom.fields) || !custom.fields.length) {
+      log.error('there are no fields for validation');
+    }
+    if (custom.fields) {
+      custom.fields.forEach(function (field) {
+        if (!utils.validateFieldName(field.name)) {
+          log.error('field name "' + field.name + '" must be a valid name');
+        }
+      });
+    }
+
+    // Create context.
+    // @NOTE: The .get() method the context has will be set on this object
+    // when the instance on client or server side is made.
+    custom.context = utilityContext.extend();
+
+    // Process fieldsets.
+    if (custom.fieldsets) {
+      (function () {
+        var fieldsNames = custom.fields.map(function (field) {
+          return field.name;
+        });
+
+        custom.fieldsets = custom.fieldsets.map(function (fieldset) {
+
+          var fields = void 0,
+              field = void 0;
+
+          if (typeof fieldset.name !== 'string' || !validator.isAlphanumeric(fieldset.name) || !fieldset.name.length) {
+            log.error('fieldset name "' + fieldset.name + '" is invalid');
+          }
+
+          if (fieldset.fields instanceof RegExp) {
+            fields = fieldsNames.filter(function (name) {
+              return fieldset.fields.test(name);
+            });
+          } else if (typeof fieldset.fields === 'string') {
+            fields = fieldsNames.filter(function (name) {
+              return name.indexOf(fieldset.fields) === 0;
+            });
+          } else if (Array.isArray(fieldset.fields)) {
+            fields = [];
+            fieldset.fields.forEach(function (fsfield) {
+              field = utils.find(fieldsNames, function (fn) {
+                return fn === fsfield;
+              });
+              if (field) fields.push(field);else log.error('fieldset field "' + fsfield + '" not found');
+            });
+          }
+
+          if (!fields || !fields.length) {
+            log.error('fieldset name "' + fieldset.name + '" fields not found');
+          }
+
+          fieldset.fields = fields;
+
+          return fieldsetSettings.extend(fieldset);
+        });
+      })();
+    }
+
+    // Process fields.
+    var inheritFromSettings = ['disabled', 'autostart', 'intern', 'firstValidationEvent', 'validationEvents'];
+    var inheritFromFieldsetSettings = ['disabled', 'autostart', 'intern', 'required', 'onlyUI', 'firstValidationEvent', 'validationEvents'];
+    custom.fields = custom.fields.map(function (field) {
+
+      var newField = {};
+
+      // value() will only be used in client side so field.$el will be available.
+      if (field.value) {
+        newField.value = field.value.bind(custom.context, field.$el);
+      } else {
+        newField.value = fieldSettings.value.bind(custom.context, field.$el);
+      }
+
+      if (field.onlyIf) {
+        (function () {
+          var onlyIf = field.onlyIf;
+          delete field.onlyIf;
+          newField.onlyIf = function () {
+            return onlyIf.call(custom.context, custom.context.get && custom.context.get(field.name));
+          };
+        })();
+      }
+
+      var fromBaseSettings = utils.pick(settings, inheritFromSettings);
+      var fromSettings = utils.pick(custom, inheritFromSettings);
+      _extend(newField, fromBaseSettings, fromSettings);
+
+      if (custom.fieldsets) {
+        custom.fieldsets.forEach(function (fieldset) {
+          if (utils.find(fieldset.fields, function (ff) {
+            return ff === field.name;
+          })) {
+
+            var fromFieldsetSettings = utils.pick(fieldset, inheritFromFieldsetSettings);
+            _extend(newField, fromFieldsetSettings);
+
+            if (fieldset.onlyIf) {
+              (function () {
+                var onlyIf = newField.onlyIf;
+                var fsOnlyIf = fieldset.onlyIf;
+                delete newField.onlyIf;
+                newField.onlyIf = function () {
+                  return (onlyIf ? onlyIf() : true) && fsOnlyIf.call(custom.context, custom.context.get && custom.context.get(field.name));
+                };
+              })();
+            }
+
+            newField.validators = _extend(true, {}, newField.validators, fieldset.validators, field.validators);
+          }
+        });
+      }
+
+      var validators = field.validators;
+      var onlyIf = field.onlyIf;
+      var value = field.value;
+      delete field.validators;
+      delete field.onlyIf;
+      delete field.value;
+
+      field = _extend(newField, field);
+
+      if (!field.validators) field.validators = validators;
+      if (!field.onlyIf) field.onlyIf = onlyIf;
+      if (!field.value) field.value = value;
+
+      return fieldSettings.extend(field);
+    });
+
     // Validate locale.
     if (custom.locale) {
       if (!this.msgs[custom.locale]) {
-        log.error('locale "' + custom.locale + '" not found');
+        log.error('locale "' + custom.locale + '" was not found');
       }
     }
 
@@ -4692,48 +4093,83 @@ var settings = {
     }
 
     return _extend(true, {}, this, custom);
-  },
-
-
-  /**
-   * Get a message template according to locale.
-   *
-   * @private
-   * @param  {String} id - Validator identifier.
-   * @return {String}
-   */
-  getMsgTemplate: function getMsgTemplate(id) {
-    'use strict';
-
-    // locale with validator
-
-    if (this.msgs[this.locale] && this.msgs[this.locale][id]) {
-      return this.msgs[this.locale][id];
-    }
-    // default with validator
-    else if (this.msgs.defaults[id]) {
-        return this.msgs.defaults[id];
-      }
-      // locale general
-      else if (this.msgs[this.locale] && this.msgs[this.locale].general) {
-          return this.msgs[this.locale].general;
-        }
-        // default general
-        else {
-            return this.msgs.defaults.general;
-          }
   }
 };
 
 module.exports = settings;
 
-},{"./log":73,"./utils":90,"extend":1}],90:[function(require,module,exports){
+},{"../log":72,"../utils":78,"./fieldSettings":74,"./fieldsetSettings":75,"./utilityContext":77,"extend":1,"validator":3}],77:[function(require,module,exports){
 'use strict';
 
 var validator = require('validator');
 
+/**
+ * @namespace utilityContext
+ * @type {Object}
+ *
+ * @description
+ * This is the function context used in some methods/functions in validations
+ * processes.
+ *
+ * Also, this object has all the methods in the {@link https://www.npmjs.com/package/validator validator}
+ * package.
+ */
+var utilityContext = {
+
+  /**
+   * Reference to the {@link https://www.npmjs.com/package/validator validator}
+   * package.
+   *
+   * @type {Object}
+   */
+  validator: null,
+
+  /**
+   * A method used to get another field value in the data {@link map} used in
+   * the validation. You need to pass the name of the field as a first parameter
+   * and will return its value in the data map.
+   *
+   * If the {@link map} was nested when used in a validation method, you need to
+   * reference it as it were plain, ex: `{ person: { age: 22 } }` will be gotten
+   * with `.get('person.age')`.
+   *
+   * @type {Function}
+   */
+  get: null,
+
+  /**
+   * Extend utility context.
+   *
+   * @private
+   * @return {Object}
+   */
+  extend: function extend() {
+    var F = function F() {};
+    F.prototype = validator;
+    F.prototype.validator = validator;
+    return new F();
+  }
+};
+
+module.exports = utilityContext;
+
+},{"validator":3}],78:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var extend = require('extend');
+var validator = require('validator');
+var browser = require('./browser');
+
 var utils = {
+
+  extend: extend,
+  validator: validator,
+  browser: browser,
+
   walkObject: function walkObject(obj, callback, context) {
+    'use strict';
 
     if (!context) context = obj;
 
@@ -4746,6 +4182,7 @@ var utils = {
     return obj;
   },
   everyInObject: function everyInObject(obj, callback, context) {
+    'use strict';
 
     if (!context) context = obj;
 
@@ -4761,6 +4198,7 @@ var utils = {
     return !!keep;
   },
   findInObject: function findInObject(obj, callback, context) {
+    'use strict';
 
     if (!context) context = obj;
 
@@ -4775,7 +4213,19 @@ var utils = {
 
     return obj;
   },
+  pick: function pick(root, props, deep) {
+    var newProps = {};
+    props.forEach(function (prop) {
+      if (deep || root.hasOwnProperty(prop)) {
+        if (root[prop] !== undefined) {
+          newProps[prop] = root[prop];
+        }
+      }
+    });
+    return newProps;
+  },
   find: function find(arr, callback, context) {
+    'use strict';
 
     if (!context) context = arr;
 
@@ -4785,20 +4235,104 @@ var utils = {
       }
     }
   },
+  mergeCollections: function mergeCollections(id, arr1, arr2) {
+    'use strict';
+
+    id = id ? id : 0;
+    arr1 = arr1 ? arr1 : [];
+    arr2 = arr2 ? arr2 : [];
+
+    var arr = [];
+    var temp1, temp2;
+
+    arr1.forEach(function (a1) {
+
+      temp1 = utils.find(arr, function (a) {
+        return a[id] === a1[id];
+      });
+      if (temp1) {
+        extend(true, temp1, a1);
+      }
+
+      temp2 = utils.find(arr2, function (a2) {
+        return a2[id] === a1[id];
+      });
+      if (temp1) {
+        extend(temp1, temp2);
+      } else if (temp2) {
+        arr.push(extend(true, {}, a1, temp2));
+      } else {
+        arr.push(a1);
+      }
+    });
+
+    arr2.forEach(function (a2) {
+      temp1 = utils.find(arr, function (a) {
+        return a[id] === a2[id];
+      });
+      if (!temp1) {
+        arr.push(a2);
+      }
+    });
+
+    return arr;
+  },
+  removeArrayDuplicates: function removeArrayDuplicates(arr) {
+    'use strict';
+
+    var obj = {};
+    for (var i = 0; i < arr.length; i++) {
+      obj[arr[i]] = true;
+    }
+
+    arr = [];
+    for (var key in obj) {
+      arr.push(key);
+    }
+
+    return arr;
+  },
+  formatWalk: function formatWalk(obj, list, i) {
+    'use strict';
+
+    if (!list[i]) return;
+
+    if (_typeof(obj[list[i]]) === 'object') {
+      return utils.formatWalk(obj[list[i]], list, i + 1);
+    } else {
+      return obj[list[i]];
+    }
+  },
   format: function format(str, params) {
+    'use strict';
 
     str = String(str);
     params = params || {};
 
-    for (var p in params) {
-      if (params.hasOwnProperty(p)) {
-        str = str.replace(new RegExp('{{' + p + '}}', 'g'), params[p]);
+    var name = void 0,
+        value = void 0;
+    var props = str.match(/\{\{\w+(\w|\.\w+)*\}\}/g);
+
+    if (props && props.length) {
+
+      props = utils.removeArrayDuplicates(props);
+      props = props.map(function (p) {
+        return p.replace('{{', '').replace('}}', '').split('.');
+      });
+
+      for (var i = 0; i < props.length; i++) {
+        value = utils.formatWalk(params, props[i], 0);
+        if (value) {
+          name = props[i].join('.');
+          str = str.replace(new RegExp('{{' + name + '}}', 'g'), value);
+        }
       }
     }
 
     return str;
   },
   validateFieldName: function validateFieldName(name) {
+    if (typeof name !== 'string') return false;
     return name.split('.').every(function (part) {
       return (/^[-_a-zA-Z0-9]{1,}$/.test(part) && !validator.isInt(part.charAt(0)) && !!part.length
       );
@@ -4811,112 +4345,12 @@ var utils = {
 
 module.exports = utils;
 
-},{"validator":3}],91:[function(require,module,exports){
+},{"./browser":67,"extend":1,"validator":3}],79:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var validator = require('validator');
-var extend = require('extend');
-var settings = require('./settings');
 var log = require('./log');
-var utils = require('./utils');
-var convertMapTo = require('./convertMapTo');
-var rawValidation = require('./rawValidation');
-
-/**
- * Validate a field in provided data {@link map} using the provided validation {@link settings}.
- *
- * @static
- * @method module:vulcanval.validateField
- *
- * @param  {String} fieldName - The field name in data map. If the {@link map} is nested,
- * the field name is set as in plain map. Ex: `{user: {name: 'romel'}}` will be `'user.name'`.
- * @param  {map} map - The data map (plain or nested).
- * @param  {settings} settings - The validation settings.
- *
- * @return {Boolean|String} If it is valid, `false` will be returned. Otherwise
- * there will be an string message describing the error.
- *
- * @example
- * const map = {
- *   name: 'Romel',
- *   age: 22,
- *   likesPumpkin: false
- * };
- *
- * const settings = {
- *   fields: [{
- *     name: 'name',
- *     required: true,
- *     validators: {
- *       isAlphanumeric: 'en-US',
- *       isLowercase: true
- *     }
- *   }, {
- *     name: 'age',
- *     validators: {
- *       isInt: { min: 1, max: 500 }
- *     }
- *   }]
- * };
- *
- * const nameResult = vulcanval.validateField('name', map, settings);
- * console.log(nameResult); // 'This field should only contain lowercase text.'
- *
- * const ageResult = vulcanval.validateField('age', map, settings);
- * console.log(ageResult); // false
- */
-module.exports = function (fieldName, map, customSettings) {
-  'use strict';
-
-  if ((typeof map === 'undefined' ? 'undefined' : _typeof(map)) !== 'object') {
-    return log.error('second parameter (map) must be an object');
-  }
-  if ((typeof customSettings === 'undefined' ? 'undefined' : _typeof(customSettings)) !== 'object') {
-    return log.error('third parameter (settings) must be an object');
-  }
-
-  customSettings = settings.extend(customSettings);
-
-  if (customSettings.enableNestedMaps) {
-    map = convertMapTo('plain', map);
-  }
-
-  // Creating the './utilityContext' for this validation.
-  var context = {
-    validator: validator,
-    get: function get(name) {
-      if (map[name]) {
-        return map[name];
-      } else {
-        log.warn('field "' + name + '" not found in map');
-      }
-    }
-  };
-
-  var isValidField = rawValidation({
-    field: {
-      name: fieldName,
-      value: map[fieldName]
-    },
-    settings: customSettings,
-    context: context
-  });
-
-  return isValidField;
-};
-
-},{"./convertMapTo":68,"./log":73,"./rawValidation":88,"./settings":89,"./utils":90,"extend":1,"validator":3}],92:[function(require,module,exports){
-'use strict';
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-var validator = require('validator');
-var extend = require('extend');
-var settings = require('./settings');
-var log = require('./log');
-var utils = require('./utils');
 var convertMapTo = require('./convertMapTo');
 var rawValidation = require('./rawValidation');
 
@@ -4974,49 +4408,32 @@ var rawValidation = require('./rawValidation');
  * console.log(result2);
  * // false
  */
-module.exports = function (map, customSettings) {
+module.exports = function (map) {
   'use strict';
+
+  var _this = this;
 
   if ((typeof map === 'undefined' ? 'undefined' : _typeof(map)) !== 'object') {
     return log.error('first parameter (map) must be an object');
   }
-  if ((typeof customSettings === 'undefined' ? 'undefined' : _typeof(customSettings)) !== 'object') {
-    return log.error('second parameter (settings) must be an object');
-  }
 
-  customSettings = settings.extend(customSettings);
-
-  if (customSettings.enableNestedMaps) {
+  if (this.settings.enableNestedMaps) {
     map = convertMapTo('plain', map);
   }
 
-  // Creating the './utilityContext' for this validation.
-  var context = {
-    validator: validator,
-    get: function get(name) {
-      if (map[name]) {
-        return map[name];
-      } else {
-        log.warn('field "' + name + '" not found in map');
-      }
+  this.settings.context.get = function (name) {
+    if (map[name] !== undefined) {
+      return map[name];
+    } else {
+      log.warn('field "' + name + '" not found in map');
     }
   };
 
   var errors = {};
 
-  customSettings.fields.forEach(function (field) {
-
-    var err = rawValidation({
-      field: {
-        name: field.name,
-        value: map[field.name]
-      },
-      settings: customSettings,
-      context: context
-    });
-
+  this.settings.fields.forEach(function (field) {
+    var err = _this.rawValidation(field.name);
     if (err) {
-      log.debug('invalid field name="' + field.name + '" with value=' + map[field.name] + ':', err);
       errors[field.name] = err;
     }
   });
@@ -5028,38 +4445,208 @@ module.exports = function (map, customSettings) {
   }
 };
 
-},{"./convertMapTo":68,"./log":73,"./rawValidation":88,"./settings":89,"./utils":90,"extend":1,"validator":3}],93:[function(require,module,exports){
+},{"./convertMapTo":69,"./log":72,"./rawValidation":73}],80:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var log = require('./log');
+var utils = require('./utils');
+var convertMapTo = require('./convertMapTo');
+var rawValidation = require('./rawValidation');
+
+/**
+ * Validate a field in provided data {@link map} using the provided validation {@link settings}.
+ *
+ * @static
+ * @method module:vulcanval.validateField
+ *
+ * @param  {String} fieldName - The field name in data map. If the {@link map} is nested,
+ * the field name is set as in plain map. Ex: `{user: {name: 'romel'}}` will be `'user.name'`.
+ * @param  {map} map - The data map (plain or nested).
+ *
+ * @return {Boolean|String} If it is valid, `false` will be returned. Otherwise
+ * there will be an string message describing the error.
+ *
+ * @example
+ * const map = {
+ *   name: 'Romel',
+ *   age: 22,
+ *   likesPumpkin: false
+ * };
+ *
+ * const settings = {
+ *   fields: [{
+ *     name: 'name',
+ *     required: true,
+ *     validators: {
+ *       isAlphanumeric: 'en-US',
+ *       isLowercase: true
+ *     }
+ *   }, {
+ *     name: 'age',
+ *     validators: {
+ *       isInt: { min: 1, max: 500 }
+ *     }
+ *   }]
+ * };
+ *
+ * const nameResult = vulcanval.validateField('name', map, settings);
+ * console.log(nameResult); // 'This field should only contain lowercase text.'
+ *
+ * const ageResult = vulcanval.validateField('age', map, settings);
+ * console.log(ageResult); // false
+ */
+module.exports = function (fieldName, map) {
+  'use strict';
+
+  if ((typeof map === 'undefined' ? 'undefined' : _typeof(map)) !== 'object') {
+    log.error('second parameter (map) must be an object');
+  }
+
+  if (this.settings.enableNestedMaps) {
+    map = convertMapTo('plain', map);
+  }
+
+  if (!utils.find(this.settings.fields, function (f) {
+    return f.name === fieldName;
+  })) {
+    log.error('field "' + fieldName + '" was not found');
+  }
+
+  this.settings.context.get = function (name) {
+    if (map[name] !== undefined) {
+      return map[name];
+    } else {
+      log.warn('field "' + name + '" not found in map');
+    }
+  };
+
+  return this.rawValidation(fieldName);
+};
+
+},{"./convertMapTo":69,"./log":72,"./rawValidation":73,"./utils":78}],81:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var log = require('./log');
+var utils = require('./utils');
+var convertMapTo = require('./convertMapTo');
+var rawValidation = require('./rawValidation');
+
+/**
+ * Validate all fields in a fieldset.
+ *
+ * @method module:vulcanval.validateFieldset
+ */
+module.exports = function (fieldsetName, map) {
+  'use strict';
+
+  var _this = this;
+
+  if ((typeof map === 'undefined' ? 'undefined' : _typeof(map)) !== 'object') {
+    log.error('second parameter (map) must be an object');
+  }
+
+  var fieldset = utils.find(this.settings.fieldsets, function (fs) {
+    return fs.name === fieldsetName;
+  });
+
+  if (!fieldset) {
+    log.error('fieldset "' + fieldsetName + '" was not found');
+  }
+
+  if (this.settings.enableNestedMaps) {
+    map = convertMapTo('plain', map);
+  }
+
+  this.settings.context.get = function (name) {
+    if (map[name] !== undefined) {
+      return map[name];
+    } else {
+      log.warn('field "' + name + '" not found in map');
+    }
+  };
+
+  var errors = {};
+
+  fieldset.fields.forEach(function (fieldname) {
+    var err = _this.rawValidation(fieldname);
+    if (err) {
+      errors[fieldname] = err;
+    }
+  });
+
+  if (Object.keys(errors).length) {
+    return errors;
+  } else {
+    return false;
+  }
+};
+
+},{"./convertMapTo":69,"./log":72,"./rawValidation":73,"./utils":78}],82:[function(require,module,exports){
+'use strict';
+
+/**
+ * @name isAlphanumericText
+ * @memberof settings.validators
+ * @function
+ *
+ * @description
+ * This is the same as the validator `isAlphanumeric` except that this cleans
+ * spaces and line endings before validating so the field needs to have valid
+ * alphanumeric strings.
+ */
+module.exports = function isAlphanumericText(value, locale) {
+  value = value.replace(/\s/g, '').replace(/\r?\n/g, '');
+  locale = typeof locale === 'string' ? locale : undefined;
+  return this.validator.isAlphanumeric(value, locale);
+};
+
+},{}],83:[function(require,module,exports){
+"use strict";
+
+/**
+ * @name isEqualToField
+ * @memberof settings.validators
+ * @function
+ *
+ * @description
+ * This field value has to be the same as another field the form. The name of
+ * the comparing field should be set as a string parameter.
+ */
+module.exports = function isEqualToField(value, field) {
+  return value === this.get(field);
+};
+
+},{}],84:[function(require,module,exports){
 'use strict';
 
 var extend = require('extend');
 var validator = require('validator');
-var settings = require('./settings');
+
 var log = require('./log');
 var utils = require('./utils');
 var browser = require('./browser');
-var rawValidation = require('./rawValidation');
+var localeEN = require('./locale/en');
+
+var settings = require('./settings/settings');
+var fieldsetSettings = require('./settings/fieldsetSettings');
+var fieldSettings = require('./settings/fieldSettings');
+var utilityContext = require('./settings/utilityContext');
+
+var extendLocale = require('./extendLocale');
 var convertMapTo = require('./convertMapTo');
 var cleanMap = require('./cleanMap');
-var validateMap = require('./validateMap');
+var addValidator = require('./addValidator');
+var rawValidation = require('./rawValidation');
+var validate = require('./validate');
 var validateField = require('./validateField');
+var validateFieldset = require('./validateFieldset');
 
-/**
- * jQuery object.
- * @external jQuery
- * @see {@link http://api.jquery.com/jQuery/}
- */
-
-/**
- * The jQuery plugin namespace.
- * @external "jQuery.fn"
- * @see {@link http://docs.jquery.com/Plugins/Authoring The jQuery Plugin Guide}
- */
-
-/**
- * window object.
- * @external window
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Window}
- */
+var isEqualToField = require('./validators/isEqualToField');
+var isAlphanumericText = require('./validators/isAlphanumericText');
 
 /**
  * This is a reference to the {@link module:vulcanval vulcanval}.
@@ -5069,6 +4656,17 @@ var validateField = require('./validateField');
  * @type {Object}
  * @see {@link module:vulcanval}
  */
+
+/**
+ * Proto
+ */
+var vulcanvalProto = {
+  cleanMap: cleanMap,
+  rawValidation: rawValidation,
+  validate: validate,
+  validateFieldset: validateFieldset,
+  validateField: validateField
+};
 
 /**
  * The vulcan validator (vulcanval) object.
@@ -5088,142 +4686,39 @@ var validateField = require('./validateField');
  *
  * @module vulcanval
  */
-var vulcanval = {
-
-  version: '1.0.0-beta',
-
-  validator: validator,
-  rawValidation: rawValidation,
-  convertMapTo: convertMapTo,
-  cleanMap: cleanMap,
-  validateField: validateField,
-  validateMap: validateMap,
-
-  /**
-   * Extend validators messages in an specific localization. If it does not exist,
-   * it will be created.
-   *
-   * @memberof module:vulcanval
-   *
-   * @param  {Object} locale - A plain object describing the locale.
-   * @param  {String} locale.id - The identifier of the locale. It should be like:
-   * `'en'`, `'es'`, `'jp'` or similar.
-   * @param  {Object} locale.msgs - A plain object with validators names as keys
-   * and messages formats as values. It should have a default value with the key
-   * `general`, which will be used when there is no message for an specific validator
-   * on error.
-   *
-   * @example
-   * const locale = {
-   *   id: 'jp',
-   *   msgs: {
-   *
-   *     // Default error message: "Invalid form field error".
-   *     general: '無効なフォームフィールド。',
-   *
-   *     // Message: "Form field has to be alphanumeric error message."
-   *     isAlphanumeric: 'フォームフィールドは、英数字である必要があります。'
-   *   }
-   * };
-   *
-   * vulcanval.extendLocale(locale);
-   */
-  extendLocale: function extendLocale(locale) {
-    settings.msgs[locale.id] = extend(true, {}, settings.msgs[locale.id], locale.msgs);
-  },
-
-
-  /**
-   * Set an specific locale as default in validations. The locale has to be
-   * already installed with the {@link module:vulcanval.extendLocale vulcanval.extendLocale}
-   * method.
-   *
-   * @memberof module:vulcanval
-   *
-   * @param {String} locale - The locale identifier.
-   *
-   * @example
-   * // Configuring messages in Japanese.
-   * vulcanval.setLocale('jp');
-   */
-  setLocale: function setLocale(locale) {
-    if (!settings.msgs[locale]) {
-      return log.error('the locale "' + locale + '" does not exist');
-    }
-    settings.locale = locale;
-  },
-
-
-  /**
-   * Add a custom validator.
-   *
-   * All validators in the package {@link https://www.npmjs.com/package/validator validator}
-   * are installed and ready to use.
-   *
-   * @memberof module:vulcanval
-   *
-   * @param {String} name - An alphanumeric validator name.
-   * @param {Function} validator - The validator function. Receives as a first parameter
-   * the value of the field and has to return a
-   * {@link https://developer.mozilla.org/en-US/docs/Glossary/Truthy truthy value}.
-   * This function will have the {@link utilityContext utility context} as
-   * function context. Don't pass
-   * {@link https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions arrow functions}
-   * or it won't be available.
-   *
-   * @example
-   * vulcanval.addValidator('isGreat', function (value) {
-   *   return value.length > 4 && value.indexOf('great') >= 0;
-   * });
-   *
-   * const map = {
-   *   field0: 'normal value'
-   * };
-   *
-   * const settings = {
-   *   msgs: {
-   *     isGreat: 'This field needs to be great!'
-   *   },
-   *   fields: [{
-   *     name: 'field0',
-   *     validators: {
-   *       isGreat: true
-   *     }
-   *   }]
-   * };
-   *
-   * const field0Valid = vulcanval.validateField('field0', map, settings);
-   * console.log(field0Valid); // 'This field needs to be great!'
-   *
-   * @see In the example is used the {@link module:vulcanval.validateField vulcanval.validateField}
-   * static method to test the new validator.
-   */
-  addValidator: function addValidator(name, validator) {
-    settings.validators[name] = validator;
-  },
-
-
-  /**
-   * Change the debug level.
-   *
-   * @memberof module:vulcanval
-   *
-   * @param  {Boolean|Number} isDebug - A `true` value to display all messages.
-   * A number to describe the scale of debug logs using the
-   * {@link https://github.com/romelperez/prhone-log prhone-log} module to log
-   * events. By default the log scale is `2`.
-   */
-  debug: function debug(isDebug) {
-    if (isDebug !== undefined) {
-      log.settings.scale = typeof isDebug === 'number' ? isDebug : isDebug ? 10 : 1;
-    }
-  }
+var vulcanval = function vulcanval(custom) {
+  return extend(Object.create(vulcanvalProto), {
+    settings: settings.extend(custom)
+  });
 };
 
+vulcanval.version = '2.0.0';
+vulcanval.log = log;
+vulcanval.utils = utils;
+vulcanval.validator = validator;
+
+vulcanval.settings = settings;
+vulcanval.fieldsetSettings = fieldsetSettings;
+vulcanval.fieldSettings = fieldSettings;
+vulcanval.utilityContext = utilityContext;
+
+vulcanval.extendLocale = extendLocale;
+vulcanval.addValidator = addValidator;
+vulcanval.convertMapTo = convertMapTo;
+
+// Install the English language.
+vulcanval.extendLocale(localeEN);
+vulcanval.settings.locale = 'en';
+
+// Install custom validators.
+vulcanval.addValidator('isEqualToField', isEqualToField);
+vulcanval.addValidator('isAlphanumericText', isAlphanumericText);
+
+// Install module in browser if client side.
 browser.perform(false, function () {
   window.vulcanval = vulcanval;
 });
 
 module.exports = vulcanval;
 
-},{"./browser":66,"./cleanMap":67,"./convertMapTo":68,"./log":73,"./rawValidation":88,"./settings":89,"./utils":90,"./validateField":91,"./validateMap":92,"extend":1,"validator":3}]},{},[74]);
+},{"./addValidator":66,"./browser":67,"./cleanMap":68,"./convertMapTo":69,"./extendLocale":70,"./locale/en":71,"./log":72,"./rawValidation":73,"./settings/fieldSettings":74,"./settings/fieldsetSettings":75,"./settings/settings":76,"./settings/utilityContext":77,"./utils":78,"./validate":79,"./validateField":80,"./validateFieldset":81,"./validators/isAlphanumericText":82,"./validators/isEqualToField":83,"extend":1,"validator":3}]},{},[84]);
