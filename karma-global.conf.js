@@ -23,7 +23,7 @@ module.exports = function(config) {
     // list of files to exclude
     exclude: [
       'test/global/index.js',
-      'src/js/plugin/**/*.js'
+      'src/js/jquery/**/*.js'
     ],
 
 

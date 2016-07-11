@@ -17,9 +17,10 @@ module.exports = function(config) {
     files: [
       'lib/jquery-3.0.0.min.js',
       'dist/vulcanval.js',
-      'test/client/**/*.html',
-      'test/client/**/*.json',
-      'test/client/**/*.js',
+      'dist/vulcanval-jquery.js',
+      'test/jquery/**/*.html',
+      'test/jquery/**/*.json',
+      'test/jquery/**/*.js',
     ],
 
 
@@ -32,9 +33,9 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'src/js/**/*.js': ['browserify'],
-      'test/client/**/*.js': ['browserify'],
-      'test/client/**/*.html': ['html2js'],
-      'test/client/**/*.json': ['json_fixtures']
+      'test/jquery/**/*.js': ['browserify'],
+      'test/jquery/**/*.html': ['html2js'],
+      'test/jquery/**/*.json': ['json_fixtures']
     },
 
 
