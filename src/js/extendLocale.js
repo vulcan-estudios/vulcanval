@@ -1,5 +1,5 @@
 const extend = require('extend');
-const settings = require('./settings');
+const settings = require('./settings/settings');
 
 /**
  * Extend validators messages in an specific localization. If it does not exist,

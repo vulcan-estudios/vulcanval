@@ -1,5 +1,5 @@
-const log = require('../log');
-const utils = require('../utils');
+const utils = window.vulcanval.utils;
+const log = window.vulcanval.log;
 
 /**
  * ***Invoke over instantiated elements.***

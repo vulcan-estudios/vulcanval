@@ -1,5 +1,7 @@
-const validator = require('validator');
-const utils = require('../utils');
+const validator = window.vulcanval.validator;
+const utils = window.vulcanval.utils;
+const log = window.vulcanval.log;
+
 const ui = require('./_ui');
 const change = require('./_change');
 

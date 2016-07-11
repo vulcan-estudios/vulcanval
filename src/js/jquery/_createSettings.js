@@ -1,9 +1,9 @@
-const extend = require('extend');
-const validator = require('validator');
-const settings = require('../settings');
-const utils = require('../utils');
-const log = require('../log');
-const fieldSettings = require('../fieldSettings');
+const extend =    window.vulcanval.utils.extend;
+const validator = window.vulcanval.validator;
+const utils =     window.vulcanval.utils;
+const log =       window.vulcanval.log;
+const settings =  window.vulcanval.settings;
+
 const ui = require('./_ui');
 
 /**

@@ -1,7 +1,12 @@
 const extend = require('extend');
 const validator = require('validator');
+const browser = require('./browser');
 
 const utils = {
+
+  extend,
+  validator,
+  browser,
 
   walkObject (obj, callback, context) {
     'use strict';

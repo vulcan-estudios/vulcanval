@@ -1,10 +1,9 @@
-const extend =          require('extend');
-const validator =       require('validator');
-
-const log =             require('../log');
-const utils =           require('../utils');
-const browser =         require('../browser');
-const fieldSettings =   require('../fieldSettings');
+const extend =          window.vulcanval.utils.extend;
+const validator =       window.vulcanval.validator;
+const log =             window.vulcanval.log;
+const utils =           window.vulcanval.utils;
+const browser =         window.vulcanval.utils.browser;
+const fieldSettings =   window.vulcanval.utils.fieldSettings;
 
 const ui =              require('./_ui');
 const fetchUISettings = require('./_fetchUISettings.js');

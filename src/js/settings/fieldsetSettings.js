@@ -1,5 +1,5 @@
 const extend = require('extend');
-const utils = require('./utils');
+const utils = require('../utils');
 
 /**
  * @namespace fieldsetSettings

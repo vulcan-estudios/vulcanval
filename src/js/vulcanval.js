@@ -1,6 +1,3 @@
-// Import the plugin in the package.
-require('./plugin/plugin');
-
 const extend =    require('extend');
 const validator = require('validator');
 
@@ -9,7 +6,11 @@ const utils =     require('./utils');
 const browser =   require('./browser');
 const localeEN =  require('./locale/en');
 
-const settings =          require('./settings');
+const settings =          require('./settings/settings');
+const fieldsetSettings =  require('./settings/fieldsetSettings');
+const fieldSettings =     require('./settings/fieldSettings');
+const utilityContext =    require('./settings/utilityContext');
+
 const extendLocale =      require('./extendLocale');
 const convertMapTo =      require('./convertMapTo');
 const cleanMap =          require('./cleanMap');
@@ -66,11 +67,16 @@ const vulcanval = function (custom) {
   });
 };
 
-vulcanval.version = '2.0.0';
-vulcanval.log = log;
-vulcanval.utils = utils;
+vulcanval.version =   '2.0.0';
+vulcanval.log =       log;
+vulcanval.utils =     utils;
 vulcanval.validator = validator;
-vulcanval.settings = settings;
+
+vulcanval.settings =          settings;
+vulcanval.fieldsetSettings =  fieldsetSettings;
+vulcanval.fieldSettings =     fieldSettings;
+vulcanval.utilityContext =    utilityContext;
+
 vulcanval.extendLocale = extendLocale;
 vulcanval.addValidator = addValidator;
 vulcanval.convertMapTo = convertMapTo;

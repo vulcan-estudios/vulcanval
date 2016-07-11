@@ -1,5 +1,6 @@
-const convertMapTo = require('../convertMapTo');
-const fieldSettings = require('../fieldSettings');
+const convertMapTo = window.vulcanval.convertMapTo;
+const fieldSettings = window.vulcanval.fieldSettings;
+
 const ui = require('./_ui');
 
 /**

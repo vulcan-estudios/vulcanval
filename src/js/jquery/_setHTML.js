@@ -1,4 +1,6 @@
-const utils = require('../utils');
+const utils = window.vulcanval.utils;
+const log = window.vulcanval.log;
+
 const ui = require('./_ui');
 
 /**
