@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>VulcanVal | Validate data forms in client and server sides seamlessly</title>
+    <meta name="description" content="A package to validate data objects (possibly extracted from HTML forms) in client and server sides and a customizable jQuery plugin to validate them in realtime">
+    <script src="../site/js/webcomponents-lite.min.js"></script>
+    <link rel="shortcut icon" href="/site/favicon.png">
+    <link rel="import" href="../site/polymers/vv-all.html">
+  </head>
+  <body>
+
+    <vv-header></vv-header>
+
+    <vv-main>
+
+      <p>A package to validate data objects (possibly extracted from HTML forms) in client and server sides and a customizable jQuery plugin to validate them in realtime.</p>
+      <p>See <a href="./doc/js">JavaScript API</a> and <a href="./doc/sass">SASS configuration</a>.</p>
+
+      <a name="features"></a>
+      <h3>Features</h3>
+      <ul>
+        <li>Define universal validation configuration to validate in client and server sides in a really similar way.</li>
+        <li>Use of the <a href="https://github.com/chriso/validator.js" target="_blank">validator.js</a> package validators so we implement well tested string validators.</li>
+        <li>Customizable interface.</li>
+        <li>Highly configurable.</li>
+        <li>Dynamic validation process.</li>
+        <li>Ability to add custom validators.</li>
+        <li>Ability to add custom fields different from form elements.</li>
+        <li>Ability to configure fieldsets.</li>
+        <li>Extract data from forms elements as data maps (possibly nested objects).</li>
+        <li>Internationalization support.</li>
+        <li>HTML5 integration.</li>
+        <li>API to integrate with your own libraries.</li>
+        <li>Written in ES2015 and <a href="http://sass-lang.com" target="_blank">SASS</a>.</li>
+        <li>And more.</li>
+      </ul>
+
+      <a name="example"></a>
+      <h3>Example</h3>
+
+      <h4>HTML</h4>
+      <pre><code class="language-html">&lt;form&gt;
+
+  &lt;div class="row"&gt;
+    &lt;label for="email"&gt;Your Email&lt;/label&gt;
+    &lt;input id="email" name="email" type="email"
+              data-vv-display="#email-msgs"&gt;
+    &lt;div id="email-msgs"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="row"&gt;
+    &lt;label for="pass"&gt;Your Password&lt;/label&gt;
+    &lt;input id="pass" name="pass" type="password"
+              data-vv-display="#pass-msgs"&gt;
+    &lt;div id="pass-msgs"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="row"&gt;
+    &lt;input type="submit"&gt;
+    &lt;input type="reset"&gt;
+  &lt;/div&gt;
+
+&lt;/form&gt;</code></pre>
+
+      <h4>JavaScript (client)</h4>
+      <pre><code class="language-js">// The same configuration as the server
+$('form').vulcanval({
+  disableHTML5Validation: true,
+  fields: [{
+    name: 'email',
+    required: true,
+    validators: {
+      isEmail: true,
+      isLength: { min: 4, max: 32 }
+    }
+  }, {
+    name: 'pass',
+    required: true,
+    validators: {
+      isAlphanumeric: true,
+      isLength: { min: 4, max: 32 }
+    }
+  }]
+});
+
+// later
+const invalid = $('form').vulcanval('inspect');
+
+if (invalid) {
+  // `invalid` is an object with all the invalid fields
+  // keys are the fields names and values its error messages
+} else {
+  const dataMap = $('form').vulcanval('getMap');
+  // { email: 'anEmail@mail.com', pass: 'aPassword' }
+  // send it to the server...
+}</code></pre>
+
+      <h4>JavaScript (server)</h4>
+      <pre><code class="language-js">const vulcanval = require('vulcanval');
+
+// The same configuration as the client
+const vv = vulcanval({
+  disableHTML5Validation: true,
+  fields: [{
+    name: 'email',
+    required: true,
+    validators: {
+      isEmail: true,
+      isLength: { min: 4, max: 32 }
+    }
+  }, {
+    name: 'pass',
+    required: true,
+    validators: {
+      isAlphanumeric: true,
+      isLength: { min: 4, max: 32 }
+    }
+  }]
+});
+
+// Gotten from the client:
+const dataMap = { email: 'anEmail@mail.com', pass: 'aPassword' };
+
+const invalid = vv.validate(dataMap);
+
+if (invalid) {
+  // `invalid` is an object with all the invalid fields
+  // keys are the fields names and values its error messages
+} else {
+  // we are free to go :)
+}</code></pre>
+
+      <a name="demos"></a>
+      <h3>Demos</h3>
+      <ul>
+        <li><a href="./demo/basic/index.html">Basic use</a></li>
+        <li><a href="./demo/basic-htmlconfig/index.html">Basic configuration with HTML attributes</a></li>
+        <li><a href="./demo/normal/index.html">Normal example</a> (with a more real use)</li>
+        <li><a href="./demo/lang/index.html">Installing a language</a></li>
+        <li><a href="./demo/lang-new/index.html">Creating a language</a></li>
+        <li><a href="./demo/intern/index.html">Only functionality</a> (intern)</li>
+        <li><a href="./demo/custom-fields/index.html">Custom fields</a></li>
+        <li><a href="./demo/conditions/index.html">Conditions</a></li>
+        <li><a href="./demo/fieldsets/index.html">Fieldsets</a></li>
+        <li><a href="https://github.com/vulcan-estudios/vulcanval/tree/master/demo/server" target="_blank">Server</a> (Only code)</li>
+        <li><a href="https://github.com/vulcan-estudios/vulcanval/tree/master/demo/complete" target="_blank">Complete demo</a> (Only code)</li>
+      </ul>
+
+      <a name="install"></a>
+      <h3>Install</h3>
+
+      <h4>JavaScript</h4>
+      <p>To install with <a href="http://npmjs.com">NPM</a>:</p>
+      <pre><code class="language-bash">npm install --save vulcanval</code></pre>
+      <p>To use in <a href="http://nodejs.org">Node</a>:</p>
+      <pre><code class="language-js">const vulcanval = require('vulcanval');</code></pre>
+      <p>To use with <a href="http://browserify.org">Browserify</a> or <a href="https://webpack.github.io">Webpack</a>:</p>
+<pre><code class="language-js">const vulcanval = require('vulcanval');
+const vulcanvalJQuery = require('vulcanval/src/js/plugin');
+// or
+import vulcanval from 'vulcanval';
+import vulcanvalJQuery from 'vulcanval/src/js/plugin';</code></pre>
+      <p>Make sure you have an ES2015 compiler as <a href="https://babeljs.io/">Babel</a> configured.</p>
+      <p>On <a href="http://nodejs.org">Node</a> VulcanVal does not have dependencies but in client-side the plugin requires <a href="http://jquery.com">jQuery</a> so make sure you install it first.</p>
+
+      <h4>CSS</h4>
+      <p>To install the styles with <a href="http://sass-lang.com">SASS</a>, include in import paths:</p>
+      <pre><code class="language-none">./node_modules/vulcanval/src/scss/jquery</code></pre>
+      <p>And import in your SASS code:</p>
+      <pre><code class="language-css">@import &#39;vulcanval&#39;;</code></pre>
+
+      <h4>Built files</h4>
+      <p>You can download the browser built files version 2.x from:</p>
+      <ul>
+        <li><a href="https://raw.githubusercontent.com/vulcan-estudios/vulcanval/master/dist/vulcanval.min.js" download>vulcanval.min.js</a></li>
+        <li><a href="https://raw.githubusercontent.com/vulcan-estudios/vulcanval/master/dist/vulcanval-jquery.min.js" download>vulcanval-jquery.min.js</a></li>
+        <li><a href="https://raw.githubusercontent.com/vulcan-estudios/vulcanval/master/dist/vulcanval-jquery.min.css" download>vulcanval-jquery.min.css</a></li>
+      </ul>
+
+      <a name="additionals"></a>
+      <h3>Additionals</h3>
+      <ul>
+        <li>You can add certain support to browser input autofill with this package <a href="https://github.com/tbosch/autofill-event" target="_blank">github.com/tbosch/autofill-event</a>.</li>
+        <li>VulcanVal does not support inputs type file, an alternative is <a href="https://github.com/vulcan-estudios/vulcanup" target="_blank">VulcanUp</a>.</li>
+      </ul>
+
+      <a name="thanks"></a>
+      <h3>Thanks</h3>
+      <p>To <a href="https://github.com/chriso" target="_blank">Chris O’Hara</a> and everyone who contributed to <a href="https://github.com/chriso/validator.js" target="_blank">validator.js</a> which this project relies on for raw validations.</p>
+
+      <a name="license"></a>
+      <h3>License</h3>
+      <p><a href="https://github.com/vulcan-estudios/vulcanval/blob/master/LICENSE">MIT</a></p>
+
+    </vv-main>
+
+    <vv-footer></vv-footer>
+
+  </body>
+</html>
