@@ -17,7 +17,8 @@ gulp.task('browserify', function () {
 
   // Browserify files to build.
   const files = {
-    vulcanval: './src/js/main.js'
+    'vulcanval': './src/js/vulcanval.js',
+    'vulcanval-jquery': './src/js/jquery/index.js'
   };
 
   // Add languages not added to package.
@@ -45,29 +46,38 @@ gulp.task('browserify', function () {
 });
 
 gulp.task('browserify-compress', ['browserify'], function () {
-  return gulp.src('./dist/vulcanval.js')
+
+  const files = {
+    'vulcanval': './dist/vulcanval.js',
+    'vulcanval-jquery': './dist/vulcanval-jquery.js'
+  };
+
+  Object.keys(files).forEach(function (file) {
+    gulp.src([files[file]])
     .pipe(rename({
-      basename: 'vulcanval.min'
+      dirname: '',
+      basename: file +'.min'
     }))
-    .pipe(uglify())
+    .pipe(uglify().on('error', gutil.log))
     .pipe(gulp.dest('dist'));
+  });
 });
 
 gulp.task('sass', function () {
 
   // bundle
   const result = sass.renderSync({
-    file: './src/scss/_vulcanval.scss',
-    outFile: './dist/vulcanval.css'
+    file: './src/scss/jquery/_vulcanval-jquery.scss',
+    outFile: './dist/vulcanval-jquery.css'
   });
-  fs.writeFileSync(__dirname +'/dist/vulcanval.css', result.css);
+  fs.writeFileSync(__dirname +'/dist/vulcanval-jquery.css', result.css);
 
   // compress
-  return gulp.src(['./dist/vulcanval.css'])
+  return gulp.src(['./dist/vulcanval-jquery.css'])
     .pipe(cleanCSS())
     .pipe(rename({
       dirname: '',
-      basename: 'vulcanval.min'
+      basename: 'vulcanval-jquery.min'
     }))
     .pipe(gulp.dest('./dist', {
       overwrite: true
