@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="settings.validators.html">settings.validators</a></li><li><a href="utilityContext.html">utilityContext</a></li>
+					<li><a href="fieldsetSettings.html">fieldsetSettings</a></li><li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="settings.validators.html">settings.validators</a></li><li><a href="utilityContext.html">utilityContext</a></li>
 				</ul>
 			</li>
 			
@@ -41,6 +41,20 @@
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="module-vulcanval.html">vulcanval</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-getting-started.html">Getting started</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#vulcanvalProto">vulcanvalProto</a></li>
 				</ul>
 			</li>
 			
@@ -164,6 +178,160 @@
         <h3 class="subsection-title">Methods</h3>
 
         <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(getMap)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Get the data <a href="map.html">map</a> extracted from the <code>&lt;form&gt;</code>.</p>
+<p>If the instance was configured with the setting settings.enableNestedMaps
+as <code>true</code>, the <a href="map.html">map</a> returned will be nested. Otherwise it will be plain.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>getMap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>With value <code>'getMap'</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The data <a href="map.html">map</a>.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="map.html">map</a></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
             
 <hr>
 <dt>
@@ -364,7 +532,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(getMap)</h4>
+    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(validate [, fieldName])</h4>
     
     
 </dt>
@@ -372,10 +540,8 @@
 
     
     <div class="description">
-        <p><strong><em>Invoke over instantiated or <code>&lt;form&gt;</code> elements.</em></strong></p>
-<p>Get the data <a href="map.html">map</a> extracted from the <code>&lt;form&gt;</code>.</p>
-<p>If the instance was configured with the setting <a href="settings.html#.enableNestedMaps">settings.enableNestedMaps</a>
-as <code>true</code>, the <a href="map.html">map</a> returned will be nested. Otherwise it will be plain.</p>
+        <p><strong><em>Invoke over instantiated elements.</em></strong></p>
+<p>Validate visually complete <code>&lt;form&gt;</code> or specific field in it.</p>
     </div>
     
 
@@ -398,6 +564,8 @@ as <code>true</code>, the <a href="map.html">map</a> returned will be nested. Ot
         <th>Type</th>
 
         
+        <th>Argument</th>
+        
 
         
 
@@ -410,7 +578,7 @@ as <code>true</code>, the <a href="map.html">map</a> returned will be nested. Ot
 
         <tr>
             
-                <td class="name"><code>getMap</code></td>
+                <td class="name"><code>validate</code></td>
             
 
             <td class="type">
@@ -424,10 +592,52 @@ as <code>true</code>, the <a href="map.html">map</a> returned will be nested. Ot
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>With value <code>'getMap'</code>.</p></td>
+            <td class="description last"><p>With value <code>'validate'</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fieldName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Only limite validation to the field.</p></td>
         </tr>
 
     
@@ -491,7 +701,7 @@ as <code>true</code>, the <a href="map.html">map</a> returned will be nested. Ot
     
             
 <div class="param-desc">
-    <p>The data <a href="map.html">map</a>.</p>
+    <p>The same jQuery object.</p>
 </div>
 
 
@@ -502,7 +712,204 @@ as <code>true</code>, the <a href="map.html">map</a> returned will be nested. Ot
     </dt>
     <dd>
         
-<span class="param-type"><a href="map.html">map</a></span>
+<span class="param-type"><a href="external-jQuery.html">external:jQuery</a></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(reset [, fieldName])</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p><strong><em>Invoke over instantiated elements.</em></strong></p>
+<p>Reset the form or specific field validation state.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>reset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>With value <code>'reset'</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fieldName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Only limite reset to specified field.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The same jQuery object.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-jQuery.html">external:jQuery</a></span>
 
 
 
@@ -890,7 +1297,7 @@ whole validation process.</p></td>
             
 <hr>
 <dt>
-    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(validate [, fieldName])</h4>
+    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(reset [, fieldName])</h4>
     
     
 </dt>
@@ -899,7 +1306,7 @@ whole validation process.</p></td>
     
     <div class="description">
         <p><strong><em>Invoke over instantiated elements.</em></strong></p>
-<p>Validate visually complete <code>&lt;form&gt;</code> or specific field in it.</p>
+<p>Reset the form or specific field validation state.</p>
     </div>
     
 
@@ -936,7 +1343,7 @@ whole validation process.</p></td>
 
         <tr>
             
-                <td class="name"><code>validate</code></td>
+                <td class="name"><code>reset</code></td>
             
 
             <td class="type">
@@ -961,7 +1368,7 @@ whole validation process.</p></td>
 
             
 
-            <td class="description last"><p>With value <code>'validate'</code>.</p></td>
+            <td class="description last"><p>With value <code>'reset'</code>.</p></td>
         </tr>
 
     
@@ -995,7 +1402,7 @@ whole validation process.</p></td>
 
             
 
-            <td class="description last"><p>Only limite validation to the field.</p></td>
+            <td class="description last"><p>Only limite reset to specified field.</p></td>
         </tr>
 
     
@@ -1131,7 +1538,7 @@ whole validation process.</p></td>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-07-04T00:06:00-05:00
+		on 2016-07-11T15:48:11-05:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

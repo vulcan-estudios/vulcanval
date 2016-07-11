@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="settings.validators.html">settings.validators</a></li><li><a href="utilityContext.html">utilityContext</a></li>
+					<li><a href="fieldsetSettings.html">fieldsetSettings</a></li><li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="settings.validators.html">settings.validators</a></li><li><a href="utilityContext.html">utilityContext</a></li>
 				</ul>
 			</li>
 			
@@ -41,6 +41,20 @@
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="module-vulcanval.html">vulcanval</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-getting-started.html">Getting started</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#vulcanvalProto">vulcanvalProto</a></li>
 				</ul>
 			</li>
 			
@@ -161,202 +175,7 @@ are extended from the <a href="settings.html">settings</a>.</p>
             
 <hr>
 <dt>
-    <h4 class="name" id=".addValidator"><span class="type-signature">&lt;static> </span>addValidator(name, validator)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Add a custom validator.</p>
-<p>All validators in the package <a href="https://www.npmjs.com/package/validator">validator</a>
-are installed and ready to use.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>An alphanumeric validator name.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>validator</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The validator function. Receives as a first parameter
-the value of the field and has to return a
-<a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy value</a>.
-This function will have the <a href="utilityContext.html">utility context</a> as
-function context. Don't pass
-<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions">arrow functions</a>
-or it won't be available.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
-	<dd class="tag-see">
-		<ul>
-			<li>In the example is used the <a href="module-vulcanval.html#.validateField">vulcanval.validateField</a>
-static method to test the new validator.</li>
-			</ul>
-	</dd>
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">vulcanval.addValidator(&#x27;isGreat&#x27;, function (value) {
-  return value.length &gt; 4 &amp;&amp; value.indexOf(&#x27;great&#x27;) &gt;= 0;
-});
-
-const map = {
-  field0: &#x27;normal value&#x27;
-};
-
-const settings = {
-  msgs: {
-    isGreat: &#x27;This field needs to be great!&#x27;
-  },
-  fields: [{
-    name: &#x27;field0&#x27;,
-    validators: {
-      isGreat: true
-    }
-  }]
-};
-
-const field0Valid = vulcanval.validateField(&#x27;field0&#x27;, map, settings);
-console.log(field0Valid); // &#x27;This field needs to be great!&#x27;</pre>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".cleanMap"><span class="type-signature">&lt;static> </span>cleanMap(isPlain, map, settings)</h4>
+    <h4 class="name" id=".cleanMap"><span class="type-signature">&lt;static> </span>cleanMap(isPlain, map)</h4>
     
     
 </dt>
@@ -444,30 +263,6 @@ only used in client side.</p>
             
 
             <td class="description last"><p>The map to clean.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>settings</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="settings.html">settings</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The validation settings.</p></td>
         </tr>
 
     
@@ -737,7 +532,7 @@ only used in client side.</p>
             
 <hr>
 <dt>
-    <h4 class="name" id=".debug"><span class="type-signature">&lt;static> </span>debug(isDebug)</h4>
+    <h4 class="name" id=".module.exports"><span class="type-signature">&lt;static> </span>module.exports(name, validator)</h4>
     
     
 </dt>
@@ -745,7 +540,9 @@ only used in client side.</p>
 
     
     <div class="description">
-        <p>Change the debug level.</p>
+        <p>Add a custom validator.</p>
+<p>All validators in the package <a href="https://www.npmjs.com/package/validator">validator</a>
+are installed and ready to use.</p>
     </div>
     
 
@@ -780,16 +577,13 @@ only used in client side.</p>
 
         <tr>
             
-                <td class="name"><code>isDebug</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Boolean</span>
-|
-
-<span class="param-type">Number</span>
+<span class="param-type">String</span>
 
 
 
@@ -800,10 +594,37 @@ only used in client side.</p>
 
             
 
-            <td class="description last"><p>A <code>true</code> value to display all messages.
-A number to describe the scale of debug logs using the
-<a href="https://github.com/romelperez/prhone-log">prhone-log</a> module to log
-events. By default the log scale is <code>2</code>.</p></td>
+            <td class="description last"><p>An alphanumeric validator name.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>validator</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The validator function. Receives as a first parameter
+the value of the field and has to return a
+<a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy value</a>.
+This function will have the <a href="utilityContext.html">utility context</a> as
+function context. Don't pass
+<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions">arrow functions</a>
+or it won't be available.</p></td>
         </tr>
 
     
@@ -847,6 +668,14 @@ events. By default the log scale is <code>2</code>.</p></td>
 	
 
 	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li>In the example is used the <a href="module-vulcanval.html#.validateField">vulcanval.validateField</a>
+static method to test the new validator.</li>
+			</ul>
+	</dd>
+	
 
 	
 </dl>
@@ -865,13 +694,40 @@ events. By default the log scale is <code>2</code>.</p></td>
     
 
     
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">vulcanval.addValidator(&#x27;isGreat&#x27;, function (value) {
+  return value.length &gt; 4 &amp;&amp; value.indexOf(&#x27;great&#x27;) &gt;= 0;
+});
+
+const map = {
+  field0: &#x27;normal value&#x27;
+};
+
+const settings = {
+  msgs: {
+    isGreat: &#x27;This field needs to be great!&#x27;
+  },
+  fields: [{
+    name: &#x27;field0&#x27;,
+    validators: {
+      isGreat: true
+    }
+  }]
+};
+
+const field0Valid = vulcanval.validateField(&#x27;field0&#x27;, map, settings);
+console.log(field0Valid); // &#x27;This field needs to be great!&#x27;</pre>
+
+
+    
 </dd>
 
         
             
 <hr>
 <dt>
-    <h4 class="name" id=".extendLocale"><span class="type-signature">&lt;static> </span>extendLocale(locale)</h4>
+    <h4 class="name" id=".module.exports"><span class="type-signature">&lt;static> </span>module.exports(locale)</h4>
     
     
 </dt>
@@ -1096,144 +952,7 @@ vulcanval.extendLocale(locale);</pre>
             
 <hr>
 <dt>
-    <h4 class="name" id=".setLocale"><span class="type-signature">&lt;static> </span>setLocale(locale)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Set an specific locale as default in validations. The locale has to be
-already installed with the <a href="module-vulcanval.html#.extendLocale">vulcanval.extendLocale</a>
-method.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>locale</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The locale identifier.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">// Configuring messages in Japanese.
-vulcanval.setLocale(&#x27;jp&#x27;);</pre>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".validateField"><span class="type-signature">&lt;static> </span>validateField(fieldName, map, settings)</h4>
+    <h4 class="name" id=".validateField"><span class="type-signature">&lt;static> </span>validateField(fieldName, map)</h4>
     
     
 </dt>
@@ -1319,30 +1038,6 @@ the field name is set as in plain map. Ex: <code>{user: {name: 'romel'}}</code> 
             
 
             <td class="description last"><p>The data map (plain or nested).</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>settings</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="settings.html">settings</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The validation settings.</p></td>
         </tr>
 
     
@@ -1462,6 +1157,84 @@ console.log(nameResult); // &#x27;This field should only contain lowercase text.
 const ageResult = vulcanval.validateField(&#x27;age&#x27;, map, settings);
 console.log(ageResult); // false</pre>
 
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".validateFieldset"><span class="type-signature">&lt;static> </span>validateFieldset()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Validate all fields in a fieldset.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 
     
 </dd>
@@ -1621,7 +1394,7 @@ object describing each field error if there are.</p>
 <div class="param-desc">
     <p>If the map is valid, <code>false</code> will be returned. Otherwise
 there will be an object describing each field error as a plain map with its
-keys as the fields names even if the property <a href="settings.html#.enableNestedMaps">settings.enableNestedMaps</a>
+keys as the fields names even if the property settings.enableNestedMaps
 is enabled. Use the vulcanval.convertMapTo method if needed.</p>
 </div>
 
@@ -1739,7 +1512,7 @@ console.log(result2);
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-07-04T00:06:00-05:00
+		on 2016-07-11T15:48:11-05:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

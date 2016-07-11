@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="settings.validators.html">settings.validators</a></li><li><a href="utilityContext.html">utilityContext</a></li>
+					<li><a href="fieldsetSettings.html">fieldsetSettings</a></li><li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="settings.validators.html">settings.validators</a></li><li><a href="utilityContext.html">utilityContext</a></li>
 				</ul>
 			</li>
 			
@@ -41,6 +41,20 @@
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="module-vulcanval.html">vulcanval</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-getting-started.html">Getting started</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#vulcanvalProto">vulcanvalProto</a></li>
 				</ul>
 			</li>
 			
@@ -94,7 +108,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>vulcanval validation settings by default.</p>
+            <div class="description"><p><a href="module-vulcanval.html">vulcanval</a> validation settings by default.</p>
 <p>When using validation methods you have to pass an object settings to
 configure the validation process which will overwrite this settings used by
 default.</p></div>
@@ -167,85 +181,6 @@ default.</p></div>
         <dl>
             
 <hr>
-<dt class="name" id=".autostart">
-    <h4><span class="type-signature">&lt;static> </span>autostart<span class="type-signature"> :Boolean</span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Only client-side. Overwritten by <a href="fieldSettings.html">fieldSettings</a>.</p>
-<p>Validate field elements on instance time.</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Boolean</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
-	<dd class="tag-default">
-		<ul class="dummy">
-			<li>false</li>
-		</ul>
-	</dd>
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
 <dt class="name" id=".classes">
     <h4><span class="type-signature">&lt;static> </span>classes<span class="type-signature"> :Object</span></h4>
 
@@ -254,7 +189,7 @@ default.</p></div>
 <dd>
     
     <div class="description">
-        <p>Only client-side. Only for <code>&lt;form&gt;</code>.</p>
+        <p><em>Only client-side.</em></p>
 <p>HTML tag classes to add to specific elements in form on error.</p>
     </div>
     
@@ -723,194 +658,6 @@ default.</p></div>
         
             
 <hr>
-<dt class="name" id=".disableHTML5Validation">
-    <h4><span class="type-signature">&lt;static> </span>disableHTML5Validation<span class="type-signature"> :Boolean</span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Only client-side. Only for <code>&lt;form&gt;</code>.</p>
-<p>Disable HTML5 validation with novalidate attribute when instanced on <code>&lt;form&gt;</code>.
-This is enabled if attribute &quot;novalidate&quot; is present.</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Boolean</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
-	<dd class="tag-default">
-		<ul class="dummy">
-			<li>false</li>
-		</ul>
-	</dd>
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id=".enableNestedMaps">
-    <h4><span class="type-signature">&lt;static> </span>enableNestedMaps<span class="type-signature"> :Boolean</span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>When a map of fields is created out of a form, should it be converted to a
-map of nested fields or only plain fields?</p>
-<p>Validation methods use this property to convert data <a href="map.html">maps</a> from
-nested maps to plain maps when this property is enabled.</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Boolean</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
-	<dd class="tag-default">
-		<ul class="dummy">
-			<li>false</li>
-		</ul>
-	</dd>
-	
-
-
-
-	
-
-	
-
-	
-	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
-	<dd class="tag-see">
-		<ul>
-			<li><a href="external-_jQuery.fn_.html#.vulcanval">external:"jQuery.fn".vulcanval</a></li>
-			</ul>
-	</dd>
-	
-
-	
-</dl>
-
-
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">// Using a form like this:
-// &lt;form&gt;
-//  &lt;input name=&quot;field1&quot; /&gt;
-//  &lt;input name=&quot;map1.field2&quot; /&gt;
-//  &lt;input name=&quot;map1.field3&quot; /&gt;
-//  &lt;input name=&quot;map2.field4&quot; /&gt;
-// &lt;/form&gt;
-
-const map = $(&#x27;form&#x27;).vulcanval(&#x27;getMap&#x27;);
-
-// If nested maps are enabled, the map object will have this value:
-// { field1: &#x27;&#x27;, map1: { field2: &#x27;&#x27;, field3: &#x27;&#x27; }, map2: { field4: &#x27;&#x27; } }
-
-// Otherwise:
-// { field1: &#x27;&#x27;, &#x27;map1.field2&#x27;: &#x27;&#x27;, &#x27;map1.field3&#x27;: &#x27;&#x27;, &#x27;map2.field4&#x27;: &#x27;&#x27; }</pre>
-
-
-    
-</dd>
-
-        
-            
-<hr>
 <dt class="name" id=".fields">
     <h4><span class="type-signature">&lt;static> </span>fields<span class="type-signature"> :Array</span></h4>
 
@@ -920,7 +667,6 @@ const map = $(&#x27;form&#x27;).vulcanval(&#x27;getMap&#x27;);
     
     <div class="description">
         <p>The form fields to configure.</p>
-<p>The main property to configure validation.</p>
     </div>
     
 
@@ -979,6 +725,98 @@ const map = $(&#x27;form&#x27;).vulcanval(&#x27;getMap&#x27;);
 	
 
 	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="fieldSettings.html">fieldSettings</a></li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".fieldsets">
+    <h4><span class="type-signature">&lt;static> </span>fieldsets<span class="type-signature"> :Array</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The form fieldsets to configure.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Array</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>[ ]</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="fieldsetSettings.html">fieldsetSettings</a></li>
+			</ul>
+	</dd>
+	
 
 	
 </dl>
@@ -998,7 +836,7 @@ const map = $(&#x27;form&#x27;).vulcanval(&#x27;getMap&#x27;);
 <dd>
     
     <div class="description">
-        <p>Only client-side. Overwritten by <a href="fieldSettings.html">fieldSettings</a>.</p>
+        <p><em>Only client-side.</em></p>
 <p>What event to listen to trigger the first validation on fields.</p>
     </div>
     
@@ -1047,87 +885,6 @@ const map = $(&#x27;form&#x27;).vulcanval(&#x27;getMap&#x27;);
 	<dd class="tag-default">
 		<ul class="dummy">
 			<li>'blur change'</li>
-		</ul>
-	</dd>
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id=".intern">
-    <h4><span class="type-signature">&lt;static> </span>intern<span class="type-signature"> :Boolean</span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Only client-side. Overwritten by <a href="fieldSettings.html">fieldSettings</a>.</p>
-<p>When a field is validated, don't show changes visually nor show messages.
-This is used to know whether they are valid or not, update the fields
-elements states and trigger events.</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Boolean</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
-	<dd class="tag-default">
-		<ul class="dummy">
-			<li>false</li>
 		</ul>
 	</dd>
 	
@@ -1396,7 +1153,7 @@ console.log(ageValid); // &#x27;Valor &quot;720&quot; debe ser número entero.&#
 <dd>
     
     <div class="description">
-        <p>Only client-side. Overwritten by <a href="fieldSettings.html">fieldSettings</a>.</p>
+        <p><em>Only client-side.</em></p>
 <p>After first validation, what events to listen to re-validate fields.</p>
     </div>
     
@@ -1514,7 +1271,7 @@ console.log(ageValid); // &#x27;Valor &quot;720&quot; debe ser número entero.&#
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-07-04T00:06:00-05:00
+		on 2016-07-11T15:48:11-05:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
