@@ -11,12 +11,11 @@
     }, {
       name: 'pass',
       required: true,
-
-      // if this function returns true, the validation continues, otherwise,
-      // it halts.
+      // If this function returns true, the validation continues,
+      // otherwise it halts.
       onlyIf: function () {
-
-        // if the email is different than this one, the validation is made
+        // If the email is different than this one,
+        // the validation is made.
         return this.get('email') !== 'admin@gmail.com';
       },
       validators: {

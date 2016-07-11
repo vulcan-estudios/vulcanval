@@ -1,7 +1,10 @@
 module.exports = {
-  locale: 'es',
-  enableNestedMaps: true,
+  locale: 'es',  // set language
+  enableNestedMaps: true,  // treat data maps as nested objects
   fields: [{
+    // the same "user.name" in a nested maps will be in the map as:
+    // { user: { name: <value>, ... }, ... }
+    // The point is the delimitator
     name: 'user.name',
     required: true,
     validators: {
@@ -32,8 +35,8 @@ module.exports = {
     },
     validators: {
       matches: {
-        pattern: /^[0-9]{3,4}$/,
-        msgs: 'Un número de seguridad de tarjeta de crédito es requerido.'
+        pattern: /^[0-9]{3,4}$/,  // match a JavaScript RegExp
+        msgs: 'Un número de seguridad de tarjeta de crédito es requerido.'  // with custom message
       }
     }
   }]

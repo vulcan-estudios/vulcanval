@@ -19,6 +19,7 @@
     }]
   };
 
+  // A trick to share this script between client and server side.
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = settings;
   } else {

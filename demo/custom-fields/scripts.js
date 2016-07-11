@@ -5,7 +5,7 @@
     $(e.target).parents('.cards').find('.card').removeClass('card_selected');
     $(e.target).addClass('card_selected');
 
-    // tell the library this field has changed
+    // tell the library this field has changed, this is required
     $('form #section').trigger('vv-change');
   });
 
@@ -24,17 +24,17 @@
       name: 'section',
       required: true,
 
-      // define how to get the field value
+      // define how to get the field value, this is required
       value: function ($field) {
         return $field.find('.card.card_selected').data('value');
       }
     }]
   });
 
-  // this is useful when you want to validate and extract data from custom fields
-  // you can get the data map with your custom fields with: $('form').vulcanval('getMap');
   $('#getData').on('click', function (e) {
-    console.log("$('form').vulcanval('getMap'):", $('form').vulcanval('getMap'));
+    const map = $('form').vulcanval('getMap');
+    console.log("$('form').vulcanval('getMap'):", map);
+    $('#map').html(JSON.stringify(map));
   });
 
 })();

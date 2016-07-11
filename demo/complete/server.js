@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const vulcanval = require('../../src/js/main');
+const vulcanval = require('../../src/js/vulcanval');
 const settings = require('./settings');
 
-const port = process.env.PORT || 7000;
+const port = process.env.PORT || 8000;
 const app = express();
+const vv = vulcanval(settings);
 
 app.use(bodyParser.json({ type: 'application/*+json' }));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -16,9 +17,10 @@ app.get('/', (req, res) => res.redirect('/demo/complete'));
 app.post('/api/login', (req, res) => {
 
   const map = req.body;
-  const invalids = vulcanval.validateMap(map, settings);
+  const invalids = vv.validate(map);
 
   res.status(invalids ? 400 : 200);
+
   res.json({
     success: !invalids,
     data: invalids

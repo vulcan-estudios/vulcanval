@@ -4,49 +4,56 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Conditions | vulcanval</title>
-    <link rel="stylesheet" href="../../lib/foundation-3.0.3.min.css">
-    <link rel="stylesheet" href="../../dist/vulcanval.css">
-    <link rel="stylesheet" href="./../assets/styles.css">
+    <title>VulcanVal | Validate data forms in client and server sides seamlessly</title>
+    <meta name="description" content="A package to validate data objects (possibly extracted from HTML forms) in client and server sides and a customizable jQuery plugin to validate them in realtime">
+    <script src="../../site/js/webcomponents-lite.min.js"></script>
+    <link rel="shortcut icon" href="/site/favicon.png">
+    <link rel="import" href="../../site/polymers/vv-all.html">
+
+    <!-- VulcanVal jQuery plugin styles -->
+    <link rel="stylesheet" href="../../dist/vulcanval-jquery.css">
   </head>
   <body>
+    <vv-header></vv-header>
+    <vv-main>
 
-    <h2>Conditions | vulcanval</h2>
-    <p>Validation of fields with conditions.</p>
-    <p><a href="../index.html">Demos index</a></p>
+      <h3>Conditions</h3>
+      <p>Validation of fields depending of conditions.</p>
+      <p><a href="../index.html">Back to demos</a></p>
 
-    <form>
+      <form>
 
-      <div class="row">
-        <div class="column small-12">
-          <label for="email">Your Email (try: <b>admin@gmail.com</b> to see condition working)</label>
-          <input id="email" name="email" type="email" placeholder="Your Email" data-vv-display="#email-msgs">
-          <div id="email-msgs"></div>
+        <div class="row">
+          <div class="column small-12">
+            <label for="email">Your Email (try: <b>admin@gmail.com</b> to see condition working)</label>
+            <input id="email" name="email" type="email" placeholder="Your Email" data-vv-display="#email-msgs">
+            <div id="email-msgs"></div>
+          </div>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="column small-12">
-          <label for="pass">Your Password</label>
-          <input id="pass" name="pass" type="password" placeholder="Your Password" data-vv-display="#pass-msgs">
-          <div id="pass-msgs"></div>
+        <div class="row">
+          <div class="column small-12">
+            <label for="pass">Your Password</label>
+            <input id="pass" name="pass" type="password" placeholder="Your Password" data-vv-display="#pass-msgs">
+            <div id="pass-msgs"></div>
+          </div>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="column small-6">
-          <input class="button" type="submit" value="Login">
+        <div class="row">
+          <div class="column small-12">
+            <input class="button" type="submit" value="Login">
+            <input class="button secondary" type="reset" value="Reset">
+          </div>
         </div>
-        <div class="column small-6">
-          <input class="button secondary" type="reset" value="Reset">
-        </div>
-      </div>
 
-    </form>
+      </form>
+
+    </vv-main>
+    <vv-footer></vv-footer>
 
     <script src="../../lib/jquery-3.0.0.min.js"></script>
     <script src="../../dist/vulcanval.js"></script>
-    <script src="./../assets/scripts.js"></script>
-    <script src="./index.js"></script>
+    <script src="../../dist/vulcanval-jquery.js"></script>
+    <script src="./scripts.js"></script>
   </body>
 </html>

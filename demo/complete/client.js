@@ -2,6 +2,7 @@
 
   const settings = window.settings;
   const $form = $('form');
+
   $form.vulcanval(settings);
 
   $form.on('submit', function (e) {

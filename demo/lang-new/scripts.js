@@ -21,7 +21,7 @@
   vulcanval.extendLocale(lang);
 
   // Set as default language.
-  vulcanval.setLocale('de');
+  vulcanval.settings.locale = lang.id;
 
   $('form').vulcanval();
 

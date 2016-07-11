@@ -1,11 +1,14 @@
-const vulcanval = require('../../src/js/main');
+const vulcanval = require('../../src/js/vulcanval');
 const es = require('../../src/js/locale/es');
-
 const settings = require('./settings');
 
+// In server, we need to install the language and set it as default manually.
 vulcanval.extendLocale(es);
-vulcanval.setLocale('es');
+vulcanval.settings.locale = 'es';
 
+const vv = vulcanval(settings);
+
+// This is an example of data we can get from client-side.
 const dirtyMap = {
   hack1: 'DROP TABLE Users;',
   user: {
@@ -20,7 +23,8 @@ const dirtyMap = {
   }
 };
 
-const map = vulcanval.cleanMap(false, dirtyMap, settings);
+// Leave the object with only the data we care about.
+const map = vv.cleanMap(false, dirtyMap);
 console.log(map);
 // { user:
 //    { name: 'Romel Pérez',
@@ -30,15 +34,15 @@ console.log(map);
 //     number: '4111 1111 1111 1111',
 //     ccv: '123' } }
 
-const result = vulcanval.validateMap(map, settings);
+const result = vv.validate(map);
 console.log(result);
 // { 'user.age': 'Escribe un número entero válido por favor.',
 //   'user.married': 'Este campo debe ser booleano.' }
 
-const result2 = vulcanval.validateField('user.age', map, settings);
+const result2 = vv.validateField('user.age', map);
 console.log(result2);
 // 'Escribe un número entero válido por favor.'
 
-const result3 = vulcanval.validateField('creditcard.number', map, settings);
+const result3 = vv.validateField('creditcard.number', map);
 console.log(result3);
 // false

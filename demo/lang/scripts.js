@@ -1,0 +1,5 @@
+(function () {
+
+  $('form').vulcanval();
+
+})();
