@@ -224,6 +224,14 @@ describe('settings{}', function () {
 
     describe('Process fields', function () {
 
+      it('Inherit props from default settings (different from nulls)', function () {
+        ns = settings.extend({
+          fields: [ {name: 'a'} ]
+        });
+        assert.strictEqual(ns.fields[0].firstValidationEvent, settings.firstValidationEvent);
+        assert.strictEqual(ns.fields[0].validationEvents, settings.validationEvents);
+      });
+
       it('Inherit props from settings', function () {
         ns = settings.extend({
           autostart: true,
@@ -255,11 +263,11 @@ describe('settings{}', function () {
             name: 'a',
           }]
         });
-        assert.isTrue(ns.fields[0].autostart);
-        assert.isFalse(ns.fields[0].intern);
-        assert.isTrue(ns.fields[0].onlyUI);
-        assert.equal(ns.fields[0].firstValidationEvent, 'blur');
-        assert.equal(ns.fields[0].validationEvents, 'input');
+        assert.isTrue(ns.fields[0].autostart, 'autostart should be true');
+        assert.isFalse(ns.fields[0].intern, 'intern should be false');
+        assert.isTrue(ns.fields[0].onlyUI, 'onlyUI should be true');
+        assert.equal(ns.fields[0].firstValidationEvent, 'blur', 'firstValidationEvent should equal "blur"');
+        assert.equal(ns.fields[0].validationEvents, 'input', 'validationEvents should equal "input"');
       });
 
       it('Overwrite inherit properties', function () {
