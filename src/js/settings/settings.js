@@ -25,6 +25,8 @@ const settings = {
    * Disable HTML5 validation with novalidate attribute when instanced on `<form>`.
    * This is enabled if attribute "novalidate" is present.
    *
+   * @name disableHTML5Validation
+   * @memberof settings
    * @type {Boolean}
    * @default false
    */
@@ -37,6 +39,8 @@ const settings = {
    * Validation methods use this property to convert data {@link map maps} from
    * nested maps to plain maps when this property is enabled.
    *
+   * @name enableNestedMaps
+   * @memberof settings
    * @type {Boolean}
    * @default false
    *
@@ -62,8 +66,11 @@ const settings = {
   //enableNestedMaps: null,
 
   /**
-   * Form will not be instantiated.
+   * Form will not be instantiated. In client side, if `<form>` has the attribute
+   * `disabled`, this will be enabled.
    *
+   * @name disabled
+   * @memberof settings
    * @type {Boolean}
    * @default false
    */
@@ -74,6 +81,8 @@ const settings = {
    *
    * Validate field elements on instance time.
    *
+   * @name autostart
+   * @memberof settings
    * @type {Boolean}
    * @default false
    */
@@ -86,6 +95,8 @@ const settings = {
    * This is used to know whether they are valid or not, update the fields
    * elements states and trigger events.
    *
+   * @name intern
+   * @memberof settings
    * @type {Boolean}
    * @default false
    */
@@ -96,6 +107,8 @@ const settings = {
    *
    * What event to listen to trigger the first validation on fields.
    *
+   * @name firstValidationEvent
+   * @memberof settings
    * @type {String}
    * @default 'blur change'
    */
@@ -106,6 +119,8 @@ const settings = {
    *
    * After first validation, what events to listen to re-validate fields.
    *
+   * @name validationEvents
+   * @memberof settings
    * @type {String}
    * @default 'input blur change'
    */
@@ -114,6 +129,8 @@ const settings = {
   /**
    * Default messages locale.
    *
+   * @name locale
+   * @memberof settings
    * @type {String}
    * @default 'en'
    */
@@ -122,7 +139,10 @@ const settings = {
   /**
    * *Only client-side.*
    *
-   * HTML tag classes to add to specific elements in form on error.
+   * HTML tag classes to add to specific elements in form on default and on error.
+   *
+   * @name classes
+   * @memberof settings
    * @type {Object}
    * @property {Object} [defaults] - Static classes.
    * @property {String} [defaults.form] - Form classes.
@@ -157,8 +177,10 @@ const settings = {
    * second one the options gave to it when configured. Only if the user configured
    * a validator with an string, number or object value, it is received.
    *
-   * The context of the validators is {@link fieldSettings} so don't use arrow functions.
+   * The context of the validators is {@link utilityContext} so don't use arrow functions.
    *
+   * @name validators
+   * @memberof settings
    * @namespace
    * @see {@link module:vulcanval.addValidator vulcanval.addValidator()} to see how to add new ones.
    * @see {@link fieldSettings.validators} to see how to implement them.
@@ -178,10 +200,11 @@ const settings = {
    * The formats can have some variables expressed as `{{var}}` where `var` is the
    * variable name.
    *
-   * - The variable `{{value}}` is always present to use.
+   * - The variable `{{value}}` is always present to use and it's the value of the field
+   *   validating.
    * - The variable `{{option}}` can be used when the validator is configured
    *   with an string. Ex: in validator `isAlphanumeric: 'de-DE'`, the
-   *   variable will have the `de-DE` value.
+   *   variable will have the `de-DE` value. This also applies to numbers.
    * - If the validator is configured with an object, then its properties are
    *   available as variables. Ex: in `isInt: {min:4, max:8}`, `{{min}}` and `{{max}}`
    *   will be available as variables in the message.
@@ -192,6 +215,8 @@ const settings = {
    *
    * Also, the order of validator messages on errors can vary.
    *
+   * @name msgs
+   * @memberof settings
    * @type {Object}
    * @default {}
    *
@@ -234,7 +259,10 @@ const settings = {
    *     validators: {
    *       isAlphanumeric: 'en-GB',
    *       isLength: { min: 4, max: 16 },
-   *       isLowercase: true  // If this fails, the default message will be used
+   *
+   *       // If this fails, the default message will be used because the package
+   *       // does not have a message for this validator by default
+   *       isMongoId: true
    *     }
    *   }, {
    *     name: 'age',
@@ -244,14 +272,16 @@ const settings = {
    *   }]
    * };
    *
-   * let usernameValid = vulcanval.validateField('username', map, settings);
+   * const vv = vulcanval(settings);
+   *
+   * let usernameValid = vv.validateField('username', map);
    * console.log(usernameValid); // 'Debe ser alfanumérico en local "en-GB".'
    *
    * map.username = 'rp';
-   * usernameValid = vulcanval.validateField('username', map, settings);
+   * usernameValid = vv.validateField('username', map);
    * console.log(usernameValid); // 'Mínimo valor: 4.'
    *
-   * let ageValid = vulcanval.validateField('age', map, settings);
+   * let ageValid = vv.validateField('age', map);
    * console.log(ageValid); // 'Valor "720" debe ser número entero.'
    */
   msgs: {
@@ -264,6 +294,8 @@ const settings = {
    * Utility context.
    *
    * @private
+   * @name context
+   * @memberof settings
    * @see {@link utilityContext}
    * @type {Object}
    */
@@ -272,7 +304,9 @@ const settings = {
   /**
    * The form fieldsets to configure.
    *
-   * @see {@link fieldsetSettings}
+   * @name fieldsets
+   * @memberof settings
+   * @see See {@link fieldsetSettings} for more info about its configuration.
    * @type {Array}
    * @default [ ]
    */
@@ -281,7 +315,9 @@ const settings = {
   /**
    * The form fields to configure.
    *
-   * @see {@link fieldSettings}
+   * @name fields
+   * @memberof settings
+   * @see See {@link fieldSettings} for more info about its configuration.
    * @type {Array}
    * @default [ ]
    */
@@ -298,6 +334,8 @@ const settings = {
    * - {undefined|Boolean} vv-valid - If all fields are valid. undefined if it's unknown.
    *
    * @private
+   * @name $form
+   * @memberof settings
    * @type {external:jQuery}
    */
   $form: null,
@@ -308,6 +346,8 @@ const settings = {
    * On form submit event.
    *
    * @private
+   * @name onSubmit
+   * @memberof settings
    * @type {Function}
    */
   onSubmit: null,
@@ -318,6 +358,8 @@ const settings = {
    * On form reset event.
    *
    * @private
+   * @name onReset
+   * @memberof settings
    * @type {Function}
    */
   onReset: null,
@@ -326,6 +368,8 @@ const settings = {
    * Get a message template according to locale.
    *
    * @private
+   * @name getMsgTemplate
+   * @memberof settings
    * @param  {String} id - Validator identifier.
    * @return {String}
    */
@@ -354,6 +398,8 @@ const settings = {
    * Extend settings.
    *
    * @private
+   * @name extend
+   * @memberof settings
    * @param  {Object} custom - Extend this settings with this paramter.
    * @return {Object} Extended settings.
    */

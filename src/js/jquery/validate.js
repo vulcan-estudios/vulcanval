@@ -4,12 +4,11 @@ const log = window.vulcanval.log;
 /**
  * ***Invoke over instantiated elements.***
  *
- * Validate visually complete `<form>` or specific field in it.
+ * Validate visually all fields in `<form>`.
  *
  * @function external:"jQuery.fn".vulcanval
  *
  * @param  {String} validate - With value `'validate'`.
- * @param  {String} [fieldName] - Only limite validation to the field.
  * @return {external:jQuery} The same jQuery object.
  */
 const validate = function () {

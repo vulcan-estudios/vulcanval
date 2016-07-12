@@ -90,7 +90,7 @@ const toPlain = function (map) {
  *
  * @param  {String} to - It can have two values: `plain` or `nested`.
  * @param  {map} map - The object to convert.
- * @return {Object} The converted object.
+ * @return {map} The converted object map.
  */
 module.exports = function (to, map) {
   'use strict';

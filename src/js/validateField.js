@@ -4,13 +4,13 @@ const convertMapTo =  require('./convertMapTo');
 const rawValidation = require('./rawValidation');
 
 /**
- * Validate a field in provided data {@link map} using the provided validation {@link settings}.
+ * Validate a field in provided data {@link map}.
  *
  * @static
- * @method module:vulcanval.validateField
+ * @method validator.validateField
  *
- * @param  {String} fieldName - The field name in data map. If the {@link map} is nested,
- * the field name is set as in plain map. Ex: `{user: {name: 'romel'}}` will be `'user.name'`.
+ * @param  {String} fieldName - The field name to validate. If the {@link map} is nested,
+ * the field name should be set as in plain map. Ex: `{user: {name: 'romel'}}` will be `'user.name'`.
  * @param  {map} map - The data map (plain or nested).
  *
  * @return {Boolean|String} If it is valid, `false` will be returned. Otherwise
@@ -39,10 +39,12 @@ const rawValidation = require('./rawValidation');
  *   }]
  * };
  *
- * const nameResult = vulcanval.validateField('name', map, settings);
+ * const vv = vulcanval(settings);
+ *
+ * const nameResult = vv.validateField('name', map);
  * console.log(nameResult); // 'This field should only contain lowercase text.'
  *
- * const ageResult = vulcanval.validateField('age', map, settings);
+ * const ageResult = vv.validateField('age', map);
  * console.log(ageResult); // false
  */
 module.exports = function (fieldName, map) {

@@ -3,14 +3,12 @@ const convertMapTo =  require('./convertMapTo');
 const rawValidation = require('./rawValidation');
 
 /**
- * Validate provided data map using the provided validation settings and get an
- * object describing each field error if there are.
+ * Validate provided data map and get an object describing each field error if there are.
  *
  * @static
- * @method module:vulcanval.validateMap
+ * @method validator.validate
  *
  * @param  {map} map - The data map.
- * @param  {settings} settings - The validation settings.
  *
  * @return {Boolean|Object} If the map is valid, `false` will be returned. Otherwise
  * there will be an object describing each field error as a plain map with its
@@ -43,7 +41,9 @@ const rawValidation = require('./rawValidation');
  *   }]
  * };
  *
- * const result = vulcanval.validateMap(map, settings);
+ * const vv = vulcanval(settings);
+ *
+ * const result = vv.validate(map);
  * console.log(result);
  * // {
  * //   name: 'This field should only contain lowercase text.',
@@ -52,7 +52,7 @@ const rawValidation = require('./rawValidation');
  *
  * map.name = 'romel';
  * map.likesPumpkin = true;
- * const result2 = vulcanval.validateMap(map, settings);
+ * const result2 = vv.validate(map);
  * console.log(result2);
  * // false
  */

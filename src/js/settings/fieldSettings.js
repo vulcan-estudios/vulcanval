@@ -16,8 +16,10 @@ const utils = require('../utils');
 const fieldSettings = {
 
   /**
-   * The field name. This property is always required.
+   * The field name. This property is required.
    *
+   * @name name
+   * @memberof fieldSettings
    * @type {String}
    */
   name: null,
@@ -25,71 +27,83 @@ const fieldSettings = {
   /**
    * Field will be ignored in validation if `true`.
    *
+   * @name disabled
+   * @memberof fieldSettings
    * @type {Boolean}
    * @default false
    */
   //disabled: null,
 
   /**
-   * Field is required and cannot be undefined. If the field is not required but
-   * it has a
+   * Field is required and cannot be undefined nor empty string. If the field is
+   * not required but it does NOT have a
    * {@link https://developer.mozilla.org/en-US/docs/Glossary/Truthy truthy value},
    * then this will pass over all validators.
    *
+   * @name required
+   * @memberof fieldSettings
    * @type {Boolean}
    * @default false
    */
   //required: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Validate field elements on instance time.
    *
+   * @name autostart
+   * @memberof fieldSettings
    * @type {Boolean}
    * @default false
    */
   //autostart: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * When a field is validated, don't show changes visually nor show messages.
    * This is used to know whether they are valid or not, update the fields
    * elements states and trigger events.
    *
-   * If the field is an `<input>` type `hidden`, this will be set as `true`.
-   *
+   * @name intern
+   * @memberof fieldSettings
    * @type {Boolean}
    * @default false
    */
   //intern: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Ignore field in validation in server side.
    *
+   * @name onlyUI
+   * @memberof fieldSettings
    * @type {Boolean}
    * @default false
    */
   //onlyUI: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * What event to listen to trigger the first validation on field.
    *
+   * @name firstValidationEvent
+   * @memberof fieldSettings
    * @type {String}
    * @default Inherited from {@link settings}
    */
   //firstValidationEvent: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * After first validation, what events to listen to re-validate field.
    *
+   * @name validationEvents
+   * @memberof fieldSettings
    * @type {String}
    * @default Inherited from {@link settings}
    */
@@ -107,12 +121,17 @@ const fieldSettings = {
    * You can use all validators from the {@link https://www.npmjs.com/package/validator validator}
    * package.
    *
+   * This object will be merged with the {@link fieldsetSettings.validators fieldsets validators}
+   * this field is in.
+   *
+   * @name validators
+   * @memberof fieldSettings
    * @type {Object}
    */
   validators: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Field jQuery element.
    *
@@ -132,66 +151,84 @@ const fieldSettings = {
    * - {Boolean|String} msg - If field is invalid the error, otherwise false.
    *
    * @private
+   * @name $el
+   * @memberof fieldSettings
    * @type {external:jQuery}
    */
   $el: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * The element where to set the current field message error. If not specified,
-   * the messages won't be shown on UI. This is a jQuery selector.
+   * the messages won't be shown on UI.
    *
+   * When configured by HTML attribute `data-vv-display`, the value expected should
+   * be a jQuery selector. Otherwise this can be anything to select with the jQuery
+   * selector method.
+   *
+   * @name display
+   * @memberof fieldSettings
    * @type {external:jQuery}
    */
   display: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Display jQuery element.
    *
    * @private
+   * @name $display
+   * @memberof fieldSettings
    * @type {external:jQuery}
    */
   $display: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * jQuery `<label>` elements which have `for` attribute to the field element.
    *
    * @private
+   * @name $labels
+   * @memberof fieldSettings
    * @type {external:jQuery}
    */
   $labels: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Field onFirstChange event (this is defined by user).
    *
    * @private
+   * @name onFirstChange
+   * @memberof fieldSettings
    * @type {Function}
    */
   onFirstChange: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Field onChange event (this is defined by user).
    *
    * @private
+   * @name onChange
+   * @memberof fieldSettings
    * @type {Function}
    */
   onChange: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Field onBlur event.
    *
    * @private
+   * @name onBlur
+   * @memberof fieldSettings
    * @type {Function}
    */
   onBlur: null,
@@ -206,24 +243,34 @@ const fieldSettings = {
    * {@link https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions arrow functions}.
    *
    * @method
+   * @name onlyIf
+   * @memberof fieldSettings
    * @return {Boolean}
    */
   onlyIf: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Method to get the value of the field. This will have the {@link utilityContext utilty context}
    * so don't use
    * {@link https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions arrow functions}.
    *
-   * By default this can retrieve the value of `<input>`s of any kind except `submit`, 'reset'
-   * and `button`, `<textarea>`s and `<select>`s.
+   * By default this can retrieve the value of `<input>`s of any kind except
+   * `image`, `submit`, `reset`, `file` and `button`, `<textarea>`s and `<select>`s.
    *
-   * You can overwrite this to create your own custom field value getter.
+   * You can overwrite this to create your own custom field value getter. Otherwise
+   * leave this property as default.
    *
+   * The first paramter `$field` will be binded to the function and it is the
+   * jQuery element the fields belongs to.
+   *
+   * @method
+   * @name value
+   * @memberof fieldSettings
    * @param  {external:jQuery} $field - The field element.
-   * @return {*} The value returned will depend on the type of element.
+   * @return {*} The value returned will depend on the type of element or what you
+   * configure if you overwrite this method.
    */
   value ($field) {
 
@@ -260,6 +307,8 @@ const fieldSettings = {
    * Extend field settings default configuration.
    *
    * @private
+   * @name extend
+   * @memberof fieldSettings
    * @param  {Object} custom
    * @return {Object}
    */

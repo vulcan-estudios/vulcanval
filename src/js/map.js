@@ -5,14 +5,14 @@
  * @description
  * A plain object as a data map extracted from a `<form>`.
  *
- * This is basically an plain object with keys as form fields names and values
+ * This is basically a plain object with keys as form fields names and values
  * as their respective values.
  *
  * The values can be strings, numbers or booleans. Currently there is no support
  * for arrays.
  *
  * The keys can be simple alphanumeric values but can be used to describe a nested
- * or deep map if they are dots in the string in plain maps. The dots are to describe
+ * or deep map if they have dots in the string in plain maps. The dots are to describe
  * `<fieldset>`s in the form and improve the structure of complex forms.
  *
  * If the map is plain and its keys have dots in the strings, it can be converted

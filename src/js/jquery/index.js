@@ -39,7 +39,7 @@ const methods = {
  * This can be instantiated on forms or any form elements with a valid attribute `name`:
  *
  * - `<form>`
- * - `<input>` with `type` different than `submit`, `button` and `reset`
+ * - `<input>` with `type` different than `file`, `submit`, `image`, `button` and `reset`
  * - `<textarea>`
  * - `<select>`
  *
@@ -52,6 +52,9 @@ const methods = {
  * @param  {settings} settings - Instance settings. This is used to configure the
  * whole validation process.
  * @return {external:jQuery} The same jQuery object.
+ *
+ * @see Also see the {@link http://vulcan-estudios.github.io/vulcanval#demos demos}
+ * to learn how to implement this method.
  */
 const plugin = function (customSettings) {
   'use strict';

@@ -8,9 +8,7 @@ const browser = require('./browser');
  * rawValidation method.
  *
  * @private
- *
  * @param  {String} fieldName
- *
  * @return {String|Boolean} `false` if valid, otherwise the error message.
  */
 module.exports = function (fieldName) {

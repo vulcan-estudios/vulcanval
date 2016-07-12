@@ -33,7 +33,16 @@ const isAlphanumericText =  require('./validators/isAlphanumericText');
  */
 
 /**
- * Proto
+ * @namespace validator
+ * @type {Object}
+ * @description
+ * This is an object created by the module {@link module:vulcanval vulcanval} by
+ * specified {@link settings} to validate {@link map data maps}.
+ *
+ * This object has some methods to help you validate data possibly extracted from
+ * forms through a configuration that can be used in client side and server side.
+ *
+ * @see {@link module:vulcanval vulcanval} to see how to create this object.
  */
 const vulcanvalProto = {
   cleanMap,
@@ -44,12 +53,12 @@ const vulcanvalProto = {
 };
 
 /**
- * The vulcan validator (vulcanval) object.
+ * The vulcan validator (vulcanval) creator.
  *
- * This module exposes some static methods to validate data maps extracted maybe
- * extracted from client-side form elements. The data maps are simple plain JavaScript
- * objects with each element name and value in form. The validations configurations
- * are extended from the {@link settings}.
+ * This module is a function which receives a {@link settings} object and returns
+ * a {@link validator} object to validate {@link map data maps}.
+ *
+ * Also this has some properties and methods to configure the validations globally.
  *
  * In Node.js environments use like:
  *
@@ -60,6 +69,35 @@ const vulcanvalProto = {
  * In browser environments this object is available in {@link external:window.vulcanval window.vulcanval}.
  *
  * @module vulcanval
+ * @see {@link validator}
+ * @example
+ * // Changing a global configuration in settings.
+ * vulcanval.settings.locale = 'pt';
+ *
+ * // Addind a new validator method.
+ * vulcanval.addValidator('valName', function () { ... });
+ *
+ * // Extending/creating a new locale/language.
+ * vulcanval.extendLocale({ ... });
+ *
+ * // A form configuration to create a validator.
+ * const settings = {
+ *   fields: [{
+ *     name: 'fieldName',
+ *     validators: {}
+ *   }]
+ * };
+ *
+ * // Creating a validator from settings.
+ * const validator = vulcanval(settings);
+ *
+ * // A data map to validate.
+ * const map = {
+ *   fieldName: 'field value'
+ * };
+ *
+ * // Validating the map with the validator.
+ * const result = validator.validate(map);
  */
 const vulcanval = function (custom) {
   return extend(Object.create(vulcanvalProto), {
@@ -67,16 +105,52 @@ const vulcanval = function (custom) {
   });
 };
 
-vulcanval.version =   '2.0.0';
-vulcanval.log =       log;
-vulcanval.utils =     utils;
+/**
+ * @name log
+ * @memberof module:vulcanval
+ * @type {Object}
+ * @description
+ * This is a reference to the {@link https://github.com/romelperez/prhone-log prhone-log}
+ * package instance used to log messages.
+ */
+vulcanval.log = log;
+
+/**
+ * @name validator
+ * @memberof module:vulcanval
+ * @type {Object}
+ * @description
+ * This is a reference to the {@link https://github.com/chriso/validator.js validator}
+ * package.
+ */
 vulcanval.validator = validator;
 
-vulcanval.settings =          settings;
-vulcanval.fieldsetSettings =  fieldsetSettings;
-vulcanval.fieldSettings =     fieldSettings;
+/**
+ * @name settings
+ * @memberof module:vulcanval
+ * @type {Object}
+ * @description
+ * This is a reference to the {@link settings} global configuration.
+ */
+vulcanval.settings = settings;
+
+/**
+ * @name utilityContext
+ * @memberof module:vulcanval
+ * @type {Object}
+ *
+ * @description
+ * This is a reference to the {@link utilityContext} global configuration.
+ *
+ * This can be mutated to use your own custom properties and methods in any
+ * method/function that make use of this context.
+ */
 vulcanval.utilityContext =    utilityContext;
 
+vulcanval.version = '2.0.0';
+vulcanval.utils = utils;
+vulcanval.fieldsetSettings = fieldsetSettings;
+vulcanval.fieldSettings = fieldSettings;
 vulcanval.extendLocale = extendLocale;
 vulcanval.addValidator = addValidator;
 vulcanval.convertMapTo = convertMapTo;

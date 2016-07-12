@@ -6,12 +6,13 @@ const ui = require('./_ui');
 /**
  * ***Invoke over instantiated elements.***
  *
- * Reset the form or specific field validation state.
+ * Reset all fields in fieldset validation state. This removes all current error states
+ * in those fields.
  *
  * @function external:"jQuery.fn".vulcanval
  *
- * @param  {String} reset - With value `'reset'`.
- * @param  {String} [fieldName] - Only limite reset to specified field.
+ * @param  {String} resetFieldset - With value `'resetFieldset'`.
+ * @param  {String} fieldsetName - Fieldset name to reset.
  * @return {external:jQuery} The same jQuery object.
  */
 const resetFieldset = function (fieldsetName) {

@@ -9,6 +9,10 @@ const ui = require('./_ui');
  * If the instance was configured with the setting {@link settings.enableNestedMaps}
  * as `true`, the {@link map} returned will be nested. Otherwise it will be plain.
  *
+ * This method can also be used over `<form>` elements without being instantiated
+ * and will return a plain data map with all its inputs, selects and textareas
+ * values.
+ *
  * @function external:"jQuery.fn".vulcanval
  *
  * @param  {String} getMap - With value `'getMap'`.

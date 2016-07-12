@@ -2,9 +2,11 @@ const extend = require('extend');
 const settings = require('./settings/settings');
 
 /**
- * Extend validators messages in an specific localization. If it does not exist,
- * it will be created.
+ * Extend validators messages in an specific localization globally. If it does
+ * not exist it will be created.
  *
+ * @method
+ * @name extendLocale
  * @memberof module:vulcanval
  *
  * @param  {Object} locale - A plain object describing the locale.
@@ -29,6 +31,9 @@ const settings = require('./settings/settings');
  * };
  *
  * vulcanval.extendLocale(locale);
+ *
+ * // To set it as default, use:
+ * vulcanval.settings.locale = 'jp';  // The identifier
  */
 module.exports = function extendLocale (locale) {
   settings.msgs[locale.id] = extend(true, {}, settings.msgs[locale.id], locale.msgs);

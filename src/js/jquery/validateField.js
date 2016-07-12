@@ -1,6 +1,17 @@
 const utils = window.vulcanval.utils;
 const log = window.vulcanval.log;
 
+/**
+ * ***Invoke over instantiated elements.***
+ *
+ * Validate visually an specific field in `<form>`.
+ *
+ * @function external:"jQuery.fn".vulcanval
+ *
+ * @param  {String} validateField - With value `'validateField'`.
+ * @param  {String} fieldName - The field name to validate.
+ * @return {external:jQuery} The same jQuery object.
+ */
 const validateField = function (fieldName) {
   'use strict';
 

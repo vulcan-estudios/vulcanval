@@ -1,6 +1,17 @@
 const utils = window.vulcanval.utils;
 const log = window.vulcanval.log;
 
+/**
+ * ***Invoke over instantiated elements.***
+ *
+ * Validate visually all fields of an specific fieldset in `<form>`.
+ *
+ * @function external:"jQuery.fn".vulcanval
+ *
+ * @param  {String} validateFieldset - With value `'validateFieldset'`.
+ * @param  {String} fieldsetName - The fieldset name to validate.
+ * @return {external:jQuery} The same jQuery object.
+ */
 const validateFieldset = function (fieldsetName) {
   'use strict';
 

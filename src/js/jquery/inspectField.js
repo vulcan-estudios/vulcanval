@@ -1,6 +1,18 @@
 const utils = window.vulcanval.utils;
 const log = window.vulcanval.log;
 
+/**
+ * ***Invoke over instantiated elements.***
+ *
+ * Inspect the validation status of an specific field in `<form>`.
+ *
+ * @function external:"jQuery.fn".vulcanval
+ *
+ * @param  {String} inspectField - With value `'inspectField'`.
+ * @param  {String} [fieldName] - The field name to inspect.
+ * @return {String|Boolean}  It will return an error message if field is invalid,
+ * otherwise `false`.
+ */
 const inspectField = function (fieldName) {
 
   const vv = this.data('vv');

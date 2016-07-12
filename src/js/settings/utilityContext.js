@@ -9,7 +9,7 @@ const validator = require('validator');
  * processes.
  *
  * Also, this object has all the methods in the {@link https://www.npmjs.com/package/validator validator}
- * package.
+ * package. So you can shortcut them easily.
  */
 const utilityContext = {
 
@@ -30,7 +30,10 @@ const utilityContext = {
    * reference it as it were plain, ex: `{ person: { age: 22 } }` will be gotten
    * with `.get('person.age')`.
    *
+   * If the field was not found, undefined will be returned.
+   *
    * @type {Function}
+   * @return {*}
    */
   get: null,
 
