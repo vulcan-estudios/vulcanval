@@ -110,6 +110,7 @@ gulp.task('doc-sass-clean', function () {
 gulp.task('doc-sass', ['doc-sass-clean'], function () {
   return gulp.src('./src/scss/**/*.scss')
     .pipe(sassdoc({
+      package: './package.json',
       dest: './doc/sass',
       basePath: 'https://github.com/vulcan-estudios/vulcanval/tree/master',
       descriptionPath: './doc/sass-intro.md',
