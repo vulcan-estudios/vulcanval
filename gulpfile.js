@@ -102,7 +102,10 @@ gulp.task('doc-js', ['doc-js-clean'], function (cb) {
       footer: '<div style="text-align:center;">&copy; 2016 <a href="http://romelperez.com" target="_blank">Romel Pérez</a></div>',
       theme: 'united',
       syntaxTheme: 'dark',
-      analytics: 'UA-80614822-1'
+      analytics: {
+        "ua": "UA-80614822-1",
+        "domain": "http://vulcan-estudios.github.io/vulcanval"
+      }
     }
   };
   gulp.src(['./doc/js-intro.md', './src/js/**/*.js'], {
