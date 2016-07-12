@@ -1,0 +1,30 @@
+<link rel="import" href="./polymer.html">
+
+<dom-module id="vv-source">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+        margin-top: 16px;
+        margin-bottom: 16px;
+        text-align: right;
+      }
+    </style>
+
+    <a class="button secondary hollow" target="_blank"
+       href="https://github.com/vulcan-estudios/vulcanval/tree/master/demo/[[link]]">View Code</a>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'vv-source',
+      properties: {
+        link: String
+      }
+    });
+  </script>
+
+</dom-module>

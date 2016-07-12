@@ -506,6 +506,10 @@ var ui = require('./_ui');
  * If the instance was configured with the setting {@link settings.enableNestedMaps}
  * as `true`, the {@link map} returned will be nested. Otherwise it will be plain.
  *
+ * This method can also be used over `<form>` elements without being instantiated
+ * and will return a plain data map with all its inputs, selects and textareas
+ * values.
+ *
  * @function external:"jQuery.fn".vulcanval
  *
  * @param  {String} getMap - With value `'getMap'`.
@@ -596,7 +600,7 @@ var methods = {
  * This can be instantiated on forms or any form elements with a valid attribute `name`:
  *
  * - `<form>`
- * - `<input>` with `type` different than `submit`, `button` and `reset`
+ * - `<input>` with `type` different than `file`, `submit`, `image`, `button` and `reset`
  * - `<textarea>`
  * - `<select>`
  *
@@ -609,6 +613,9 @@ var methods = {
  * @param  {settings} settings - Instance settings. This is used to configure the
  * whole validation process.
  * @return {external:jQuery} The same jQuery object.
+ *
+ * @see Also see the {@link http://vulcan-estudios.github.io/vulcanval#demos demos}
+ * to learn how to implement this method.
  */
 var plugin = function plugin(customSettings) {
   'use strict';
@@ -735,16 +742,13 @@ var log = window.vulcanval.log;
 /**
  * ***Invoke over instantiated elements.***
  *
- * Inspect the validation status of the `<form>` or specific field in it.
+ * Inspect the validation status of the `<form>`.
  *
  * @function external:"jQuery.fn".vulcanval
  *
  * @param  {String} inspect - With value `'inspect'`.
- * @param  {String} [fieldName] - Only limite inspection to the field.
  * @return {Object|String|Boolean} A plain object with keys as field names and values with
- * error messages if they have. If form is valid, `false` will be returned. If
- * the fieldName is sent, it will return an error message if field is invalid,
- * otherwise `false`.
+ * error messages if they have. If form is valid, `false` will be returned.
  */
 var inspect = function inspect() {
 
@@ -769,6 +773,18 @@ module.exports = inspect;
 var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
+/**
+ * ***Invoke over instantiated elements.***
+ *
+ * Inspect the validation status of an specific field in `<form>`.
+ *
+ * @function external:"jQuery.fn".vulcanval
+ *
+ * @param  {String} inspectField - With value `'inspectField'`.
+ * @param  {String} [fieldName] - The field name to inspect.
+ * @return {String|Boolean}  It will return an error message if field is invalid,
+ * otherwise `false`.
+ */
 var inspectField = function inspectField(fieldName) {
 
   var vv = this.data('vv');
@@ -797,6 +813,18 @@ module.exports = inspectField;
 var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
+/**
+ * ***Invoke over instantiated elements.***
+ *
+ * Inspect the validation status of all fields in fieldset in the `<form>`.
+ *
+ * @function external:"jQuery.fn".vulcanval
+ *
+ * @param  {String} inspectFieldset - With value `'inspectFieldset'`.
+ * @param  {String} fieldsetName - The fieldset name to inspect.
+ * @return {Object|String|Boolean} A plain object with keys as field names and values with
+ * error messages if they have. If fieldset is valid, `false` will be returned.
+ */
 var inspectFieldset = function inspectFieldset(fieldsetName) {
   'use strict';
 
@@ -839,12 +867,11 @@ var ui = require('./_ui');
 /**
  * ***Invoke over instantiated elements.***
  *
- * Reset the form or specific field validation state.
+ * Reset the `<form>` validation state. This removes all current error states.
  *
  * @function external:"jQuery.fn".vulcanval
  *
  * @param  {String} reset - With value `'reset'`.
- * @param  {String} [fieldName] - Only limite reset to specified field.
  * @return {external:jQuery} The same jQuery object.
  */
 var reset = function reset() {
@@ -896,12 +923,13 @@ var ui = require('./_ui');
 /**
  * ***Invoke over instantiated elements.***
  *
- * Reset the form or specific field validation state.
+ * Reset specific field validation state. This removes all current error states
+ * from field.
  *
  * @function external:"jQuery.fn".vulcanval
  *
- * @param  {String} reset - With value `'reset'`.
- * @param  {String} [fieldName] - Only limite reset to specified field.
+ * @param  {String} resetField - With value `'resetField'`.
+ * @param  {String} fieldName - The name of the field.
  * @return {external:jQuery} The same jQuery object.
  */
 var resetField = function resetField(fieldName) {
@@ -957,12 +985,13 @@ var ui = require('./_ui');
 /**
  * ***Invoke over instantiated elements.***
  *
- * Reset the form or specific field validation state.
+ * Reset all fields in fieldset validation state. This removes all current error states
+ * in those fields.
  *
  * @function external:"jQuery.fn".vulcanval
  *
- * @param  {String} reset - With value `'reset'`.
- * @param  {String} [fieldName] - Only limite reset to specified field.
+ * @param  {String} resetFieldset - With value `'resetFieldset'`.
+ * @param  {String} fieldsetName - Fieldset name to reset.
  * @return {external:jQuery} The same jQuery object.
  */
 var resetFieldset = function resetFieldset(fieldsetName) {
@@ -1032,12 +1061,11 @@ var log = window.vulcanval.log;
 /**
  * ***Invoke over instantiated elements.***
  *
- * Validate visually complete `<form>` or specific field in it.
+ * Validate visually all fields in `<form>`.
  *
  * @function external:"jQuery.fn".vulcanval
  *
  * @param  {String} validate - With value `'validate'`.
- * @param  {String} [fieldName] - Only limite validation to the field.
  * @return {external:jQuery} The same jQuery object.
  */
 var validate = function validate() {
@@ -1072,6 +1100,17 @@ module.exports = validate;
 var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
+/**
+ * ***Invoke over instantiated elements.***
+ *
+ * Validate visually an specific field in `<form>`.
+ *
+ * @function external:"jQuery.fn".vulcanval
+ *
+ * @param  {String} validateField - With value `'validateField'`.
+ * @param  {String} fieldName - The field name to validate.
+ * @return {external:jQuery} The same jQuery object.
+ */
 var validateField = function validateField(fieldName) {
   'use strict';
 
@@ -1105,6 +1144,17 @@ module.exports = validateField;
 var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
+/**
+ * ***Invoke over instantiated elements.***
+ *
+ * Validate visually all fields of an specific fieldset in `<form>`.
+ *
+ * @function external:"jQuery.fn".vulcanval
+ *
+ * @param  {String} validateFieldset - With value `'validateFieldset'`.
+ * @param  {String} fieldsetName - The fieldset name to validate.
+ * @return {external:jQuery} The same jQuery object.
+ */
 var validateFieldset = function validateFieldset(fieldsetName) {
   'use strict';
 

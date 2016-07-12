@@ -2644,11 +2644,13 @@ module.exports = exports['default'];
 var settings = require('./settings/settings');
 
 /**
- * Add a custom validator.
+ * Add a custom validator globally.
  *
  * All validators in the package {@link https://www.npmjs.com/package/validator validator}
  * are installed and ready to use.
  *
+ * @method
+ * @name addValidator
  * @memberof module:vulcanval
  *
  * @param {String} name - An alphanumeric validator name.
@@ -2657,8 +2659,7 @@ var settings = require('./settings/settings');
  * {@link https://developer.mozilla.org/en-US/docs/Glossary/Truthy truthy value}.
  * This function will have the {@link utilityContext utility context} as
  * function context. Don't pass
- * {@link https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions arrow functions}
- * or it won't be available.
+ * {@link https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions arrow functions}.
  *
  * @example
  * vulcanval.addValidator('isGreat', function (value) {
@@ -2681,10 +2682,12 @@ var settings = require('./settings/settings');
  *   }]
  * };
  *
- * const field0Valid = vulcanval.validateField('field0', map, settings);
+ * const vv = vulcanval(settings);
+ *
+ * const field0Valid = vv.validateField('field0', map);
  * console.log(field0Valid); // 'This field needs to be great!'
  *
- * @see In the example is used the {@link module:vulcanval.validateField vulcanval.validateField}
+ * @see In the example is used the {@link validator.validateField validator.validateField}
  * static method to test the new validator.
  */
 module.exports = function addValidator(name, validator) {
@@ -2728,19 +2731,22 @@ var utils = require('./utils');
 var convertMapTo = require('./convertMapTo');
 
 /**
- * Clean a map from properties outside the validation process.
+ * Clean a {@link map} from properties outside the validation process.
  *
  * This is done by removing all properties which are not present in the fields
  * list of validation and the fields which are disabled or intented to be
  * only used in client side.
  *
  * @static
- * @method module:vulcanval.cleanMap
+ * @method validator.cleanMap
  *
  * @param  {Boolean} isPlain - If the {@link map} is plain. `false` for nested.
  * @param  {map} map - The map to clean.
  *
  * @return {map} - The cleaned map.
+ *
+ * @see An example of this method is in the
+ * {@link https://github.com/vulcan-estudios/vulcanval/tree/master/demo/server demo server}.
  */
 module.exports = function (isPlain, map) {
   'use strict';
@@ -2861,7 +2867,7 @@ var toPlain = function toPlain(map) {
  *
  * @param  {String} to - It can have two values: `plain` or `nested`.
  * @param  {map} map - The object to convert.
- * @return {Object} The converted object.
+ * @return {map} The converted object map.
  */
 module.exports = function (to, map) {
   'use strict';
@@ -2889,9 +2895,11 @@ var extend = require('extend');
 var settings = require('./settings/settings');
 
 /**
- * Extend validators messages in an specific localization. If it does not exist,
- * it will be created.
+ * Extend validators messages in an specific localization globally. If it does
+ * not exist it will be created.
  *
+ * @method
+ * @name extendLocale
  * @memberof module:vulcanval
  *
  * @param  {Object} locale - A plain object describing the locale.
@@ -2916,6 +2924,9 @@ var settings = require('./settings/settings');
  * };
  *
  * vulcanval.extendLocale(locale);
+ *
+ * // To set it as default, use:
+ * vulcanval.settings.locale = 'jp';  // The identifier
  */
 module.exports = function extendLocale(locale) {
   settings.msgs[locale.id] = extend(true, {}, settings.msgs[locale.id], locale.msgs);
@@ -2991,9 +3002,7 @@ var browser = require('./browser');
  * rawValidation method.
  *
  * @private
- *
  * @param  {String} fieldName
- *
  * @return {String|Boolean} `false` if valid, otherwise the error message.
  */
 module.exports = function (fieldName) {
@@ -3176,8 +3185,10 @@ var utils = require('../utils');
 var fieldSettings = {
 
   /**
-   * The field name. This property is always required.
+   * The field name. This property is required.
    *
+   * @name name
+   * @memberof fieldSettings
    * @type {String}
    */
   name: null,
@@ -3185,71 +3196,83 @@ var fieldSettings = {
   /**
    * Field will be ignored in validation if `true`.
    *
+   * @name disabled
+   * @memberof fieldSettings
    * @type {Boolean}
    * @default false
    */
   //disabled: null,
 
   /**
-   * Field is required and cannot be undefined. If the field is not required but
-   * it has a
+   * Field is required and cannot be undefined nor empty string. If the field is
+   * not required but it does NOT have a
    * {@link https://developer.mozilla.org/en-US/docs/Glossary/Truthy truthy value},
    * then this will pass over all validators.
    *
+   * @name required
+   * @memberof fieldSettings
    * @type {Boolean}
    * @default false
    */
   //required: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Validate field elements on instance time.
    *
+   * @name autostart
+   * @memberof fieldSettings
    * @type {Boolean}
    * @default false
    */
   //autostart: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * When a field is validated, don't show changes visually nor show messages.
    * This is used to know whether they are valid or not, update the fields
    * elements states and trigger events.
    *
-   * If the field is an `<input>` type `hidden`, this will be set as `true`.
-   *
+   * @name intern
+   * @memberof fieldSettings
    * @type {Boolean}
    * @default false
    */
   //intern: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Ignore field in validation in server side.
    *
+   * @name onlyUI
+   * @memberof fieldSettings
    * @type {Boolean}
    * @default false
    */
   //onlyUI: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * What event to listen to trigger the first validation on field.
    *
+   * @name firstValidationEvent
+   * @memberof fieldSettings
    * @type {String}
    * @default Inherited from {@link settings}
    */
   //firstValidationEvent: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * After first validation, what events to listen to re-validate field.
    *
+   * @name validationEvents
+   * @memberof fieldSettings
    * @type {String}
    * @default Inherited from {@link settings}
    */
@@ -3267,12 +3290,17 @@ var fieldSettings = {
    * You can use all validators from the {@link https://www.npmjs.com/package/validator validator}
    * package.
    *
+   * This object will be merged with the {@link fieldsetSettings.validators fieldsets validators}
+   * this field is in.
+   *
+   * @name validators
+   * @memberof fieldSettings
    * @type {Object}
    */
   validators: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Field jQuery element.
    *
@@ -3292,66 +3320,84 @@ var fieldSettings = {
    * - {Boolean|String} msg - If field is invalid the error, otherwise false.
    *
    * @private
+   * @name $el
+   * @memberof fieldSettings
    * @type {external:jQuery}
    */
   $el: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * The element where to set the current field message error. If not specified,
-   * the messages won't be shown on UI. This is a jQuery selector.
+   * the messages won't be shown on UI.
    *
+   * When configured by HTML attribute `data-vv-display`, the value expected should
+   * be a jQuery selector. Otherwise this can be anything to select with the jQuery
+   * selector method.
+   *
+   * @name display
+   * @memberof fieldSettings
    * @type {external:jQuery}
    */
   display: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Display jQuery element.
    *
    * @private
+   * @name $display
+   * @memberof fieldSettings
    * @type {external:jQuery}
    */
   $display: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * jQuery `<label>` elements which have `for` attribute to the field element.
    *
    * @private
+   * @name $labels
+   * @memberof fieldSettings
    * @type {external:jQuery}
    */
   $labels: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Field onFirstChange event (this is defined by user).
    *
    * @private
+   * @name onFirstChange
+   * @memberof fieldSettings
    * @type {Function}
    */
   onFirstChange: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Field onChange event (this is defined by user).
    *
    * @private
+   * @name onChange
+   * @memberof fieldSettings
    * @type {Function}
    */
   onChange: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Field onBlur event.
    *
    * @private
+   * @name onBlur
+   * @memberof fieldSettings
    * @type {Function}
    */
   onBlur: null,
@@ -3366,24 +3412,34 @@ var fieldSettings = {
    * {@link https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions arrow functions}.
    *
    * @method
+   * @name onlyIf
+   * @memberof fieldSettings
    * @return {Boolean}
    */
   onlyIf: null,
 
   /**
-   * Only client-side.
+   * *Only client-side.*
    *
    * Method to get the value of the field. This will have the {@link utilityContext utilty context}
    * so don't use
    * {@link https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions arrow functions}.
    *
-   * By default this can retrieve the value of `<input>`s of any kind except `submit`, 'reset'
-   * and `button`, `<textarea>`s and `<select>`s.
+   * By default this can retrieve the value of `<input>`s of any kind except
+   * `image`, `submit`, `reset`, `file` and `button`, `<textarea>`s and `<select>`s.
    *
-   * You can overwrite this to create your own custom field value getter.
+   * You can overwrite this to create your own custom field value getter. Otherwise
+   * leave this property as default.
    *
+   * The first paramter `$field` will be binded to the function and it is the
+   * jQuery element the fields belongs to.
+   *
+   * @method
+   * @name value
+   * @memberof fieldSettings
    * @param  {external:jQuery} $field - The field element.
-   * @return {*} The value returned will depend on the type of element.
+   * @return {*} The value returned will depend on the type of element or what you
+   * configure if you overwrite this method.
    */
   value: function value($field) {
 
@@ -3416,6 +3472,8 @@ var fieldSettings = {
    * Extend field settings default configuration.
    *
    * @private
+   * @name extend
+   * @memberof fieldSettings
    * @param  {Object} custom
    * @return {Object}
    */
@@ -3440,69 +3498,123 @@ var utils = require('../utils');
  * These properties and methods will affect the fields settings.
  *
  * This is configured in {@link settings.fieldsets} array property.
+ *
+ * Important: one field can be affected by more than one fieldset so if you set
+ * two fieldsets that match the same field, it will have the configuration of both
+ * of them, being priority the last one.
  */
 var fieldsetSettings = {
 
   /**
-   * Fieldset name. This will be used to identify this fieldset.
+   * Fieldset name. This will be used to identify this fieldset and it is required.
    *
+   * @name name
+   * @memberof fieldsetSettings
    * @type {String}
    */
   name: null,
 
   /**
-   * The fields this fieldset covers.
+   * The fields this fieldset covers. This is required.
    *
    * This can be a RegExp to match against the fields names, a string that is
    * the starting string of fields names or an array with the names of the fields.
    *
+   * @name fields
+   * @memberof fieldsetSettings
    * @type {RegExp|String|Array}
-   * @default null
    */
   fields: null,
 
   /**
    * Default {@link fieldSettings.disabled} value in fieldset.
+   *
+   * @name disabled
+   * @memberof fieldsetSettings
+   * @type {Boolean}
+   * @default false
    */
   //disabled: null,
 
   /**
    * Default {@link fieldSettings.required} value in fieldset.
+   *
+   * @name required
+   * @memberof fieldsetSettings
+   * @type {Boolean}
+   * @default false
    */
   //required: null,
 
   /**
    * Default {@link fieldSettings.autostart} value in fieldset.
+   *
+   * @name autostart
+   * @memberof fieldsetSettings
+   * @type {Boolean}
+   * @default false
    */
   //autostart: null,
 
   /**
    * Default {@link fieldSettings.intern} value in fieldset.
+   *
+   * @name intern
+   * @memberof fieldsetSettings
+   * @type {Boolean}
+   * @default false
    */
   //intern: null,
 
   /**
    * Default {@link fieldSettings.onlyUI} value in fieldset.
+   *
+   * @name onlyUI
+   * @memberof fieldsetSettings
+   * @type {Boolean}
+   * @default false
    */
   //onlyUI: null,
 
   /**
    * Default {@link fieldSettings.firstValidationEvent} value in fieldset.
+   *
+   * @name firstValidationEvent
+   * @memberof fieldsetSettings
+   * @type {Boolean}
+   * @default false
    */
   //firstValidationEvent: null,
 
   /**
    * Default {@link fieldSettings.validationEvents} value in fieldset.
+   *
+   * @name validationEvents
+   * @memberof fieldsetSettings
+   * @type {Boolean}
+   * @default false
    */
   //validationEvents: null,
 
   /**
-   * Extends {@link fieldSettings.validators} value in fieldset.
+   * Extends {@link fieldSettings.validators} value in fieldset so all fields
+   * that this fieldset covers will extend their validators with this object.
+   *
+   * @name validators
+   * @memberof fieldsetSettings
+   * @type {Boolean}
+   * @default false
    */
   validators: null,
 
   /**
-   * Middleware {@link fieldSettings.onlyIf} value in fieldset.
+   * Middleware {@link fieldSettings.onlyIf} value in fieldset. This function
+   * will be used in the fields to determine if they will be validated or not.
+   *
+   * @name onlyIf
+   * @memberof fieldsetSettings
+   * @type {Boolean}
+   * @default false
    */
   onlyIf: null,
 
@@ -3510,6 +3622,8 @@ var fieldsetSettings = {
    * Extend fieldset settings default configuration.
    *
    * @private
+   * @name extend
+   * @memberof fieldsetSettings
    * @param  {Object} custom
    * @return {Object}
    */
@@ -3552,6 +3666,8 @@ var settings = {
    * Disable HTML5 validation with novalidate attribute when instanced on `<form>`.
    * This is enabled if attribute "novalidate" is present.
    *
+   * @name disableHTML5Validation
+   * @memberof settings
    * @type {Boolean}
    * @default false
    */
@@ -3564,6 +3680,8 @@ var settings = {
    * Validation methods use this property to convert data {@link map maps} from
    * nested maps to plain maps when this property is enabled.
    *
+   * @name enableNestedMaps
+   * @memberof settings
    * @type {Boolean}
    * @default false
    *
@@ -3589,8 +3707,11 @@ var settings = {
   //enableNestedMaps: null,
 
   /**
-   * Form will not be instantiated.
+   * Form will not be instantiated. In client side, if `<form>` has the attribute
+   * `disabled`, this will be enabled.
    *
+   * @name disabled
+   * @memberof settings
    * @type {Boolean}
    * @default false
    */
@@ -3601,6 +3722,8 @@ var settings = {
    *
    * Validate field elements on instance time.
    *
+   * @name autostart
+   * @memberof settings
    * @type {Boolean}
    * @default false
    */
@@ -3613,6 +3736,8 @@ var settings = {
    * This is used to know whether they are valid or not, update the fields
    * elements states and trigger events.
    *
+   * @name intern
+   * @memberof settings
    * @type {Boolean}
    * @default false
    */
@@ -3623,6 +3748,8 @@ var settings = {
    *
    * What event to listen to trigger the first validation on fields.
    *
+   * @name firstValidationEvent
+   * @memberof settings
    * @type {String}
    * @default 'blur change'
    */
@@ -3633,6 +3760,8 @@ var settings = {
    *
    * After first validation, what events to listen to re-validate fields.
    *
+   * @name validationEvents
+   * @memberof settings
    * @type {String}
    * @default 'input blur change'
    */
@@ -3641,6 +3770,8 @@ var settings = {
   /**
    * Default messages locale.
    *
+   * @name locale
+   * @memberof settings
    * @type {String}
    * @default 'en'
    */
@@ -3649,7 +3780,10 @@ var settings = {
   /**
    * *Only client-side.*
    *
-   * HTML tag classes to add to specific elements in form on error.
+   * HTML tag classes to add to specific elements in form on default and on error.
+   *
+   * @name classes
+   * @memberof settings
    * @type {Object}
    * @property {Object} [defaults] - Static classes.
    * @property {String} [defaults.form] - Form classes.
@@ -3684,8 +3818,10 @@ var settings = {
    * second one the options gave to it when configured. Only if the user configured
    * a validator with an string, number or object value, it is received.
    *
-   * The context of the validators is {@link fieldSettings} so don't use arrow functions.
+   * The context of the validators is {@link utilityContext} so don't use arrow functions.
    *
+   * @name validators
+   * @memberof settings
    * @namespace
    * @see {@link module:vulcanval.addValidator vulcanval.addValidator()} to see how to add new ones.
    * @see {@link fieldSettings.validators} to see how to implement them.
@@ -3705,10 +3841,11 @@ var settings = {
    * The formats can have some variables expressed as `{{var}}` where `var` is the
    * variable name.
    *
-   * - The variable `{{value}}` is always present to use.
+   * - The variable `{{value}}` is always present to use and it's the value of the field
+   *   validating.
    * - The variable `{{option}}` can be used when the validator is configured
    *   with an string. Ex: in validator `isAlphanumeric: 'de-DE'`, the
-   *   variable will have the `de-DE` value.
+   *   variable will have the `de-DE` value. This also applies to numbers.
    * - If the validator is configured with an object, then its properties are
    *   available as variables. Ex: in `isInt: {min:4, max:8}`, `{{min}}` and `{{max}}`
    *   will be available as variables in the message.
@@ -3719,6 +3856,8 @@ var settings = {
    *
    * Also, the order of validator messages on errors can vary.
    *
+   * @name msgs
+   * @memberof settings
    * @type {Object}
    * @default {}
    *
@@ -3761,7 +3900,10 @@ var settings = {
    *     validators: {
    *       isAlphanumeric: 'en-GB',
    *       isLength: { min: 4, max: 16 },
-   *       isLowercase: true  // If this fails, the default message will be used
+   *
+   *       // If this fails, the default message will be used because the package
+   *       // does not have a message for this validator by default
+   *       isMongoId: true
    *     }
    *   }, {
    *     name: 'age',
@@ -3771,14 +3913,16 @@ var settings = {
    *   }]
    * };
    *
-   * let usernameValid = vulcanval.validateField('username', map, settings);
+   * const vv = vulcanval(settings);
+   *
+   * let usernameValid = vv.validateField('username', map);
    * console.log(usernameValid); // 'Debe ser alfanumérico en local "en-GB".'
    *
    * map.username = 'rp';
-   * usernameValid = vulcanval.validateField('username', map, settings);
+   * usernameValid = vv.validateField('username', map);
    * console.log(usernameValid); // 'Mínimo valor: 4.'
    *
-   * let ageValid = vulcanval.validateField('age', map, settings);
+   * let ageValid = vv.validateField('age', map);
    * console.log(ageValid); // 'Valor "720" debe ser número entero.'
    */
   msgs: {
@@ -3791,6 +3935,8 @@ var settings = {
    * Utility context.
    *
    * @private
+   * @name context
+   * @memberof settings
    * @see {@link utilityContext}
    * @type {Object}
    */
@@ -3799,7 +3945,9 @@ var settings = {
   /**
    * The form fieldsets to configure.
    *
-   * @see {@link fieldsetSettings}
+   * @name fieldsets
+   * @memberof settings
+   * @see See {@link fieldsetSettings} for more info about its configuration.
    * @type {Array}
    * @default [ ]
    */
@@ -3808,7 +3956,9 @@ var settings = {
   /**
    * The form fields to configure.
    *
-   * @see {@link fieldSettings}
+   * @name fields
+   * @memberof settings
+   * @see See {@link fieldSettings} for more info about its configuration.
    * @type {Array}
    * @default [ ]
    */
@@ -3825,6 +3975,8 @@ var settings = {
    * - {undefined|Boolean} vv-valid - If all fields are valid. undefined if it's unknown.
    *
    * @private
+   * @name $form
+   * @memberof settings
    * @type {external:jQuery}
    */
   $form: null,
@@ -3835,6 +3987,8 @@ var settings = {
    * On form submit event.
    *
    * @private
+   * @name onSubmit
+   * @memberof settings
    * @type {Function}
    */
   onSubmit: null,
@@ -3845,6 +3999,8 @@ var settings = {
    * On form reset event.
    *
    * @private
+   * @name onReset
+   * @memberof settings
    * @type {Function}
    */
   onReset: null,
@@ -3853,6 +4009,8 @@ var settings = {
    * Get a message template according to locale.
    *
    * @private
+   * @name getMsgTemplate
+   * @memberof settings
    * @param  {String} id - Validator identifier.
    * @return {String}
    */
@@ -3883,6 +4041,8 @@ var settings = {
    * Extend settings.
    *
    * @private
+   * @name extend
+   * @memberof settings
    * @param  {Object} custom - Extend this settings with this paramter.
    * @return {Object} Extended settings.
    */
@@ -4112,7 +4272,7 @@ var validator = require('validator');
  * processes.
  *
  * Also, this object has all the methods in the {@link https://www.npmjs.com/package/validator validator}
- * package.
+ * package. So you can shortcut them easily.
  */
 var utilityContext = {
 
@@ -4133,7 +4293,10 @@ var utilityContext = {
    * reference it as it were plain, ex: `{ person: { age: 22 } }` will be gotten
    * with `.get('person.age')`.
    *
+   * If the field was not found, undefined will be returned.
+   *
    * @type {Function}
+   * @return {*}
    */
   get: null,
 
@@ -4355,14 +4518,12 @@ var convertMapTo = require('./convertMapTo');
 var rawValidation = require('./rawValidation');
 
 /**
- * Validate provided data map using the provided validation settings and get an
- * object describing each field error if there are.
+ * Validate provided data map and get an object describing each field error if there are.
  *
  * @static
- * @method module:vulcanval.validateMap
+ * @method validator.validate
  *
  * @param  {map} map - The data map.
- * @param  {settings} settings - The validation settings.
  *
  * @return {Boolean|Object} If the map is valid, `false` will be returned. Otherwise
  * there will be an object describing each field error as a plain map with its
@@ -4395,7 +4556,9 @@ var rawValidation = require('./rawValidation');
  *   }]
  * };
  *
- * const result = vulcanval.validateMap(map, settings);
+ * const vv = vulcanval(settings);
+ *
+ * const result = vv.validate(map);
  * console.log(result);
  * // {
  * //   name: 'This field should only contain lowercase text.',
@@ -4404,7 +4567,7 @@ var rawValidation = require('./rawValidation');
  *
  * map.name = 'romel';
  * map.likesPumpkin = true;
- * const result2 = vulcanval.validateMap(map, settings);
+ * const result2 = vv.validate(map);
  * console.log(result2);
  * // false
  */
@@ -4456,13 +4619,13 @@ var convertMapTo = require('./convertMapTo');
 var rawValidation = require('./rawValidation');
 
 /**
- * Validate a field in provided data {@link map} using the provided validation {@link settings}.
+ * Validate a field in provided data {@link map}.
  *
  * @static
- * @method module:vulcanval.validateField
+ * @method validator.validateField
  *
- * @param  {String} fieldName - The field name in data map. If the {@link map} is nested,
- * the field name is set as in plain map. Ex: `{user: {name: 'romel'}}` will be `'user.name'`.
+ * @param  {String} fieldName - The field name to validate. If the {@link map} is nested,
+ * the field name should be set as in plain map. Ex: `{user: {name: 'romel'}}` will be `'user.name'`.
  * @param  {map} map - The data map (plain or nested).
  *
  * @return {Boolean|String} If it is valid, `false` will be returned. Otherwise
@@ -4491,10 +4654,12 @@ var rawValidation = require('./rawValidation');
  *   }]
  * };
  *
- * const nameResult = vulcanval.validateField('name', map, settings);
+ * const vv = vulcanval(settings);
+ *
+ * const nameResult = vv.validateField('name', map);
  * console.log(nameResult); // 'This field should only contain lowercase text.'
  *
- * const ageResult = vulcanval.validateField('age', map, settings);
+ * const ageResult = vv.validateField('age', map);
  * console.log(ageResult); // false
  */
 module.exports = function (fieldName, map) {
@@ -4536,9 +4701,70 @@ var convertMapTo = require('./convertMapTo');
 var rawValidation = require('./rawValidation');
 
 /**
- * Validate all fields in a fieldset.
+ * Validate all fields of fieldset in {@link map} provided.
  *
- * @method module:vulcanval.validateFieldset
+ * @static
+ * @method validator.validateFieldset
+ *
+ * @param  {String} fieldsetName - The fieldset name to validate.
+ * @param  {map} map - The data map (plain or nested).
+ *
+ * @return {Boolean|Object} If the fieldset fields are valid, `false` will be returned.
+ * Otherwise there will be an object describing each field error as a plain map with its
+ * keys as the fields names even if the property {@link settings.enableNestedMaps}
+ * is enabled. Use the {@link vulcanval.convertMapTo} method if needed.
+ *
+ * @example
+ * const map = {
+ *   user: {
+ *     name: 'Romel',
+ *     age: 22
+ *   },
+ *   course: {
+ *     id: '4cdfb11e1f3c000000007822',
+ *     register: 'wrong value'
+ *   }
+ * };
+ *
+ * const settings = {
+ *
+ *   // Usually you would use nested maps with fieldsets.
+ *   enableNestedMaps: true,
+ *
+ *   fieldsets: [{
+ *     name: 'user',
+ *     fields: ['user.name', 'user.age'],
+ *     required: true
+ *   }, {
+ *     name: 'course',
+ *     fields: ['course.id', 'course.register'],
+ *     required: true
+ *   }],
+ *
+ *   fields: [{
+ *     name: 'user.name',
+ *     validators: { isAlphanumeric: true, isLowercase: true }
+ *   }, {
+ *     name: 'user.age',
+ *     validators: { isInt: { min: 1, max: 500 } }
+ *   }, {
+ *     name: 'course.id',
+ *     validators: { isMongoId: true }
+ *   }, {
+ *     name: 'course.register',
+ *     validators: { isISO8601: true }
+ *   }]
+ * };
+ *
+ * const vv = vulcanval(settings);
+ *
+ * const nameResult = vv.validateFieldset('user', map);
+ * console.log(nameResult);
+ * // { 'user.name': 'This field should only contain lowercase text.' }
+ *
+ * const ageResult = vv.validateFieldset('course', map);
+ * console.log(ageResult);
+ * // { 'course.register': 'Please type a valid date.' }
  */
 module.exports = function (fieldsetName, map) {
   'use strict';
@@ -4658,7 +4884,16 @@ var isAlphanumericText = require('./validators/isAlphanumericText');
  */
 
 /**
- * Proto
+ * @namespace validator
+ * @type {Object}
+ * @description
+ * This is an object created by the module {@link module:vulcanval vulcanval} by
+ * specified {@link settings} to validate {@link map data maps}.
+ *
+ * This object has some methods to help you validate data possibly extracted from
+ * forms through a configuration that can be used in client side and server side.
+ *
+ * @see {@link module:vulcanval vulcanval} to see how to create this object.
  */
 var vulcanvalProto = {
   cleanMap: cleanMap,
@@ -4669,12 +4904,12 @@ var vulcanvalProto = {
 };
 
 /**
- * The vulcan validator (vulcanval) object.
+ * The vulcan validator (vulcanval) creator.
  *
- * This module exposes some static methods to validate data maps extracted maybe
- * extracted from client-side form elements. The data maps are simple plain JavaScript
- * objects with each element name and value in form. The validations configurations
- * are extended from the {@link settings}.
+ * This module is a function which receives a {@link settings} object and returns
+ * a {@link validator} object to validate {@link map data maps}.
+ *
+ * Also this has some properties and methods to configure the validations globally.
  *
  * In Node.js environments use like:
  *
@@ -4685,6 +4920,35 @@ var vulcanvalProto = {
  * In browser environments this object is available in {@link external:window.vulcanval window.vulcanval}.
  *
  * @module vulcanval
+ * @see {@link validator}
+ * @example
+ * // Changing a global configuration in settings.
+ * vulcanval.settings.locale = 'pt';
+ *
+ * // Addind a new validator method.
+ * vulcanval.addValidator('valName', function () { ... });
+ *
+ * // Extending/creating a new locale/language.
+ * vulcanval.extendLocale({ ... });
+ *
+ * // A form configuration to create a validator.
+ * const settings = {
+ *   fields: [{
+ *     name: 'fieldName',
+ *     validators: {}
+ *   }]
+ * };
+ *
+ * // Creating a validator from settings.
+ * const validator = vulcanval(settings);
+ *
+ * // A data map to validate.
+ * const map = {
+ *   fieldName: 'field value'
+ * };
+ *
+ * // Validating the map with the validator.
+ * const result = validator.validate(map);
  */
 var vulcanval = function vulcanval(custom) {
   return extend(Object.create(vulcanvalProto), {
@@ -4692,16 +4956,52 @@ var vulcanval = function vulcanval(custom) {
   });
 };
 
-vulcanval.version = '2.0.0';
+/**
+ * @name log
+ * @memberof module:vulcanval
+ * @type {Object}
+ * @description
+ * This is a reference to the {@link https://github.com/romelperez/prhone-log prhone-log}
+ * package instance used to log messages.
+ */
 vulcanval.log = log;
-vulcanval.utils = utils;
+
+/**
+ * @name validator
+ * @memberof module:vulcanval
+ * @type {Object}
+ * @description
+ * This is a reference to the {@link https://github.com/chriso/validator.js validator}
+ * package.
+ */
 vulcanval.validator = validator;
 
+/**
+ * @name settings
+ * @memberof module:vulcanval
+ * @type {Object}
+ * @description
+ * This is a reference to the {@link settings} global configuration.
+ */
 vulcanval.settings = settings;
-vulcanval.fieldsetSettings = fieldsetSettings;
-vulcanval.fieldSettings = fieldSettings;
+
+/**
+ * @name utilityContext
+ * @memberof module:vulcanval
+ * @type {Object}
+ *
+ * @description
+ * This is a reference to the {@link utilityContext} global configuration.
+ *
+ * This can be mutated to use your own custom properties and methods in any
+ * method/function that make use of this context.
+ */
 vulcanval.utilityContext = utilityContext;
 
+vulcanval.version = '2.0.0';
+vulcanval.utils = utils;
+vulcanval.fieldsetSettings = fieldsetSettings;
+vulcanval.fieldSettings = fieldSettings;
 vulcanval.extendLocale = extendLocale;
 vulcanval.addValidator = addValidator;
 vulcanval.convertMapTo = convertMapTo;

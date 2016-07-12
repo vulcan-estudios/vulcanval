@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="fieldsetSettings.html">fieldsetSettings</a></li><li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="settings.validators.html">settings.validators</a></li><li><a href="utilityContext.html">utilityContext</a></li>
+					<li><a href="fieldsetSettings.html">fieldsetSettings</a></li><li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="settings.validators.html">settings.validators</a></li><li><a href="utilityContext.html">utilityContext</a></li><li><a href="validator.html">validator</a></li>
 				</ul>
 			</li>
 			
@@ -41,13 +41,6 @@
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="module-vulcanval.html">vulcanval</a></li>
-				</ul>
-			</li>
-			
-			<li class="dropdown">
-				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="global.html#vulcanvalProto">vulcanvalProto</a></li>
 				</ul>
 			</li>
 			
@@ -102,7 +95,10 @@
     
         
             <div class="description"><p>These properties and methods will affect the fields settings.</p>
-<p>This is configured in <a href="settings.html#.fieldsets">settings.fieldsets</a> array property.</p></div>
+<p>This is configured in <a href="settings.html#.fieldsets">settings.fieldsets</a> array property.</p>
+<p>Important: one field can be affected by more than one fieldset so if you set
+two fieldsets that match the same field, it will have the configuration of both
+of them, being priority the last one.</p></div>
         
 
         
@@ -165,6 +161,162 @@
         <dl>
             
 <hr>
+<dt class="name" id=".autostart">
+    <h4><span class="type-signature">&lt;static> </span>autostart<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Default <a href="fieldSettings.html#.autostart">fieldSettings.autostart</a> value in fieldset.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".disabled">
+    <h4><span class="type-signature">&lt;static> </span>disabled<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Default <a href="fieldSettings.html#.disabled">fieldSettings.disabled</a> value in fieldset.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
 <dt class="name" id=".fields">
     <h4><span class="type-signature">&lt;static> </span>fields<span class="type-signature"> :RegExp|String|Array</span></h4>
 
@@ -173,7 +325,7 @@
 <dd>
     
     <div class="description">
-        <p>The fields this fieldset covers.</p>
+        <p>The fields this fieldset covers. This is required.</p>
 <p>This can be a RegExp to match against the fields names, a string that is
 the starting string of fields names or an array with the names of the fields.</p>
     </div>
@@ -225,10 +377,159 @@ the starting string of fields names or an array with the names of the fields.</p
 	
 
 	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".firstValidationEvent">
+    <h4><span class="type-signature">&lt;static> </span>firstValidationEvent<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Default <a href="fieldSettings.html#.firstValidationEvent">fieldSettings.firstValidationEvent</a> value in fieldset.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
 	<dd class="tag-default">
 		<ul class="dummy">
-			<li>null</li>
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".intern">
+    <h4><span class="type-signature">&lt;static> </span>intern<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Default <a href="fieldSettings.html#.intern">fieldSettings.intern</a> value in fieldset.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
 		</ul>
 	</dd>
 	
@@ -259,7 +560,7 @@ the starting string of fields names or an array with the names of the fields.</p
 <dd>
     
     <div class="description">
-        <p>Fieldset name. This will be used to identify this fieldset.</p>
+        <p>Fieldset name. This will be used to identify this fieldset and it is required.</p>
     </div>
     
 
@@ -323,17 +624,29 @@ the starting string of fields names or an array with the names of the fields.</p
             
 <hr>
 <dt class="name" id=".onlyIf">
-    <h4><span class="type-signature">&lt;static> </span>onlyIf<span class="type-signature"></span></h4>
+    <h4><span class="type-signature">&lt;static> </span>onlyIf<span class="type-signature"> :Boolean</span></h4>
 
     
 </dt>
 <dd>
     
     <div class="description">
-        <p>Middleware <a href="fieldSettings.html#.onlyIf">fieldSettings.onlyIf</a> value in fieldset.</p>
+        <p>Middleware <a href="fieldSettings.html#.onlyIf">fieldSettings.onlyIf</a> value in fieldset. This function
+will be used in the fields to determine if they will be validated or not.</p>
     </div>
     
 
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
     
 
     
@@ -362,6 +675,247 @@ the starting string of fields names or an array with the names of the fields.</p
 
 	
 
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".onlyUI">
+    <h4><span class="type-signature">&lt;static> </span>onlyUI<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Default <a href="fieldSettings.html#.onlyUI">fieldSettings.onlyUI</a> value in fieldset.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".required">
+    <h4><span class="type-signature">&lt;static> </span>required<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Default <a href="fieldSettings.html#.required">fieldSettings.required</a> value in fieldset.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".validationEvents">
+    <h4><span class="type-signature">&lt;static> </span>validationEvents<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Default <a href="fieldSettings.html#.validationEvents">fieldSettings.validationEvents</a> value in fieldset.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
 	
 
 
@@ -383,17 +937,29 @@ the starting string of fields names or an array with the names of the fields.</p
             
 <hr>
 <dt class="name" id=".validators">
-    <h4><span class="type-signature">&lt;static> </span>validators<span class="type-signature"></span></h4>
+    <h4><span class="type-signature">&lt;static> </span>validators<span class="type-signature"> :Boolean</span></h4>
 
     
 </dt>
 <dd>
     
     <div class="description">
-        <p>Extends <a href="fieldSettings.html#.validators">fieldSettings.validators</a> value in fieldset.</p>
+        <p>Extends <a href="fieldSettings.html#.validators">fieldSettings.validators</a> value in fieldset so all fields
+that this fieldset covers will extend their validators with this object.</p>
     </div>
     
 
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
     
 
     
@@ -422,6 +988,13 @@ the starting string of fields names or an array with the names of the fields.</p
 
 	
 
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
 	
 
 
@@ -489,7 +1062,7 @@ the starting string of fields names or an array with the names of the fields.</p
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-07-11T17:08:44-05:00
+		on 2016-07-12T05:17:51-05:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

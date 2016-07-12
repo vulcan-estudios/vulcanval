@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="fieldsetSettings.html">fieldsetSettings</a></li><li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="settings.validators.html">settings.validators</a></li><li><a href="utilityContext.html">utilityContext</a></li>
+					<li><a href="fieldsetSettings.html">fieldsetSettings</a></li><li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="settings.validators.html">settings.validators</a></li><li><a href="utilityContext.html">utilityContext</a></li><li><a href="validator.html">validator</a></li>
 				</ul>
 			</li>
 			
@@ -41,13 +41,6 @@
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="module-vulcanval.html">vulcanval</a></li>
-				</ul>
-			</li>
-			
-			<li class="dropdown">
-				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="global.html#vulcanvalProto">vulcanvalProto</a></li>
 				</ul>
 			</li>
 			
@@ -174,6 +167,85 @@ default.</p></div>
         <dl>
             
 <hr>
+<dt class="name" id=".autostart">
+    <h4><span class="type-signature">&lt;static> </span>autostart<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p><em>Only client-side.</em></p>
+<p>Validate field elements on instance time.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
 <dt class="name" id=".classes">
     <h4><span class="type-signature">&lt;static> </span>classes<span class="type-signature"> :Object</span></h4>
 
@@ -183,7 +255,7 @@ default.</p></div>
     
     <div class="description">
         <p><em>Only client-side.</em></p>
-<p>HTML tag classes to add to specific elements in form on error.</p>
+<p>HTML tag classes to add to specific elements in form on default and on error.</p>
     </div>
     
 
@@ -651,6 +723,273 @@ default.</p></div>
         
             
 <hr>
+<dt class="name" id=".disabled">
+    <h4><span class="type-signature">&lt;static> </span>disabled<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Form will not be instantiated. In client side, if <code>&lt;form&gt;</code> has the attribute
+<code>disabled</code>, this will be enabled.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".disableHTML5Validation">
+    <h4><span class="type-signature">&lt;static> </span>disableHTML5Validation<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p><em>Only client-side.</em></p>
+<p>Disable HTML5 validation with novalidate attribute when instanced on <code>&lt;form&gt;</code>.
+This is enabled if attribute &quot;novalidate&quot; is present.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".enableNestedMaps">
+    <h4><span class="type-signature">&lt;static> </span>enableNestedMaps<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>When a map of fields is created out of a form, should it be converted to a
+map of nested fields or only plain fields?</p>
+<p>Validation methods use this property to convert data <a href="map.html">maps</a> from
+nested maps to plain maps when this property is enabled.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="external-_jQuery.fn_.html#.vulcanval">external:"jQuery.fn".vulcanval</a></li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">// Using a form like this:
+// &lt;form&gt;
+//  &lt;input name=&quot;field1&quot; /&gt;
+//  &lt;input name=&quot;map1.field2&quot; /&gt;
+//  &lt;input name=&quot;map1.field3&quot; /&gt;
+//  &lt;input name=&quot;map2.field4&quot; /&gt;
+// &lt;/form&gt;
+
+const map = $(&#x27;form&#x27;).vulcanval(&#x27;getMap&#x27;);
+
+// If nested maps are enabled, the map object will have this value:
+// { field1: &#x27;&#x27;, map1: { field2: &#x27;&#x27;, field3: &#x27;&#x27; }, map2: { field4: &#x27;&#x27; } }
+
+// Otherwise:
+// { field1: &#x27;&#x27;, &#x27;map1.field2&#x27;: &#x27;&#x27;, &#x27;map1.field3&#x27;: &#x27;&#x27;, &#x27;map2.field4&#x27;: &#x27;&#x27; }</pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
 <dt class="name" id=".fields">
     <h4><span class="type-signature">&lt;static> </span>fields<span class="type-signature"> :Array</span></h4>
 
@@ -721,7 +1060,7 @@ default.</p></div>
 	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
 	<dd class="tag-see">
 		<ul>
-			<li><a href="fieldSettings.html">fieldSettings</a></li>
+			<li>See <a href="fieldSettings.html">fieldSettings</a> for more info about its configuration.</li>
 			</ul>
 	</dd>
 	
@@ -806,7 +1145,7 @@ default.</p></div>
 	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
 	<dd class="tag-see">
 		<ul>
-			<li><a href="fieldsetSettings.html">fieldsetSettings</a></li>
+			<li>See <a href="fieldsetSettings.html">fieldsetSettings</a> for more info about its configuration.</li>
 			</ul>
 	</dd>
 	
@@ -878,6 +1217,87 @@ default.</p></div>
 	<dd class="tag-default">
 		<ul class="dummy">
 			<li>'blur change'</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".intern">
+    <h4><span class="type-signature">&lt;static> </span>intern<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p><em>Only client-side.</em></p>
+<p>When a field is validated, don't show changes visually nor show messages.
+This is used to know whether they are valid or not, update the fields
+elements states and trigger events.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
 		</ul>
 	</dd>
 	
@@ -995,10 +1415,11 @@ locale configured.</p>
 <p>The formats can have some variables expressed as <code>{{var}}</code> where <code>var</code> is the
 variable name.</p>
 <ul>
-<li>The variable <code>{{value}}</code> is always present to use.</li>
+<li>The variable <code>{{value}}</code> is always present to use and it's the value of the field
+validating.</li>
 <li>The variable <code>{{option}}</code> can be used when the validator is configured
 with an string. Ex: in validator <code>isAlphanumeric: 'de-DE'</code>, the
-variable will have the <code>de-DE</code> value.</li>
+variable will have the <code>de-DE</code> value. This also applies to numbers.</li>
 <li>If the validator is configured with an object, then its properties are
 available as variables. Ex: in <code>isInt: {min:4, max:8}</code>, <code>{{min}}</code> and <code>{{max}}</code>
 will be available as variables in the message.</li>
@@ -1111,7 +1532,10 @@ const settings = {
     validators: {
       isAlphanumeric: &#x27;en-GB&#x27;,
       isLength: { min: 4, max: 16 },
-      isLowercase: true  // If this fails, the default message will be used
+
+      // If this fails, the default message will be used because the package
+      // does not have a message for this validator by default
+      isMongoId: true
     }
   }, {
     name: &#x27;age&#x27;,
@@ -1121,14 +1545,16 @@ const settings = {
   }]
 };
 
-let usernameValid = vulcanval.validateField(&#x27;username&#x27;, map, settings);
+const vv = vulcanval(settings);
+
+let usernameValid = vv.validateField(&#x27;username&#x27;, map);
 console.log(usernameValid); // &#x27;Debe ser alfanumérico en local &quot;en-GB&quot;.&#x27;
 
 map.username = &#x27;rp&#x27;;
-usernameValid = vulcanval.validateField(&#x27;username&#x27;, map, settings);
+usernameValid = vv.validateField(&#x27;username&#x27;, map);
 console.log(usernameValid); // &#x27;Mínimo valor: 4.&#x27;
 
-let ageValid = vulcanval.validateField(&#x27;age&#x27;, map, settings);
+let ageValid = vv.validateField(&#x27;age&#x27;, map);
 console.log(ageValid); // &#x27;Valor &quot;720&quot; debe ser número entero.&#x27;</pre>
 
 
@@ -1264,7 +1690,7 @@ console.log(ageValid); // &#x27;Valor &quot;720&quot; debe ser número entero.&#
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-07-11T17:08:44-05:00
+		on 2016-07-12T05:17:51-05:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
