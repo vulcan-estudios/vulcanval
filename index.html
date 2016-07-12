@@ -159,10 +159,10 @@ if (invalid) {
       <pre><code class="language-js">const vulcanval = require('vulcanval');</code></pre>
       <p>To use with <a href="http://browserify.org">Browserify</a> or <a href="https://webpack.github.io">Webpack</a>:</p>
 <pre><code class="language-js">const vulcanval = require('vulcanval');
-const vulcanvalJQuery = require('vulcanval/src/js/plugin');
+const vulcanvalJQuery = require('vulcanval/src/js/jquery');
 // or
 import vulcanval from 'vulcanval';
-import vulcanvalJQuery from 'vulcanval/src/js/plugin';</code></pre>
+import vulcanvalJQuery from 'vulcanval/src/js/jquery';</code></pre>
       <p>Make sure you have an ES2015 compiler as <a href="https://babeljs.io/">Babel</a> configured.</p>
       <p>On <a href="http://nodejs.org">Node</a> VulcanVal does not have dependencies but in client-side the plugin requires <a href="http://jquery.com">jQuery</a> so make sure you install it first.</p>
 
@@ -170,7 +170,7 @@ import vulcanvalJQuery from 'vulcanval/src/js/plugin';</code></pre>
       <p>To install the styles with <a href="http://sass-lang.com">SASS</a>, include in import paths:</p>
       <pre><code class="language-none">./node_modules/vulcanval/src/scss/jquery</code></pre>
       <p>And import in your SASS code:</p>
-      <pre><code class="language-css">@import &#39;vulcanval&#39;;</code></pre>
+      <pre><code class="language-css">@import &#39;vulcanval-jquery&#39;;</code></pre>
 
       <h4>Built files</h4>
       <p>You can download the browser built files version 2.x from:</p>
