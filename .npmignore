@@ -8,6 +8,7 @@ test
 lib
 demo
 doc
+site
 
 *.log
 *.pid
@@ -15,7 +16,8 @@ doc
 
 NOTES.md
 gulpfile.js
-karma.conf.js
+karma-global.conf.js
+karma-jquery.conf.js
 karma-desktop.conf.js
 .gitignore
 .npmignore
@@ -24,3 +26,6 @@ karma-desktop.conf.js
 .grunt
 .lock-wscript
 .travis.yml
+server.js
+index.html
+update.sh

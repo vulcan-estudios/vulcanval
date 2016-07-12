@@ -1,6 +1,6 @@
 {
   "name": "vulcanval",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Validate data forms in client and server sides seamlessly",
   "keywords": [
     "validation",
@@ -63,7 +63,7 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0"
   },
-  "main": "src/js/main.js",
+  "main": "src/js/vulcanval.js",
   "scripts": {
     "test": "npm run test-global && npm run test-jquery",
     "test-desktop": "npm run test-jquery-desktop",
