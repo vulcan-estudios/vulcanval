@@ -95,7 +95,15 @@ gulp.task('doc-js', ['doc-js-clean'], function (cb) {
     },
     plugins: [
       'plugins/markdown'
-    ]
+    ],
+    template: './node_modules/ink-docstrap/template',
+    templates: {
+      systemName: 'VulcanVal',
+      footer: '<div style="text-align:center;">&copy; 2016 <a href="http://romelperez.com" target="_blank">Romel Pérez</a></div>',
+      theme: 'united',
+      syntaxTheme: 'dark',
+      analytics: 'UA-80614822-1'
+    }
   };
   gulp.src(['./doc/js-intro.md', './src/js/**/*.js'], {
     read: false
@@ -113,7 +121,9 @@ gulp.task('doc-sass', ['doc-sass-clean'], function () {
       package: './package.json',
       dest: './doc/sass',
       basePath: 'https://github.com/vulcan-estudios/vulcanval/tree/master',
+      shortcutIcon: './site/favicon.png',
       descriptionPath: './doc/sass-intro.md',
+      googleAnalytics: 'UA-80614822-1',
       display: {
         access: ['public']
       }
