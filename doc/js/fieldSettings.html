@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="fieldsetSettings.html">fieldsetSettings</a></li><li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="settings.validators.html">settings.validators</a></li><li><a href="utilityContext.html">utilityContext</a></li>
+					<li><a href="fieldsetSettings.html">fieldsetSettings</a></li><li><a href="fieldSettings.html">fieldSettings</a></li><li><a href="map.html">map</a></li><li><a href="settings.html">settings</a></li><li><a href="settings.validators.html">settings.validators</a></li><li><a href="utilityContext.html">utilityContext</a></li><li><a href="validator.html">validator</a></li>
 				</ul>
 			</li>
 			
@@ -41,13 +41,6 @@
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="module-vulcanval.html">vulcanval</a></li>
-				</ul>
-			</li>
-			
-			<li class="dropdown">
-				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="global.html#vulcanvalProto">vulcanvalProto</a></li>
 				</ul>
 			</li>
 			
@@ -167,6 +160,163 @@
         <dl>
             
 <hr>
+<dt class="name" id=".autostart">
+    <h4><span class="type-signature">&lt;static> </span>autostart<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p><em>Only client-side.</em></p>
+<p>Validate field elements on instance time.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".disabled">
+    <h4><span class="type-signature">&lt;static> </span>disabled<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Field will be ignored in validation if <code>true</code>.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
 <dt class="name" id=".display">
     <h4><span class="type-signature">&lt;static> </span>display<span class="type-signature"> :<a href="external-jQuery.html">external:jQuery</a></span></h4>
 
@@ -175,9 +325,12 @@
 <dd>
     
     <div class="description">
-        <p>Only client-side.</p>
+        <p><em>Only client-side.</em></p>
 <p>The element where to set the current field message error. If not specified,
-the messages won't be shown on UI. This is a jQuery selector.</p>
+the messages won't be shown on UI.</p>
+<p>When configured by HTML attribute <code>data-vv-display</code>, the value expected should
+be a jQuery selector. Otherwise this can be anything to select with the jQuery
+selector method.</p>
     </div>
     
 
@@ -240,6 +393,166 @@ the messages won't be shown on UI. This is a jQuery selector.</p>
         
             
 <hr>
+<dt class="name" id=".firstValidationEvent">
+    <h4><span class="type-signature">&lt;static> </span>firstValidationEvent<span class="type-signature"> :String</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p><em>Only client-side.</em></p>
+<p>What event to listen to trigger the first validation on field.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">String</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>Inherited from <a href="settings.html">settings</a></li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".intern">
+    <h4><span class="type-signature">&lt;static> </span>intern<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p><em>Only client-side.</em></p>
+<p>When a field is validated, don't show changes visually nor show messages.
+This is used to know whether they are valid or not, update the fields
+elements states and trigger events.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
 <dt class="name" id=".name">
     <h4><span class="type-signature">&lt;static> </span>name<span class="type-signature"> :String</span></h4>
 
@@ -248,7 +561,7 @@ the messages won't be shown on UI. This is a jQuery selector.</p>
 <dd>
     
     <div class="description">
-        <p>The field name. This property is always required.</p>
+        <p>The field name. This property is required.</p>
     </div>
     
 
@@ -311,6 +624,245 @@ the messages won't be shown on UI. This is a jQuery selector.</p>
         
             
 <hr>
+<dt class="name" id=".onlyUI">
+    <h4><span class="type-signature">&lt;static> </span>onlyUI<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p><em>Only client-side.</em></p>
+<p>Ignore field in validation in server side.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".required">
+    <h4><span class="type-signature">&lt;static> </span>required<span class="type-signature"> :Boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Field is required and cannot be undefined nor empty string. If the field is
+not required but it does NOT have a
+<a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy value</a>,
+then this will pass over all validators.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Boolean</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>false</li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id=".validationEvents">
+    <h4><span class="type-signature">&lt;static> </span>validationEvents<span class="type-signature"> :String</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p><em>Only client-side.</em></p>
+<p>After first validation, what events to listen to re-validate field.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">String</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-default method-doc-label method-doc-details-label">Default Value:</dt>
+	<dd class="tag-default">
+		<ul class="dummy">
+			<li>Inherited from <a href="settings.html">settings</a></li>
+		</ul>
+	</dd>
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
 <dt class="name" id=".validators">
     <h4><span class="type-signature">&lt;static> </span>validators<span class="type-signature"> :Object</span></h4>
 
@@ -327,6 +879,8 @@ will not be used.</p>
 <p>These won't be used if the field value is boolean.</p>
 <p>You can use all validators from the <a href="https://www.npmjs.com/package/validator">validator</a>
 package.</p>
+<p>This object will be merged with the <a href="fieldsetSettings.html#.validators">fieldsets validators</a>
+this field is in.</p>
     </div>
     
 
@@ -507,13 +1061,16 @@ with the <a href="utilityContext.html">utility context</a> as function context s
 
     
     <div class="description">
-        <p>Only client-side.</p>
+        <p><em>Only client-side.</em></p>
 <p>Method to get the value of the field. This will have the <a href="utilityContext.html">utilty context</a>
 so don't use
 <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions">arrow functions</a>.</p>
-<p>By default this can retrieve the value of <code>&lt;input&gt;</code>s of any kind except <code>submit</code>, 'reset'
-and <code>button</code>, <code>&lt;textarea&gt;</code>s and <code>&lt;select&gt;</code>s.</p>
-<p>You can overwrite this to create your own custom field value getter.</p>
+<p>By default this can retrieve the value of <code>&lt;input&gt;</code>s of any kind except
+<code>image</code>, <code>submit</code>, <code>reset</code>, <code>file</code> and <code>button</code>, <code>&lt;textarea&gt;</code>s and <code>&lt;select&gt;</code>s.</p>
+<p>You can overwrite this to create your own custom field value getter. Otherwise
+leave this property as default.</p>
+<p>The first paramter <code>$field</code> will be binded to the function and it is the
+jQuery element the fields belongs to.</p>
     </div>
     
 
@@ -629,7 +1186,8 @@ and <code>button</code>, <code>&lt;textarea&gt;</code>s and <code>&lt;select&gt;
     
             
 <div class="param-desc">
-    <p>The value returned will depend on the type of element.</p>
+    <p>The value returned will depend on the type of element or what you
+configure if you overwrite this method.</p>
 </div>
 
 
@@ -701,7 +1259,7 @@ and <code>button</code>, <code>&lt;textarea&gt;</code>s and <code>&lt;select&gt;
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-07-11T17:08:44-05:00
+		on 2016-07-12T04:58:09-05:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
