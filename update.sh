@@ -3,6 +3,8 @@
 # Build distribution and documentation files, committing them and updating
 # site branch.
 
+git status
+
 # Ensure we have committed changes.
 read -p "Have you committed your changes in master? (yes/no): " answer
 if [ "$answer" != "yes" ]
