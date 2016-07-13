@@ -164,7 +164,10 @@ const vulcanvalJQuery = require('vulcanval/src/js/jquery');
 import vulcanval from 'vulcanval';
 import vulcanvalJQuery from 'vulcanval/src/js/jquery';</code></pre>
       <p>Make sure you have an ES2015 compiler as <a href="https://babeljs.io/">Babel</a> configured.</p>
-      <p>On <a href="http://nodejs.org">Node</a> VulcanVal does not have dependencies but in client-side the plugin requires <a href="http://jquery.com">jQuery</a> so make sure you install it first.</p>
+      <p>VulcanVal has a dependency on <a href="https://www.npmjs.com/package/validator" target="_blank">validator.js</a>
+         and in client-side the plugin requires <a href="http://jquery.com" target="_blank">jQuery</a> so make sure
+         you install them first.</p>
+      <pre><code class="language-bash">npm install --save validator jquery</code></pre>
 
       <h4>CSS</h4>
       <p>To install the styles with <a href="http://sass-lang.com">SASS</a>, include in import paths:</p>
