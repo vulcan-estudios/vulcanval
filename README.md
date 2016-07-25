@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/vulcanval.svg)](https://badge.fury.io/js/vulcanval)
 [![Build Status](https://travis-ci.org/vulcan-estudios/vulcanval.svg?branch=master)](https://travis-ci.org/vulcan-estudios/vulcanval)
+[![license](https://img.shields.io/github/license/vulcan-estudios/vulcanval.svg?maxAge=2592000)](https://github.com/vulcan-estudios/vulcanval/blob/master/LICENSE)
 
 > Vulcan Validator, Validate data forms in client and server sides seamlessly.
 
@@ -19,6 +20,7 @@ npm install --save vulcanval
 - Ability to add custom validators.
 - Ability to add custom fields different from form elements.
 - Ability to configure fieldsets.
+- Configuration checkers to prevent errors in settings.
 - Extract data from forms elements as data maps (possibly nested objects).
 - Internationalization support.
 - HTML5 integration.
