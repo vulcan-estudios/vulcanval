@@ -1,6 +1,6 @@
 {
   "name": "vulcanval",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Validate data forms in client and server sides seamlessly",
   "keywords": [
     "validation",
