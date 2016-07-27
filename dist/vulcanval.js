@@ -252,14 +252,13 @@ module.exports = function extend() {
   };
 
   /**
-   * Create the log message with the logger configuration.
+   * Create a log description message by logger configuration.
    * @private
    * @param  {Date} date - Date of log.
    * @param  {Object} level - Reference to the level definition.
-   * @param  {String} text - The raw message.
-   * @return {String} - The parsed message.
+   * @return {String} - The description.
    */
-  Log.prototype._msg = function (date, level, text) {
+  Log.prototype._pre = function (date, level) {
 
     var dtime = '';
     var dlevel = '';
@@ -278,15 +277,15 @@ module.exports = function extend() {
     }
 
     if (this.settings.displayLevel) {
-      dlevel = level.name + ' ';
+      dlevel = level.name +' ';
     }
 
     if (this.settings.displayNamespace) {
-      dnamespace = this.namespace + ' ';
+      dnamespace = '['+ this.namespace +'] ';
     }
 
     var dmsg = (dtime + dlevel + dnamespace).trim();
-    dmsg = dmsg.length ? dmsg + ': ' + text : text;
+    dmsg = dmsg.length ? dmsg + ':' : '';
 
     return dmsg;
   };
@@ -300,9 +299,6 @@ module.exports = function extend() {
   Log.prototype._log = function (level, msg) {
     if (this.settings.display) {
       if (console && console.log) {
-        if (this.settings.colors && isNode) {
-          msg = (level.color ? level.color : '') + msg + (level.color ? Log.COLOR.END : '');
-        }
         if (console[level.console] && typeof console[level.console] === 'function') {
           console[level.console](msg);
         } else {
@@ -333,7 +329,12 @@ module.exports = function extend() {
     }
     text = text.trim();
 
-    var msg = this._msg(date, level, text);
+    var pre = this._pre(date, level, text);
+    if (pre.length && this.settings.colors && isNode) {
+      pre = (level.color ? level.color : '') + pre + (level.color ? Log.COLOR.END : '');
+    }
+
+    var msg = pre.length ? pre + ' ' + text : text;
 
     this._record(date, level, text, msg);
 
@@ -352,8 +353,7 @@ module.exports = function extend() {
       name: 'DEBUG',
       scale: 4,
       method: 'debug',
-      'console': 'debug',
-      color: false
+      'console': 'debug'
     },
     {
       name: 'INFO',
@@ -2981,7 +2981,7 @@ module.exports = lang;
 
 var Log = require('prhone-log');
 
-module.exports = new Log('vulcanval', {
+module.exports = new Log('VulcanVal', {
   history: false,
   scale: 2,
   throwErrors: true
