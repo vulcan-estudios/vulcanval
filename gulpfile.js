@@ -85,10 +85,10 @@ gulp.task('sass', function () {
 });
 
 // JS docs.
-gulp.task('doc-js-clean', function () {
+gulp.task('docs-js-clean', function () {
   return del(['./doc/js']);
 });
-gulp.task('doc-js', ['doc-js-clean'], function (cb) {
+gulp.task('docs-js', ['docs-js-clean'], function (cb) {
   const config = {
     opts: {
       destination: './doc/js'
@@ -115,10 +115,10 @@ gulp.task('doc-js', ['doc-js-clean'], function (cb) {
 });
 
 // SASS docs.
-gulp.task('doc-sass-clean', function () {
+gulp.task('docs-sass-clean', function () {
   return del(['./doc/sass']);
 });
-gulp.task('doc-sass', ['doc-sass-clean'], function () {
+gulp.task('docs-sass', ['docs-sass-clean'], function () {
   return gulp.src('./src/scss/**/*.scss')
     .pipe(sassdoc({
       package: './package.json',
@@ -135,5 +135,5 @@ gulp.task('doc-sass', ['doc-sass-clean'], function () {
 
 
 gulp.task('build', ['browserify', 'browserify-compress', 'sass']);
-gulp.task('doc', ['doc-js', 'doc-sass']);
+gulp.task('docs', ['docs-js', 'docs-sass']);
 gulp.task('default', ['build', 'doc']);
