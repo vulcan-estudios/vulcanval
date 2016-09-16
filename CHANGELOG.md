@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v3.0.0 / 2016-09-16
+
+- Changes the way to import the project using a bundle code in ES5 instead of ES2015. All functionality for the module and the plugin remains the same.
+
 ## v2.0.0 / 2016-07-12
 
 - Changes in API:
