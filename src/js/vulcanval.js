@@ -147,7 +147,7 @@ vulcanval.settings = settings;
  */
 vulcanval.utilityContext =    utilityContext;
 
-vulcanval.version = '2.0.0';
+vulcanval.version = '3.0.0';
 vulcanval.utils = utils;
 vulcanval.fieldsetSettings = fieldsetSettings;
 vulcanval.fieldSettings = fieldSettings;
