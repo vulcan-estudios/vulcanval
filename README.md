@@ -9,7 +9,7 @@
 
 A package to validate data objects (possibly extracted from HTML forms) in client and server sides and a customizable jQuery plugin to validate them in realtime.
 
-[Docs](http://vulcan-estudios.github.io/vulcanval) | [Demos](http://vulcan-estudios.github.io/vulcanval/demo) | [JS API](http://vulcan-estudios.github.io/vulcanval/doc/js) | [SASS Config](http://vulcan-estudios.github.io/vulcanval/doc/sass)
+[Documentation](http://vulcan-estudios.github.io/vulcanval) | [Demos](http://vulcan-estudios.github.io/vulcanval/demo) | [JS API](http://vulcan-estudios.github.io/vulcanval/doc/js) | [SASS Config](http://vulcan-estudios.github.io/vulcanval/doc/sass)
 
 ## Install
 
