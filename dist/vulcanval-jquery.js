@@ -1,4 +1,9 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+"use strict";
+
+module.exports = window.jQuery || window.$;
+
+},{}],2:[function(require,module,exports){
 'use strict';
 
 var ui = require('./_ui');
@@ -55,13 +60,14 @@ var change = function change(vv, field) {
 
 module.exports = change;
 
-},{"./_ui":6}],2:[function(require,module,exports){
+},{"./_ui":7}],3:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
 var ui = require('./_ui');
+var $ = require('../jquery');
 
 /**
  * Fetch UI elements settings configured as nodes attributes and properties.
@@ -171,7 +177,7 @@ var fetchUISettings = function fetchUISettings($el, $fields) {
 
 module.exports = fetchUISettings;
 
-},{"./_ui":6}],3:[function(require,module,exports){
+},{"../jquery":1,"./_ui":7}],4:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
@@ -235,7 +241,7 @@ var setAttrs = function setAttrs(vv) {
 
 module.exports = setAttrs;
 
-},{"./_ui":6}],4:[function(require,module,exports){
+},{"./_ui":7}],5:[function(require,module,exports){
 'use strict';
 
 var validator = window.vulcanval.validator;
@@ -313,13 +319,14 @@ var setEvents = function setEvents(vv) {
 
 module.exports = setEvents;
 
-},{"./_change":1,"./_ui":6}],5:[function(require,module,exports){
+},{"./_change":2,"./_ui":7}],6:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
 var ui = require('./_ui');
+var $ = require('../jquery');
 
 /**
  * Set HTML elements and initial classes.
@@ -366,8 +373,10 @@ var setHTML = function setHTML(vv) {
 
 module.exports = setHTML;
 
-},{"./_ui":6}],6:[function(require,module,exports){
+},{"../jquery":1,"./_ui":7}],7:[function(require,module,exports){
 'use strict';
+
+var $ = require('../jquery');
 
 var ui = {
   refreshFormState: function refreshFormState(settings) {
@@ -492,13 +501,14 @@ var ui = {
 
 module.exports = ui;
 
-},{}],7:[function(require,module,exports){
+},{"../jquery":1}],8:[function(require,module,exports){
 'use strict';
 
 var convertMapTo = window.vulcanval.convertMapTo;
 var fieldSettings = window.vulcanval.fieldSettings;
 
 var ui = require('./_ui');
+var $ = require('../jquery');
 
 /**
  * Get the data {@link map} extracted from the `<form>`.
@@ -556,7 +566,7 @@ getMap.free = true;
 
 module.exports = getMap;
 
-},{"./_ui":6}],8:[function(require,module,exports){
+},{"../jquery":1,"./_ui":7}],9:[function(require,module,exports){
 'use strict';
 
 var extend = window.vulcanval.utils.extend;
@@ -566,6 +576,7 @@ var utils = window.vulcanval.utils;
 var browser = window.vulcanval.utils.browser;
 var fieldSettings = window.vulcanval.utils.fieldSettings;
 
+var $ = require('../jquery');
 var ui = require('./_ui');
 var fetchUISettings = require('./_fetchUISettings.js');
 var setAttrs = require('./_setAttrs');
@@ -727,13 +738,12 @@ var plugin = function plugin(customSettings) {
   return $el;
 };
 
-browser.perform(true, function () {
-  window.jQuery.fn.vulcanval = plugin;
-});
+// Install plugin in jQuery namespace.
+$.fn.vulcanval = plugin;
 
 module.exports = plugin;
 
-},{"./_change":1,"./_fetchUISettings.js":2,"./_setAttrs":3,"./_setEvents":4,"./_setHTML":5,"./_ui":6,"./getMap":7,"./inspect":9,"./inspectField":10,"./inspectFieldset":11,"./reset":12,"./resetField":13,"./resetFieldset":14,"./validate":15,"./validateField":16,"./validateFieldset":17}],9:[function(require,module,exports){
+},{"../jquery":1,"./_change":2,"./_fetchUISettings.js":3,"./_setAttrs":4,"./_setEvents":5,"./_setHTML":6,"./_ui":7,"./getMap":8,"./inspect":10,"./inspectField":11,"./inspectFieldset":12,"./reset":13,"./resetField":14,"./resetFieldset":15,"./validate":16,"./validateField":17,"./validateFieldset":18}],10:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
@@ -767,7 +777,7 @@ var inspect = function inspect() {
 
 module.exports = inspect;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
@@ -807,7 +817,7 @@ var inspectField = function inspectField(fieldName) {
 
 module.exports = inspectField;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
@@ -856,7 +866,7 @@ var inspectFieldset = function inspectFieldset(fieldsetName) {
 
 module.exports = inspectFieldset;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
@@ -912,7 +922,7 @@ var reset = function reset() {
 
 module.exports = reset;
 
-},{"./_ui":6}],13:[function(require,module,exports){
+},{"./_ui":7}],14:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
@@ -974,7 +984,7 @@ var resetField = function resetField(fieldName) {
 
 module.exports = resetField;
 
-},{"./_ui":6}],14:[function(require,module,exports){
+},{"./_ui":7}],15:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
@@ -1052,7 +1062,7 @@ var resetFieldset = function resetFieldset(fieldsetName) {
 
 module.exports = resetFieldset;
 
-},{"./_ui":6}],15:[function(require,module,exports){
+},{"./_ui":7}],16:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
@@ -1094,7 +1104,7 @@ var validate = function validate() {
 
 module.exports = validate;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
@@ -1138,7 +1148,7 @@ var validateField = function validateField(fieldName) {
 
 module.exports = validateField;
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
@@ -1198,4 +1208,4 @@ var validateFieldset = function validateFieldset(fieldsetName) {
 
 module.exports = validateFieldset;
 
-},{}]},{},[8]);
+},{}]},{},[9]);

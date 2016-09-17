@@ -1,7 +1,5 @@
 'use strict';
 
-var browser = require('../browser');
-
 var lang = {
   id: 'en',
   msgs: {

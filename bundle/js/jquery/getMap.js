@@ -4,6 +4,7 @@ var convertMapTo = window.vulcanval.convertMapTo;
 var fieldSettings = window.vulcanval.fieldSettings;
 
 var ui = require('./_ui');
+var $ = require('../jquery');
 
 /**
  * Get the data {@link map} extracted from the `<form>`.

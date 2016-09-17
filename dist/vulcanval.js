@@ -2797,13 +2797,9 @@ var browser = {
     return isNodejs;
   }(),
 
-  perform: function perform(isNeeded, fn) {
-    if (!browser.isNodejs) {
-      if (window.jQuery) {
-        fn();
-      } else if (isNeeded) {
-        throw new Error('jQuery is required to perform operations');
-      }
+  install: function install(inBrowser) {
+    if (!this.isNodejs) {
+      inBrowser();
     }
   }
 };
@@ -3024,8 +3020,6 @@ module.exports = function extendLocale(locale) {
 },{"./settings/settings":77,"extend":1}],72:[function(require,module,exports){
 'use strict';
 
-var browser = require('../browser');
-
 var lang = {
   id: 'en',
   msgs: {
@@ -3065,7 +3059,7 @@ var lang = {
 
 module.exports = lang;
 
-},{"../browser":68}],73:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 'use strict';
 
 var Log = require('prhone-log');
@@ -5104,7 +5098,7 @@ vulcanval.addValidator('isEqualToField', isEqualToField);
 vulcanval.addValidator('isAlphanumericText', isAlphanumericText);
 
 // Install module in browser if client side.
-browser.perform(false, function () {
+browser.install(function () {
   window.vulcanval = vulcanval;
 });
 

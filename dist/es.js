@@ -12,13 +12,9 @@ var browser = {
     return isNodejs;
   }(),
 
-  perform: function perform(isNeeded, fn) {
-    if (!browser.isNodejs) {
-      if (window.jQuery) {
-        fn();
-      } else if (isNeeded) {
-        throw new Error('jQuery is required to perform operations');
-      }
+  install: function install(inBrowser) {
+    if (!this.isNodejs) {
+      inBrowser();
     }
   }
 };
@@ -68,7 +64,7 @@ var lang = {
   }
 };
 
-browser.perform(false, function () {
+browser.install(function () {
   window.vulcanval.extendLocale(lang);
   window.vulcanval.settings.locale = lang.id;
 });

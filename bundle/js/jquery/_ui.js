@@ -1,5 +1,7 @@
 'use strict';
 
+var $ = require('../jquery');
+
 var ui = {
   refreshFormState: function refreshFormState(settings) {
     'use strict';
