@@ -7,7 +7,7 @@ var utils = window.vulcanval.utils;
 var browser = window.vulcanval.utils.browser;
 var fieldSettings = window.vulcanval.utils.fieldSettings;
 
-var $ = require('../jquery');
+var $ = require('../jquery').jQuery;
 var ui = require('./_ui');
 var fetchUISettings = require('./_fetchUISettings.js');
 var setAttrs = require('./_setAttrs');

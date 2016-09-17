@@ -1,3 +1,5 @@
 "use strict";
 
-module.exports = window.jQuery || window.$;
+module.exports = {
+  jQuery: window.jQuery || window.$
+};
