@@ -1,6 +1,6 @@
 const fs =           require('fs');
+const path =         require('path');
 const del =          require('del');
-const requireDir =   require('require-dir');
 const gulp =         require('gulp');
 const rename =       require('gulp-rename');
 const gutil =        require('gulp-util');
@@ -13,18 +13,29 @@ const sassdoc =      require('sassdoc');
 const jsdoc =        require('gulp-jsdoc3');
 
 
-gulp.task('browserify', function () {
+//
+// BROWSERIFY
+//
+
+const getLangs = dirPath => {
+  return fs.
+    readdirSync(dirPath).
+    map(item => item.replace('.js', '')).
+    filter(item => item !== 'en');
+};
+
+gulp.task('browserify-build', function () {
 
   // Browserify files to build.
   const files = {
     'vulcanval': './src/js/vulcanval.js',
-    'vulcanval-jquery': './src/js/jquery/index.js'
+    'vulcanval-jquery': './src/js/jquery/index.js',
+    'vulcanval-jquery-intern': './src/js/jquery/intern.js',
   };
 
   // Add languages not added to package.
-  const langs = requireDir('./src/js/locale');
-  delete langs.en;
-  Object.keys(langs).forEach(lang => {
+  const langs = getLangs(path.resolve(process.cwd(), './src/js/locale'));
+  langs.forEach(lang => {
     files[lang] = `./src/js/locale/${lang}.js`;
   });
 
@@ -45,11 +56,12 @@ gulp.task('browserify', function () {
   });
 });
 
-gulp.task('browserify-compress', ['browserify'], function () {
+gulp.task('browserify', ['browserify-build'], function () {
 
   const files = {
     'vulcanval': './dist/vulcanval.js',
-    'vulcanval-jquery': './dist/vulcanval-jquery.js'
+    'vulcanval-jquery': './dist/vulcanval-jquery.js',
+    'vulcanval-jquery-intern': './dist/vulcanval-jquery-intern.js',
   };
 
   Object.keys(files).forEach(function (file) {
@@ -62,6 +74,10 @@ gulp.task('browserify-compress', ['browserify'], function () {
     .pipe(gulp.dest('dist'));
   });
 });
+
+//
+// SASS
+//
 
 gulp.task('sass', function () {
 
@@ -84,10 +100,14 @@ gulp.task('sass', function () {
     }));
 });
 
-// JS docs.
+//
+// JSDOC
+//
+
 gulp.task('docs-js-clean', function () {
   return del(['./doc/js']);
 });
+
 gulp.task('docs-js', ['docs-js-clean'], function (cb) {
   const config = {
     opts: {
@@ -114,10 +134,14 @@ gulp.task('docs-js', ['docs-js-clean'], function (cb) {
   .pipe(jsdoc(config, cb));
 });
 
-// SASS docs.
+//
+// SASSDOC
+//
+
 gulp.task('docs-sass-clean', function () {
   return del(['./doc/sass']);
 });
+
 gulp.task('docs-sass', ['docs-sass-clean'], function () {
   return gulp.src('./src/scss/**/*.scss')
     .pipe(sassdoc({
@@ -134,6 +158,6 @@ gulp.task('docs-sass', ['docs-sass-clean'], function () {
 });
 
 
-gulp.task('build', ['browserify', 'browserify-compress', 'sass']);
+gulp.task('build', ['browserify', 'sass']);
 gulp.task('docs', ['docs-js', 'docs-sass']);
-gulp.task('default', ['build', 'doc']);
+gulp.task('default', ['build', 'docs']);
