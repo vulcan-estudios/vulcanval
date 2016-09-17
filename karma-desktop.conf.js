@@ -15,7 +15,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'lib/jquery-3.0.0.min.js',
+      'lib/jquery-3.1.0.min.js',
       'dist/vulcanval.js',
       'dist/vulcanval-jquery.js',
       'test/jquery/**/*.html',
