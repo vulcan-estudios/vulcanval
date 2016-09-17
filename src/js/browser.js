@@ -8,16 +8,11 @@ const browser = {
     return isNodejs;
   })(),
 
-  perform (isNeeded, fn) {
-    if (!browser.isNodejs) {
-      if (window.jQuery) {
-        fn();
-      }
-      else if (isNeeded) {
-        throw new Error('jQuery is required to perform operations');
-      }
+  install (inBrowser) {
+    if (!this.isNodejs) {
+      inBrowser();
     }
-  }
+  },
 };
 
 module.exports = browser;

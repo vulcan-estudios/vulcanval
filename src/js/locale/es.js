@@ -37,7 +37,7 @@ const lang = {
   }
 };
 
-browser.perform(false, function () {
+browser.install(function () {
   window.vulcanval.extendLocale(lang);
   window.vulcanval.settings.locale = lang.id;
 });

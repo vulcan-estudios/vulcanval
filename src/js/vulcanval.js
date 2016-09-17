@@ -164,7 +164,7 @@ vulcanval.addValidator('isEqualToField', isEqualToField);
 vulcanval.addValidator('isAlphanumericText', isAlphanumericText);
 
 // Install module in browser if client side.
-browser.perform(false, function () {
+browser.install(function () {
   window.vulcanval = vulcanval;
 });
 

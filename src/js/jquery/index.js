@@ -5,6 +5,7 @@ const utils =           window.vulcanval.utils;
 const browser =         window.vulcanval.utils.browser;
 const fieldSettings =   window.vulcanval.utils.fieldSettings;
 
+const $ =               require('../jquery');
 const ui =              require('./_ui');
 const fetchUISettings = require('./_fetchUISettings.js');
 const setAttrs =        require('./_setAttrs');
@@ -169,8 +170,7 @@ const plugin = function (customSettings) {
   return $el;
 };
 
-browser.perform(true, function () {
-  window.jQuery.fn.vulcanval = plugin;
-});
+// Install plugin in jQuery namespace.
+$.fn.vulcanval = plugin;
 
 module.exports = plugin;

@@ -2,6 +2,7 @@ const utils = window.vulcanval.utils;
 const log = window.vulcanval.log;
 
 const ui = require('./_ui');
+const $ = require('../jquery');
 
 /**
  * Set HTML elements and initial classes.

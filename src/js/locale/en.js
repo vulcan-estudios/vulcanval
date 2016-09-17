@@ -1,5 +1,3 @@
-const browser = require('../browser');
-
 const lang = {
   id: 'en',
   msgs: {
