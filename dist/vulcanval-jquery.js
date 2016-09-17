@@ -1,7 +1,9 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-module.exports = window.jQuery || window.$;
+module.exports = {
+  jQuery: window.jQuery || window.$
+};
 
 },{}],2:[function(require,module,exports){
 'use strict';
@@ -67,7 +69,7 @@ var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
 var ui = require('./_ui');
-var $ = require('../jquery');
+var $ = require('../jquery').jQuery;
 
 /**
  * Fetch UI elements settings configured as nodes attributes and properties.
@@ -326,7 +328,7 @@ var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
 var ui = require('./_ui');
-var $ = require('../jquery');
+var $ = require('../jquery').jQuery;
 
 /**
  * Set HTML elements and initial classes.
@@ -376,7 +378,7 @@ module.exports = setHTML;
 },{"../jquery":1,"./_ui":7}],7:[function(require,module,exports){
 'use strict';
 
-var $ = require('../jquery');
+var $ = require('../jquery').jQuery;
 
 var ui = {
   refreshFormState: function refreshFormState(settings) {
@@ -508,7 +510,7 @@ var convertMapTo = window.vulcanval.convertMapTo;
 var fieldSettings = window.vulcanval.fieldSettings;
 
 var ui = require('./_ui');
-var $ = require('../jquery');
+var $ = require('../jquery').jQuery;
 
 /**
  * Get the data {@link map} extracted from the `<form>`.
@@ -576,7 +578,7 @@ var utils = window.vulcanval.utils;
 var browser = window.vulcanval.utils.browser;
 var fieldSettings = window.vulcanval.utils.fieldSettings;
 
-var $ = require('../jquery');
+var $ = require('../jquery').jQuery;
 var ui = require('./_ui');
 var fetchUISettings = require('./_fetchUISettings.js');
 var setAttrs = require('./_setAttrs');
