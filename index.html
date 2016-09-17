@@ -183,14 +183,10 @@ const vulcanval = require('vulcanval');
 import vulcanval from 'vulcanval';
 
 // And if you want to use the jQuery plugin:
-const vulcanvalJQuery = require('vulcanval/bundle/js/jquery');
-// or
-import vulcanvalJQuery from 'vulcanval/bundle/js/jquery';
+require('vulcanval/bundle/js/jquery');
 
 // If you want to use the plugin with jQuery from module bundler (not global):
-const vulcanvalJQuery = require('vulcanval/bundle/js/jquery/intern');
-// or
-import vulcanvalJQuery from 'vulcanval/bundle/js/jquery/intern';</code></pre>
+require('vulcanval/bundle/js/jquery/intern');</code></pre>
       <p>VulcanVal has a peer dependency on <a href="https://www.npmjs.com/package/validator" target="_blank">validator.js</a>
          and in client-side the plugin requires <a href="http://jquery.com" target="_blank">jQuery</a> so make sure
          you install them first.</p>
