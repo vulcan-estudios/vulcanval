@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v3.1.0 / 2016-09-26
+
+- No API changes.
+
+### jQuery Plugin
+
+- Supports jQuery versions: 1.x (1.7.0+), 2.x (2.0.0+) and 3.x (3.0.0+).
+
 ## v3.0.0 / 2016-09-16
 
 - Changes the way to import the project using a bundle code in ES5 instead of ES2015. All functionality for the module and the plugin remains the same.

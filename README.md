@@ -21,6 +21,7 @@ $ npm install --save vulcanval
 
 - Define universal validation configuration to validate in client and server sides in a really similar way.
 - Use of the [validator.js](https://github.com/chriso/validator.js) package validators so we implement well tested string validators.
+- The plugin supports [jQuery](http://jquery.com) v1, v2 and v3.
 - Customizable interface.
 - Highly configurable.
 - Dynamic validation process.
