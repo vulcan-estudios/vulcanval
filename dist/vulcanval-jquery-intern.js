@@ -10470,12 +10470,13 @@ var ui = {
 
       valid = settings.fields.every(function (field) {
 
-        if (!field.$el) return true;
-        if (field.disabled || field.onlyIf && !field.onlyIf()) return true;
+        if (!field.$el || field.disabled || field.onlyIf && !field.onlyIf()) {
+          return true;
+        }
 
         state = field.$el.data('vv-valid');
 
-        if (state === void 0) {
+        if (state === void 0 || state === null) {
           unknown = true;
           return true;
         }
@@ -10487,7 +10488,7 @@ var ui = {
 
       settings.$form.data({
         'vv-modified': true,
-        'vv-valid': unknown ? void 0 : valid
+        'vv-valid': unknown ? null : valid
       });
 
       if (!settings.intern) {
@@ -10982,28 +10983,24 @@ var reset = function reset() {
 
   settings.fields.forEach(function (field) {
     ui.removeFieldErrorClasses(settings, field);
-    field.$el.data({
-      'vv-modified': void 0,
-      'vv-valid': void 0,
-      'vv-msg': void 0
-    });
+    field.$el.data('vv-modified', null);
+    field.$el.data('vv-valid', null);
+    field.$el.data('vv-msg', null);
   });
 
   ui.refreshFormState(settings);
 
   if (settings.$form) {
-    settings.$form.data({
-      'vv-modified': void 0,
-      'vv-valid': void 0
-    });
+    settings.$form.data('vv-modified', null);
+    settings.$form.data('vv-valid', null);
   }
 
   settings.fields.forEach(function (field) {
     field.$el.trigger('vv-modify', {
       name: field.name,
       value: field.value(),
-      valid: void 0,
-      msg: void 0
+      valid: null,
+      msg: null
     });
   });
 
@@ -11052,11 +11049,9 @@ var resetField = function resetField(fieldName) {
 
   ui.removeFieldErrorClasses(settings, field);
 
-  field.$el.data({
-    'vv-modified': void 0,
-    'vv-valid': void 0,
-    'vv-msg': void 0
-  });
+  field.$el.data('vv-modified', null);
+  field.$el.data('vv-valid', null);
+  field.$el.data('vv-msg', null);
 
   ui.refreshFormState(settings);
 
@@ -11064,8 +11059,8 @@ var resetField = function resetField(fieldName) {
     field.$el.trigger('vv-modify', {
       name: field.name,
       value: field.value(),
-      valid: void 0,
-      msg: void 0
+      valid: null,
+      msg: null
     });
   });
 
@@ -11119,20 +11114,16 @@ var resetFieldset = function resetFieldset(fieldsetName) {
       return f.name === fieldName;
     });
     ui.removeFieldErrorClasses(settings, field);
-    field.$el.data({
-      'vv-modified': void 0,
-      'vv-valid': void 0,
-      'vv-msg': void 0
-    });
+    field.$el.data('vv-modified', null);
+    field.$el.data('vv-valid', null);
+    field.$el.data('vv-msg', null);
   });
 
   ui.refreshFormState(settings);
 
   if (settings.$form) {
-    settings.$form.data({
-      'vv-modified': void 0,
-      'vv-valid': void 0
-    });
+    settings.$form.data('vv-modified', null);
+    settings.$form.data('vv-valid', null);
   }
 
   fieldset.fields.forEach(function (fieldName) {

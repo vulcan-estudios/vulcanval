@@ -7,6 +7,7 @@ var log = require('./log');
 var utils = require('./utils');
 var browser = require('./browser');
 var localeEN = require('./locale/en');
+var version = require('./version');
 
 var settings = require('./settings/settings');
 var fieldsetSettings = require('./settings/fieldsetSettings');
@@ -149,7 +150,7 @@ vulcanval.settings = settings;
  */
 vulcanval.utilityContext = utilityContext;
 
-vulcanval.version = '3.0.0';
+vulcanval.version = version;
 vulcanval.utils = utils;
 vulcanval.fieldsetSettings = fieldsetSettings;
 vulcanval.fieldSettings = fieldSettings;

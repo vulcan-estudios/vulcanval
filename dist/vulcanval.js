@@ -4932,6 +4932,11 @@ module.exports = function isEqualToField(value, field) {
 },{}],85:[function(require,module,exports){
 'use strict';
 
+module.exports = '3.1.0';
+
+},{}],86:[function(require,module,exports){
+'use strict';
+
 var extend = require('extend');
 var validator = require('validator');
 
@@ -4939,6 +4944,7 @@ var log = require('./log');
 var utils = require('./utils');
 var browser = require('./browser');
 var localeEN = require('./locale/en');
+var version = require('./version');
 
 var settings = require('./settings/settings');
 var fieldsetSettings = require('./settings/fieldsetSettings');
@@ -5081,7 +5087,7 @@ vulcanval.settings = settings;
  */
 vulcanval.utilityContext = utilityContext;
 
-vulcanval.version = '3.0.0';
+vulcanval.version = version;
 vulcanval.utils = utils;
 vulcanval.fieldsetSettings = fieldsetSettings;
 vulcanval.fieldSettings = fieldSettings;
@@ -5104,4 +5110,4 @@ browser.install(function () {
 
 module.exports = vulcanval;
 
-},{"./addValidator":67,"./browser":68,"./cleanMap":69,"./convertMapTo":70,"./extendLocale":71,"./locale/en":72,"./log":73,"./rawValidation":74,"./settings/fieldSettings":75,"./settings/fieldsetSettings":76,"./settings/settings":77,"./settings/utilityContext":78,"./utils":79,"./validate":80,"./validateField":81,"./validateFieldset":82,"./validators/isAlphanumericText":83,"./validators/isEqualToField":84,"extend":1,"validator":3}]},{},[85]);
+},{"./addValidator":67,"./browser":68,"./cleanMap":69,"./convertMapTo":70,"./extendLocale":71,"./locale/en":72,"./log":73,"./rawValidation":74,"./settings/fieldSettings":75,"./settings/fieldsetSettings":76,"./settings/settings":77,"./settings/utilityContext":78,"./utils":79,"./validate":80,"./validateField":81,"./validateFieldset":82,"./validators/isAlphanumericText":83,"./validators/isEqualToField":84,"./version":85,"extend":1,"validator":3}]},{},[86]);

@@ -42,20 +42,16 @@ var resetFieldset = function resetFieldset(fieldsetName) {
       return f.name === fieldName;
     });
     ui.removeFieldErrorClasses(settings, field);
-    field.$el.data({
-      'vv-modified': void 0,
-      'vv-valid': void 0,
-      'vv-msg': void 0
-    });
+    field.$el.data('vv-modified', null);
+    field.$el.data('vv-valid', null);
+    field.$el.data('vv-msg', null);
   });
 
   ui.refreshFormState(settings);
 
   if (settings.$form) {
-    settings.$form.data({
-      'vv-modified': void 0,
-      'vv-valid': void 0
-    });
+    settings.$form.data('vv-modified', null);
+    settings.$form.data('vv-valid', null);
   }
 
   fieldset.fields.forEach(function (fieldName) {
