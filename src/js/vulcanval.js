@@ -5,6 +5,7 @@ const log =       require('./log');
 const utils =     require('./utils');
 const browser =   require('./browser');
 const localeEN =  require('./locale/en');
+const version =   require('./version');
 
 const settings =          require('./settings/settings');
 const fieldsetSettings =  require('./settings/fieldsetSettings');
@@ -147,7 +148,7 @@ vulcanval.settings = settings;
  */
 vulcanval.utilityContext =    utilityContext;
 
-vulcanval.version = '3.0.0';
+vulcanval.version = version;
 vulcanval.utils = utils;
 vulcanval.fieldsetSettings = fieldsetSettings;
 vulcanval.fieldSettings = fieldSettings;

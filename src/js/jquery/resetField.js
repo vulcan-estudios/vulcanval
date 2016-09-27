@@ -33,11 +33,9 @@ const resetField = function (fieldName) {
 
   ui.removeFieldErrorClasses(settings, field);
 
-  field.$el.data({
-    'vv-modified': void 0,
-    'vv-valid': void 0,
-    'vv-msg': void 0
-  });
+  field.$el.data('vv-modified', null);
+  field.$el.data('vv-valid', null);
+  field.$el.data('vv-msg', null);
 
   ui.refreshFormState(settings);
 
@@ -45,8 +43,8 @@ const resetField = function (fieldName) {
     field.$el.trigger('vv-modify', {
       name: field.name,
       value: field.value(),
-      valid: void 0,
-      msg: void 0
+      valid: null,
+      msg: null
     });
   });
 

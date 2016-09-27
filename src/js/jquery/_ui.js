@@ -15,12 +15,13 @@ const ui = {
 
       valid = settings.fields.every(field => {
 
-        if (!field.$el) return true;
-        if (field.disabled || (field.onlyIf && !field.onlyIf())) return true;
+        if (!field.$el || field.disabled || (field.onlyIf && !field.onlyIf())) {
+          return true;
+        }
 
         state = field.$el.data('vv-valid');
 
-        if (state === void 0) {
+        if (state === void 0 || state === null) {
           unknown = true;
           return true;
         }
@@ -32,7 +33,7 @@ const ui = {
 
       settings.$form.data({
         'vv-modified': true,
-        'vv-valid': unknown ? void 0 : valid
+        'vv-valid': unknown ? null : valid
       });
 
       if (!settings.intern) {
