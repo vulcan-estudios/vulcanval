@@ -74,11 +74,14 @@ describe('Method resetFieldset()', function () {
   });
 
   it('Fieldset 1 reseted (state)', function () {
-    assert.isUndefined($form.data('vv-valid'), 'form vv-valid should be undefined');
-    assert.isUndefined($input1_1.data('vv-valid'), 'input1_1 vv-valid should be undefined');
-    assert.isUndefined($input1_2.data('vv-valid'), 'input1_2 vv-valid should be undefined');
-    assert.isFalse($input2_1.data('vv-valid'), 'input2_1 vv-valid should be false');
-    assert.isTrue($input2_2.data('vv-valid'), 'input2_2 vv-valid should be true');
+
+    expect($form.data('vv-valid')).to.not.exist;
+
+    expect($input1_1.data('vv-valid')).to.not.exist;
+    expect($input1_2.data('vv-valid')).to.not.exist;
+
+    expect($input2_1.data('vv-valid')).to.be.false;
+    expect($input2_2.data('vv-valid')).to.be.true;
   });
 
   it('Reset fields (part2)', function () {
@@ -94,10 +97,10 @@ describe('Method resetFieldset()', function () {
   });
 
   it('Fieldset 2 reseted (state)', function () {
-    assert.isUndefined($form.data('vv-valid'), 'form vv-valid should be undefined');
-    assert.isUndefined($input1_1.data('vv-valid'), 'input1_1 vv-valid should be undefined');
-    assert.isUndefined($input1_2.data('vv-valid'), 'input1_2 vv-valid should be undefined');
-    assert.isUndefined($input2_1.data('vv-valid'), 'input2_1 vv-valid should be undefined');
-    assert.isUndefined($input2_2.data('vv-valid'), 'input2_2 vv-valid should be undefined');
+    expect($form.data('vv-valid')).to.not.exist;
+    expect($input1_1.data('vv-valid')).to.not.exist;
+    expect($input1_2.data('vv-valid')).to.not.exist;
+    expect($input2_1.data('vv-valid')).to.not.exist;
+    expect($input2_2.data('vv-valid')).to.not.exist;
   });
 });

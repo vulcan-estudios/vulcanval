@@ -44,9 +44,9 @@ describe('Method validateField()', function () {
   });
 
   it('Invalid field (state)', function () {
-    assert.isUndefined($form.data('vv-valid'));
-    assert.isUndefined($input1.data('vv-valid'));
-    assert.isFalse($input2.data('vv-valid'));
+    expect($form.data('vv-valid')).to.not.exist;
+    expect($input1.data('vv-valid')).to.not.exist;
+    expect($input2.data('vv-valid')).to.be.false;
   });
 
   it('Validate field (valid)', function () {
@@ -61,8 +61,8 @@ describe('Method validateField()', function () {
   });
 
   it('Valid field (state)', function () {
-    assert.isUndefined($form.data('vv-valid'));
-    assert.isUndefined($input1.data('vv-valid'));
-    assert.isTrue($input2.data('vv-valid'));
+    expect($form.data('vv-valid')).to.not.exist;
+    expect($input1.data('vv-valid')).to.not.exist;
+    expect($input2.data('vv-valid')).to.be.true;
   });
 });

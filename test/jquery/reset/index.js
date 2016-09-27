@@ -19,6 +19,7 @@ describe('Method reset()', function () {
 
   it('Fields initialized with errors (class)', function () {
     assert.isTrue($form.hasClass('vv-form_error'));
+
     $form.find('input').each((i, inp) => {
       assert.isTrue($(inp).hasClass('vv-field_error'));
     });
@@ -26,6 +27,7 @@ describe('Method reset()', function () {
 
   it('Fields initialized with errors (state)', function () {
     assert.isFalse($form.data('vv-valid'));
+
     $form.find('input').each((i, inp) => {
       assert.isFalse($(inp).data('vv-valid'));
     });
@@ -41,9 +43,10 @@ describe('Method reset()', function () {
   });
 
   it('Fields reseted (state)', function () {
-    assert.isUndefined($form.data('vv-valid'));
+    expect($form.data('vv-valid')).to.not.exist;
+
     $form.find('input').each((i, inp) => {
-      assert.isUndefined($(inp).data('vv-valid'));
+      expect($(inp).data('vv-valid')).to.not.exist;
     });
   });
 });

@@ -59,23 +59,23 @@ describe('Events (setEvents, change)', function () {
       $form.find('[name=name]').on('vv-modify', function (e, info) {
         if (tried) return;
         tried = true;
-        assert.isObject(info);
-        assert.propertyVal(info, 'name', 'name');
-        assert.propertyVal(info, 'valid', void 0);
-        assert.isUndefined(info.msg);
-        assert.isDefined(info.value);
+        expect(info).to.be.an.object;
+        expect(info).to.have.property('name', 'name');
+        expect(info).to.have.property('valid', null);
+        expect(info).to.have.property('msg').to.be.falsy;
+        expect(info).to.have.property('value').to.exist;
         done();
       });
       $form.trigger('reset');
     });
 
     it('After reset (class)', function () {
-      assert.equal($form.attr('class'), 'vv-form');
+      expect($form.attr('class')).to.equal('vv-form');
     });
 
     it('Before reset (state)', function () {
-      assert.isUndefined($form.data('vv-modified'));
-      assert.isUndefined($form.data('vv-valid'));
+      expect($form.data('vv-modified')).to.be.falsy;
+      expect($form.data('vv-valid')).to.be.falsy;
     });
   });
 });

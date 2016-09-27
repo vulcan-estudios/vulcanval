@@ -60,11 +60,11 @@ describe('Method validateFieldset()', function () {
   });
 
   it('Valid fields (state)', function () {
-    assert.isUndefined($form.data('vv-valid'), 'form vv-valid should be undefined');
-    assert.isTrue($input1_1.data('vv-valid'), 'input1_1 vv-valid should be true');
-    assert.isTrue($input1_2.data('vv-valid'), 'input1_2 vv-valid should be true');
-    assert.isUndefined($input2_1.data('vv-valid'), 'input2_1 vv-valid should be undefined');
-    assert.isUndefined($input2_2.data('vv-valid'), 'input2_2 vv-valid should be undefined');
+    expect($form.data('vv-valid')).to.not.exist;
+    expect($input1_1.data('vv-valid')).to.be.true;
+    expect($input1_2.data('vv-valid')).to.be.true;
+    expect($input2_1.data('vv-valid')).to.not.exist;
+    expect($input2_2.data('vv-valid')).to.not.exist;
   });
 
   it('Validate fields (invalid)', function () {

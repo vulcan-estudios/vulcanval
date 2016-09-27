@@ -53,8 +53,8 @@ describe('Method resetField()', function () {
   });
 
   it('Fields reseted (state)', function () {
-    assert.isFalse($form.data('vv-valid'));
-    assert.isFalse($input1.data('vv-valid'));
-    assert.isUndefined($input2.data('vv-valid'));
+    expect($form.data('vv-valid')).to.be.false;
+    expect($input1.data('vv-valid')).to.be.false;
+    expect($input2.data('vv-valid')).to.not.exist;
   });
 });
