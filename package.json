@@ -1,6 +1,6 @@
 {
   "name": "vulcanval",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "description": "Validate data forms in client and server sides seamlessly",
   "keywords": [
     "validation",
@@ -22,15 +22,16 @@
   },
   "main": "bundle/js/vulcanval.js",
   "scripts": {
-    "all": "npm run build && npm run bundle && npm run doc && npm run test",
     "build": "./node_modules/.bin/gulp build",
     "bundle": "./node_modules/.bin/babel src --out-dir bundle",
     "test": "npm run test-global && npm run test-jquery",
-    "test-global": "npm run test-global-node && npm run test-global-karma",
+    "test-global": "npm run test-global-node && npm run test-global-browser",
     "test-global-node": "NODE_ENV=test ./node_modules/.bin/mocha test/global",
-    "test-global-karma": "NODE_ENV=test ./node_modules/.bin/karma start karma-global.conf.js",
-    "test-jquery": "NODE_ENV=test ./node_modules/.bin/karma start karma-jquery.conf.js",
-    "test-jquery:desktop": "NODE_ENV=test ./node_modules/.bin/karma start karma-desktop.conf.js",
+    "test-global-browser": "NODE_ENV=test ./node_modules/.bin/karma start karma-global.conf.js",
+    "test-jquery": "npm run test-jquery-v1 && npm run test-jquery-v2 && npm run test-jquery-v3",
+    "test-jquery-v1": "NODE_ENV=test ./node_modules/.bin/karma start karma-jquery-v1.conf.js",
+    "test-jquery-v2": "NODE_ENV=test ./node_modules/.bin/karma start karma-jquery-v2.conf.js",
+    "test-jquery-v3": "NODE_ENV=test ./node_modules/.bin/karma start karma-jquery-v3.conf.js",
     "docs": "./node_modules/.bin/gulp docs"
   },
   "peerDependencies": {
@@ -70,6 +71,7 @@
     "karma-mocha": "^1.1.1",
     "karma-mocha-reporter": "^2.0.4",
     "karma-phantomjs-launcher": "^1.0.1",
+    "lodash": "^4.16.1",
     "mocha": "^2.5.3",
     "node-sass": "^3.8.0",
     "require-dir": "^0.3.0",
