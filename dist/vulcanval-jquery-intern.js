@@ -10077,6 +10077,24 @@ return jQuery;
 },{}],2:[function(require,module,exports){
 "use strict";
 
+/**
+ * window object.
+ * @external window
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Window}
+ */
+
+/**
+ * jQuery object.
+ * @external jQuery
+ * @see {@link http://api.jquery.com/jQuery/}
+ */
+
+/**
+ * The jQuery plugin namespace.
+ * @external "jQuery.fn"
+ * @see {@link http://docs.jquery.com/Plugins/Authoring The jQuery Plugin Guide}
+ */
+
 module.exports = {
   jQuery: window.jQuery || window.$
 };
@@ -10145,7 +10163,7 @@ var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
 var ui = require('./_ui');
-var $ = require('../jquery').jQuery;
+var $ = require('../external').jQuery;
 
 /**
  * Fetch UI elements settings configured as nodes attributes and properties.
@@ -10255,7 +10273,7 @@ var fetchUISettings = function fetchUISettings($el, $fields) {
 
 module.exports = fetchUISettings;
 
-},{"../jquery":2,"./_ui":8}],5:[function(require,module,exports){
+},{"../external":2,"./_ui":8}],5:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
@@ -10404,7 +10422,7 @@ var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
 var ui = require('./_ui');
-var $ = require('../jquery').jQuery;
+var $ = require('../external').jQuery;
 
 /**
  * Set HTML elements and initial classes.
@@ -10451,10 +10469,10 @@ var setHTML = function setHTML(vv) {
 
 module.exports = setHTML;
 
-},{"../jquery":2,"./_ui":8}],8:[function(require,module,exports){
+},{"../external":2,"./_ui":8}],8:[function(require,module,exports){
 'use strict';
 
-var $ = require('../jquery').jQuery;
+var $ = require('../external').jQuery;
 
 var ui = {
   refreshFormState: function refreshFormState(settings) {
@@ -10580,14 +10598,14 @@ var ui = {
 
 module.exports = ui;
 
-},{"../jquery":2}],9:[function(require,module,exports){
+},{"../external":2}],9:[function(require,module,exports){
 'use strict';
 
 var convertMapTo = window.vulcanval.convertMapTo;
 var fieldSettings = window.vulcanval.fieldSettings;
 
 var ui = require('./_ui');
-var $ = require('../jquery').jQuery;
+var $ = require('../external').jQuery;
 
 /**
  * Get the data {@link map} extracted from the `<form>`.
@@ -10645,7 +10663,7 @@ getMap.free = true;
 
 module.exports = getMap;
 
-},{"../jquery":2,"./_ui":8}],10:[function(require,module,exports){
+},{"../external":2,"./_ui":8}],10:[function(require,module,exports){
 'use strict';
 
 var extend = window.vulcanval.utils.extend;
@@ -10655,7 +10673,7 @@ var utils = window.vulcanval.utils;
 var browser = window.vulcanval.utils.browser;
 var fieldSettings = window.vulcanval.utils.fieldSettings;
 
-var $ = require('../jquery').jQuery;
+var $ = require('../external').jQuery;
 var ui = require('./_ui');
 var fetchUISettings = require('./_fetchUISettings.js');
 var setAttrs = require('./_setAttrs');
@@ -10822,7 +10840,7 @@ $.fn.vulcanval = plugin;
 
 module.exports = plugin;
 
-},{"../jquery":2,"./_change":3,"./_fetchUISettings.js":4,"./_setAttrs":5,"./_setEvents":6,"./_setHTML":7,"./_ui":8,"./getMap":9,"./inspect":11,"./inspectField":12,"./inspectFieldset":13,"./reset":15,"./resetField":16,"./resetFieldset":17,"./validate":18,"./validateField":19,"./validateFieldset":20}],11:[function(require,module,exports){
+},{"../external":2,"./_change":3,"./_fetchUISettings.js":4,"./_setAttrs":5,"./_setEvents":6,"./_setHTML":7,"./_ui":8,"./getMap":9,"./inspect":11,"./inspectField":12,"./inspectFieldset":13,"./reset":15,"./resetField":16,"./resetFieldset":17,"./validate":18,"./validateField":19,"./validateFieldset":20}],11:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
@@ -10949,15 +10967,15 @@ module.exports = inspectFieldset;
 'use strict';
 
 var jquery = require('jquery');
-var medium = require('../jquery');
+var external = require('../external');
 
 // Replace local jQuery module with the node module jQuery.
-medium.jQuery = jquery;
+external.jQuery = jquery;
 
 // Require the library.
 require('./index');
 
-},{"../jquery":2,"./index":10,"jquery":1}],15:[function(require,module,exports){
+},{"../external":2,"./index":10,"jquery":1}],15:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;

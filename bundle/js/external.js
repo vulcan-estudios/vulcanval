@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * window object.
  * @external window
@@ -15,4 +17,7 @@
  * @external "jQuery.fn"
  * @see {@link http://docs.jquery.com/Plugins/Authoring The jQuery Plugin Guide}
  */
-"use strict";
+
+module.exports = {
+  jQuery: window.jQuery || window.$
+};

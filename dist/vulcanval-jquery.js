@@ -1,6 +1,24 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
+/**
+ * window object.
+ * @external window
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Window}
+ */
+
+/**
+ * jQuery object.
+ * @external jQuery
+ * @see {@link http://api.jquery.com/jQuery/}
+ */
+
+/**
+ * The jQuery plugin namespace.
+ * @external "jQuery.fn"
+ * @see {@link http://docs.jquery.com/Plugins/Authoring The jQuery Plugin Guide}
+ */
+
 module.exports = {
   jQuery: window.jQuery || window.$
 };
@@ -69,7 +87,7 @@ var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
 var ui = require('./_ui');
-var $ = require('../jquery').jQuery;
+var $ = require('../external').jQuery;
 
 /**
  * Fetch UI elements settings configured as nodes attributes and properties.
@@ -179,7 +197,7 @@ var fetchUISettings = function fetchUISettings($el, $fields) {
 
 module.exports = fetchUISettings;
 
-},{"../jquery":1,"./_ui":7}],4:[function(require,module,exports){
+},{"../external":1,"./_ui":7}],4:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;
@@ -328,7 +346,7 @@ var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
 var ui = require('./_ui');
-var $ = require('../jquery').jQuery;
+var $ = require('../external').jQuery;
 
 /**
  * Set HTML elements and initial classes.
@@ -375,10 +393,10 @@ var setHTML = function setHTML(vv) {
 
 module.exports = setHTML;
 
-},{"../jquery":1,"./_ui":7}],7:[function(require,module,exports){
+},{"../external":1,"./_ui":7}],7:[function(require,module,exports){
 'use strict';
 
-var $ = require('../jquery').jQuery;
+var $ = require('../external').jQuery;
 
 var ui = {
   refreshFormState: function refreshFormState(settings) {
@@ -504,14 +522,14 @@ var ui = {
 
 module.exports = ui;
 
-},{"../jquery":1}],8:[function(require,module,exports){
+},{"../external":1}],8:[function(require,module,exports){
 'use strict';
 
 var convertMapTo = window.vulcanval.convertMapTo;
 var fieldSettings = window.vulcanval.fieldSettings;
 
 var ui = require('./_ui');
-var $ = require('../jquery').jQuery;
+var $ = require('../external').jQuery;
 
 /**
  * Get the data {@link map} extracted from the `<form>`.
@@ -569,7 +587,7 @@ getMap.free = true;
 
 module.exports = getMap;
 
-},{"../jquery":1,"./_ui":7}],9:[function(require,module,exports){
+},{"../external":1,"./_ui":7}],9:[function(require,module,exports){
 'use strict';
 
 var extend = window.vulcanval.utils.extend;
@@ -579,7 +597,7 @@ var utils = window.vulcanval.utils;
 var browser = window.vulcanval.utils.browser;
 var fieldSettings = window.vulcanval.utils.fieldSettings;
 
-var $ = require('../jquery').jQuery;
+var $ = require('../external').jQuery;
 var ui = require('./_ui');
 var fetchUISettings = require('./_fetchUISettings.js');
 var setAttrs = require('./_setAttrs');
@@ -746,7 +764,7 @@ $.fn.vulcanval = plugin;
 
 module.exports = plugin;
 
-},{"../jquery":1,"./_change":2,"./_fetchUISettings.js":3,"./_setAttrs":4,"./_setEvents":5,"./_setHTML":6,"./_ui":7,"./getMap":8,"./inspect":10,"./inspectField":11,"./inspectFieldset":12,"./reset":13,"./resetField":14,"./resetFieldset":15,"./validate":16,"./validateField":17,"./validateFieldset":18}],10:[function(require,module,exports){
+},{"../external":1,"./_change":2,"./_fetchUISettings.js":3,"./_setAttrs":4,"./_setEvents":5,"./_setHTML":6,"./_ui":7,"./getMap":8,"./inspect":10,"./inspectField":11,"./inspectFieldset":12,"./reset":13,"./resetField":14,"./resetFieldset":15,"./validate":16,"./validateField":17,"./validateFieldset":18}],10:[function(require,module,exports){
 'use strict';
 
 var utils = window.vulcanval.utils;

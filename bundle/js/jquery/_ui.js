@@ -1,6 +1,6 @@
 'use strict';
 
-var $ = require('../jquery').jQuery;
+var $ = require('../external').jQuery;
 
 var ui = {
   refreshFormState: function refreshFormState(settings) {

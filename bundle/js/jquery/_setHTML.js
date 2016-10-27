@@ -4,7 +4,7 @@ var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
 var ui = require('./_ui');
-var $ = require('../jquery').jQuery;
+var $ = require('../external').jQuery;
 
 /**
  * Set HTML elements and initial classes.

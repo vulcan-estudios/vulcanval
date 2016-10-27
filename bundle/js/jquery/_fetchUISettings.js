@@ -4,7 +4,7 @@ var utils = window.vulcanval.utils;
 var log = window.vulcanval.log;
 
 var ui = require('./_ui');
-var $ = require('../jquery').jQuery;
+var $ = require('../external').jQuery;
 
 /**
  * Fetch UI elements settings configured as nodes attributes and properties.
