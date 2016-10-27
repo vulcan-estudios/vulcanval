@@ -5,7 +5,7 @@ const utils =           window.vulcanval.utils;
 const browser =         window.vulcanval.utils.browser;
 const fieldSettings =   window.vulcanval.utils.fieldSettings;
 
-const $ =               require('../jquery').jQuery;
+const $ =               require('../external').jQuery;
 const ui =              require('./_ui');
 const fetchUISettings = require('./_fetchUISettings.js');
 const setAttrs =        require('./_setAttrs');

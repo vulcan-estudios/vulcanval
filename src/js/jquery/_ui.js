@@ -1,4 +1,4 @@
-const $ = require('../jquery').jQuery;
+const $ = require('../external').jQuery;
 
 const ui = {
 
