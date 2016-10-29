@@ -1,6 +1,6 @@
 const extend =    require('extend');
-const validator = require('validator');
 
+const validator = require('./external').validator;
 const log =       require('./log');
 const utils =     require('./utils');
 const browser =   require('./browser');

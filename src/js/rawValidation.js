@@ -1,8 +1,8 @@
-const extend = require('extend');
-const validator = require('validator');
-const log = require('./log');
-const utils = require('./utils');
-const browser = require('./browser');
+import extend         from 'extend';
+import log            from './log';
+import utils          from './utils';
+import browser        from './browser';
+import { validator }  from './external';
 
 /**
  * rawValidation method.

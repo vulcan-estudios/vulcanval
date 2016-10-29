@@ -1,6 +1,6 @@
-const extend = require('extend');
-const validator = require('validator');
-const browser = require('./browser');
+import extend         from 'extend';
+import browser        from './browser';
+import { validator }  from './external';
 
 const utils = {
 

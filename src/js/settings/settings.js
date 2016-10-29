@@ -1,10 +1,10 @@
-const validator = require('validator');
-const extend = require('extend');
-const log = require('../log');
-const utils = require('../utils');
-const fieldSettings = require('./fieldSettings');
-const fieldsetSettings = require('./fieldsetSettings');
-const utilityContext = require('./utilityContext');
+import extend           from 'extend';
+import fieldSettings    from './fieldSettings';
+import fieldsetSettings from './fieldsetSettings';
+import utilityContext   from './utilityContext';
+import log              from '../log';
+import utils            from '../utils';
+import { validator }    from '../external';
 
 /**
  * @namespace settings

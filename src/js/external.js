@@ -1,3 +1,5 @@
+import validator from 'validator';
+
 /**
  * window object.
  * @external window
@@ -16,6 +18,8 @@
  * @see {@link http://docs.jquery.com/Plugins/Authoring The jQuery Plugin Guide}
  */
 
-module.exports = {
-  jQuery: window.jQuery || window.$
-};
+const jQuery = typeof window !== 'undefined' ? (window.jQuery || window.$) : null;
+
+export { validator, jQuery };
+
+export default { validator, jQuery };
