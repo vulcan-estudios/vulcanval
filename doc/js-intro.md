@@ -1,8 +1,8 @@
 # [VulcanVal](http://vulcan-estudios.github.io/vulcanval)
 
-> Vulcan Validator, validate data forms in client and server sides seamlessly.
+> Vulcan Validator, validate HTML form data universally seamlessly.
 
-A package to validate data objects (possibly extracted from HTML forms) in client and server sides and a customizable jQuery plugin to validate them in realtime.
+A package to validate maps of data extracted from HTML forms in the client and server sides and a customizable jQuery plugin to validate forms as you type with ease.
 
 This is the JavaScript API documentation. Here you will find information in detail about the use of the VulcanVal package for global use, client and server side, and the jQuery plugin to validate HTML forms in realtime.
 
@@ -26,7 +26,7 @@ jQuery().vulcanval();
 
 You can see the [global configurations](./settings.html) used by the module, the [fieldset configurations](./fieldsetSettings.html) and the [field configurations](./fieldSettings.html) used by default and change some of them to apply among all instances.
 
-More info at [Website](http://vulcan-estudios.github.io/vulcanval) | [Demos](http://vulcan-estudios.github.io/vulcanval/demo) | [JS API](http://vulcan-estudios.github.io/vulcanval/doc/js) | [SASS Config](http://vulcan-estudios.github.io/vulcanval/doc/sass)
+More info at [Documentation](http://vulcan-estudios.github.io/vulcanval) | [Demos](http://vulcan-estudios.github.io/vulcanval/demo) | [JS API](http://vulcan-estudios.github.io/vulcanval/doc/js) | [SASS Config](http://vulcan-estudios.github.io/vulcanval/doc/sass)
 
 ## License
 

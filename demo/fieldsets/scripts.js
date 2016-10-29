@@ -11,6 +11,7 @@
 
   $form.vulcanval({
 
+    disableHTML5Validation: true,  // disable HTML5 form validation, only use the plugin
     enableNestedMaps: true,  // enable data form as a nested object when "getMap" is called
 
     fieldsets: [{
@@ -82,6 +83,10 @@
     formState.current = name;
   };
 
+  const resetFieldset = function (id) {
+    $form.vulcanval('resetFieldset', id);
+  };
+
   // Inspect and validate only a fieldset
   const validateFieldset = function (id) {
     const invalid = $form.vulcanval('inspectFieldset', id);
@@ -106,6 +111,11 @@
   $('.register-back').on('click', function (e) {
     const to = $(this).data('to');
     changeFieldset(to);
+  });
+
+  $('.register-reset').on('click', function (e) {
+    const id = $(this).data('id');
+    resetFieldset(id);
   });
 
   //

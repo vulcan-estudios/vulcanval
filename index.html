@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>VulcanVal | Validate data forms in client and server sides seamlessly</title>
+    <title>VulcanVal | Validate HTML form data universally seamlessly</title>
     <meta name="description" content="A package to validate data objects (possibly extracted from HTML forms) in client and server sides and a customizable jQuery plugin to validate them in realtime">
     <meta name="keywords" content="vulcanval, data validation, form validation, npm package, jquery plugin">
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="VulcanVal">
     <meta property="og:site_name" content="VulcanVal">
-    <meta property="og:description" content="Validate data forms in client and server sides seamlessly">
+    <meta property="og:description" content="Validate HTML form data universally seamlessly">
     <meta property="og:type" content="profile">
     <meta property="og:url" content="http://vulcan-estudios.github.io/vulcanval">
     <meta property="og:image" content="http://vulcan-estudios.github.io/vulcanval/site/seo.jpg">
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="VulcanVal">
-    <meta name="twitter:description" content="Validate data forms in client and server sides seamlessly">
+    <meta name="twitter:description" content="Validate HTML form data universally seamlessly">
     <meta name="twitter:site" content="@romelperez07">
     <meta name="twitter:creator" content="@romelperez07">
     <meta name="twitter:image" content="http://vulcan-estudios.github.io/vulcanval/site/seo.jpg">
@@ -34,28 +34,30 @@
 
     <vv-main>
 
-      <p>A package to validate data objects (possibly extracted from HTML forms) in client and server sides and a customizable jQuery plugin to validate them in realtime.</p>
+      <p>A package to validate maps of data extracted from HTML forms in the client and server sides and a customizable jQuery plugin to validate forms as you type with ease.</p>
       <p>See <a href="./doc/js">JavaScript API</a> and <a href="./doc/sass">SASS configuration</a>.</p>
+      <img src="/site/in-action.gif" alt="Vulcan Validator in action">
 
       <a name="features"></a>
       <h3>Features</h3>
+      <h4>Validator package</h4>
       <ul>
-        <li>Define universal validation configuration to validate in client and server sides in a really similar way.</li>
-        <li>Use of the <a href="https://github.com/chriso/validator.js" target="_blank">validator.js</a> package validators so we implement well tested string validators.</li>
-        <li>The plugin supports <a href="http://jquery.com" target="_blank">jQuery</a> v1, v2 and v3.</li>
-        <li>Customizable interface.</li>
-        <li>Highly configurable.</li>
-        <li>Dynamic validation process.</li>
-        <li>Ability to add custom validators.</li>
-        <li>Ability to add custom fields different from form elements.</li>
-        <li>Ability to configure fieldsets.</li>
-        <li>Configuration checkers to prevent errors in settings.</li>
-        <li>Extract data from forms elements as data maps (possibly nested objects).</li>
+        <li>Configure validators for simple to complex forms easily.</li>
+        <li>Configure and validate by fields, fieldsets or form.</li>
+        <li>Use <a href="https://github.com/chriso/validator.js" target="_blank">validator.js</a> v3.0+ with well tested string validators.</li>
+        <li>Add custom validators.</li>
         <li>Internationalization support.</li>
+        <li>Configuration checkers to prevent errors in settings.</li>
+      </ul>
+      <h4>jQuery plugin</h4>
+      <ul>
+        <li>Validate as you type.</li>
+        <li>Inspect for validity, validate visually and reset by field, fieldset or form.</li>
+        <li>Import and customize via <a href="http://sass-lang.com" target="_blank">SASS</a> or use the built files.</li>
+        <li>Supports <a href="http://jquery.com" target="_blank">jQuery</a> v1.7+, v2.0+ and v3.0+.</li>
+        <li>Add custom fields different from form elements.</li>
+        <li>Extract data from forms elements as data maps (possibly nested objects).</li>
         <li>HTML5 integration.</li>
-        <li>API to integrate with your own libraries.</li>
-        <li>Written in ES2015 and <a href="http://sass-lang.com" target="_blank">SASS</a>.</li>
-        <li>And more.</li>
       </ul>
 
       <a name="demos"></a>
@@ -200,7 +202,7 @@ require('vulcanval/bundle/js/jquery/intern');</code></pre>
       <pre><code class="language-css">@import &#39;vulcanval-jquery&#39;;</code></pre>
 
       <h4>Built files</h4>
-      <p>You can download the browser built files version 3.x from:</p>
+      <p>You can download the latest browser built files version 3.x with <a href="https://www.npmjs.com/package/validator" target="_blank">validator.js</a> version 6.x from:</p>
       <ul>
         <li><a href="https://raw.githubusercontent.com/vulcan-estudios/vulcanval/master/dist/vulcanval.min.js" download>vulcanval.min.js</a></li>
         <li><a href="https://raw.githubusercontent.com/vulcan-estudios/vulcanval/master/dist/vulcanval-jquery.min.js" download>vulcanval-jquery.min.js</a></li>
@@ -211,8 +213,10 @@ require('vulcanval/bundle/js/jquery/intern');</code></pre>
       <a name="additionals"></a>
       <h3>Additionals</h3>
       <ul>
+        <li>You will have the <a href="https://www.npmjs.com/package/validator" target="_blank">validator.js</a> validators according to the version you install.</li>
         <li>You can add certain support to browser input autofill with this package <a href="https://github.com/tbosch/autofill-event" target="_blank">github.com/tbosch/autofill-event</a>.</li>
         <li>VulcanVal does not support inputs type file, an alternative is <a href="https://github.com/vulcan-estudios/vulcanup" target="_blank">VulcanUp</a>.</li>
+        <li>Currently, support for inputs type radio and selects multiple is under work.</li>
       </ul>
 
       <a name="thanks"></a>

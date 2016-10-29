@@ -10,3 +10,10 @@
 .register-fieldset.register-fieldset_shown {
   display: block;
 }
+
+.register-fieldset button,
+.register-fieldset input[type=button],
+.register-fieldset input[type=submit],
+.register-fieldset input[type=reset] {
+  margin: 0;
+}

@@ -521,9 +521,9 @@ var _isJSON = require('./lib/isJSON');
 
 var _isJSON2 = _interopRequireDefault(_isJSON);
 
-var _isNull = require('./lib/isNull');
+var _isEmpty = require('./lib/isEmpty');
 
-var _isNull2 = _interopRequireDefault(_isNull);
+var _isEmpty2 = _interopRequireDefault(_isEmpty);
 
 var _isLength = require('./lib/isLength');
 
@@ -568,6 +568,10 @@ var _isISIN2 = _interopRequireDefault(_isISIN);
 var _isISBN = require('./lib/isISBN');
 
 var _isISBN2 = _interopRequireDefault(_isISBN);
+
+var _isISSN = require('./lib/isISSN');
+
+var _isISSN2 = _interopRequireDefault(_isISSN);
 
 var _isMobilePhone = require('./lib/isMobilePhone');
 
@@ -635,7 +639,7 @@ var _toString2 = _interopRequireDefault(_toString);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = '5.7.0';
+var version = '6.1.0';
 
 var validator = {
   version: version,
@@ -652,13 +656,13 @@ var validator = {
   isHexColor: _isHexColor2.default,
   isMD5: _isMD2.default,
   isJSON: _isJSON2.default,
-  isNull: _isNull2.default,
+  isEmpty: _isEmpty2.default,
   isLength: _isLength2.default, isByteLength: _isByteLength2.default,
   isUUID: _isUUID2.default, isMongoId: _isMongoId2.default,
   isDate: _isDate2.default, isAfter: _isAfter2.default, isBefore: _isBefore2.default,
   isIn: _isIn2.default,
   isCreditCard: _isCreditCard2.default,
-  isISIN: _isISIN2.default, isISBN: _isISBN2.default,
+  isISIN: _isISIN2.default, isISBN: _isISBN2.default, isISSN: _isISSN2.default,
   isMobilePhone: _isMobilePhone2.default,
   isCurrency: _isCurrency2.default,
   isISO8601: _isISO2.default,
@@ -673,7 +677,7 @@ var validator = {
 
 exports.default = validator;
 module.exports = exports['default'];
-},{"./lib/blacklist":5,"./lib/contains":6,"./lib/equals":7,"./lib/escape":8,"./lib/isAfter":9,"./lib/isAlpha":10,"./lib/isAlphanumeric":11,"./lib/isAscii":12,"./lib/isBase64":13,"./lib/isBefore":14,"./lib/isBoolean":15,"./lib/isByteLength":16,"./lib/isCreditCard":17,"./lib/isCurrency":18,"./lib/isDataURI":19,"./lib/isDate":20,"./lib/isDecimal":21,"./lib/isDivisibleBy":22,"./lib/isEmail":23,"./lib/isFQDN":24,"./lib/isFloat":25,"./lib/isFullWidth":26,"./lib/isHalfWidth":27,"./lib/isHexColor":28,"./lib/isHexadecimal":29,"./lib/isIP":30,"./lib/isISBN":31,"./lib/isISIN":32,"./lib/isISO8601":33,"./lib/isIn":34,"./lib/isInt":35,"./lib/isJSON":36,"./lib/isLength":37,"./lib/isLowercase":38,"./lib/isMACAddress":39,"./lib/isMD5":40,"./lib/isMobilePhone":41,"./lib/isMongoId":42,"./lib/isMultibyte":43,"./lib/isNull":44,"./lib/isNumeric":45,"./lib/isSurrogatePair":46,"./lib/isURL":47,"./lib/isUUID":48,"./lib/isUppercase":49,"./lib/isVariableWidth":50,"./lib/isWhitelisted":51,"./lib/ltrim":52,"./lib/matches":53,"./lib/normalizeEmail":54,"./lib/rtrim":55,"./lib/stripLow":56,"./lib/toBoolean":57,"./lib/toDate":58,"./lib/toFloat":59,"./lib/toInt":60,"./lib/trim":61,"./lib/unescape":62,"./lib/util/toString":65,"./lib/whitelist":66}],4:[function(require,module,exports){
+},{"./lib/blacklist":5,"./lib/contains":6,"./lib/equals":7,"./lib/escape":8,"./lib/isAfter":9,"./lib/isAlpha":10,"./lib/isAlphanumeric":11,"./lib/isAscii":12,"./lib/isBase64":13,"./lib/isBefore":14,"./lib/isBoolean":15,"./lib/isByteLength":16,"./lib/isCreditCard":17,"./lib/isCurrency":18,"./lib/isDataURI":19,"./lib/isDate":20,"./lib/isDecimal":21,"./lib/isDivisibleBy":22,"./lib/isEmail":23,"./lib/isEmpty":24,"./lib/isFQDN":25,"./lib/isFloat":26,"./lib/isFullWidth":27,"./lib/isHalfWidth":28,"./lib/isHexColor":29,"./lib/isHexadecimal":30,"./lib/isIP":31,"./lib/isISBN":32,"./lib/isISIN":33,"./lib/isISO8601":34,"./lib/isISSN":35,"./lib/isIn":36,"./lib/isInt":37,"./lib/isJSON":38,"./lib/isLength":39,"./lib/isLowercase":40,"./lib/isMACAddress":41,"./lib/isMD5":42,"./lib/isMobilePhone":43,"./lib/isMongoId":44,"./lib/isMultibyte":45,"./lib/isNumeric":46,"./lib/isSurrogatePair":47,"./lib/isURL":48,"./lib/isUUID":49,"./lib/isUppercase":50,"./lib/isVariableWidth":51,"./lib/isWhitelisted":52,"./lib/ltrim":53,"./lib/matches":54,"./lib/normalizeEmail":55,"./lib/rtrim":56,"./lib/stripLow":57,"./lib/toBoolean":58,"./lib/toDate":59,"./lib/toFloat":60,"./lib/toInt":61,"./lib/trim":62,"./lib/unescape":63,"./lib/util/toString":66,"./lib/whitelist":67}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -693,6 +697,7 @@ var alpha = exports.alpha = {
   'sr-RS@latin': /^[A-ZČĆŽŠĐ]+$/i,
   'sr-RS': /^[А-ЯЂЈЉЊЋЏ]+$/i,
   'tr-TR': /^[A-ZÇĞİıÖŞÜ]+$/i,
+  'uk-UA': /^[А-ЯЄIЇҐ]+$/i,
   ar: /^[ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ]+$/
 };
 
@@ -710,6 +715,7 @@ var alphanumeric = exports.alphanumeric = {
   'sr-RS@latin': /^[0-9A-ZČĆŽŠĐ]+$/i,
   'sr-RS': /^[0-9А-ЯЂЈЉЊЋЏ]+$/i,
   'tr-TR': /^[0-9A-ZÇĞİıÖŞÜ]+$/i,
+  'uk-UA': /^[0-9А-ЯЄIЇҐ]+$/i,
   ar: /^[٠١٢٣٤٥٦٧٨٩0-9ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ]+$/
 };
 
@@ -751,7 +757,7 @@ function blacklist(str, chars) {
   return str.replace(new RegExp('[' + chars + ']+', 'g'), '');
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],6:[function(require,module,exports){
+},{"./util/assertString":64}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -774,7 +780,7 @@ function contains(str, elem) {
   return str.indexOf((0, _toString2.default)(elem)) >= 0;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63,"./util/toString":65}],7:[function(require,module,exports){
+},{"./util/assertString":64,"./util/toString":66}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -793,7 +799,7 @@ function equals(str, comparison) {
   return str === comparison;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],8:[function(require,module,exports){
+},{"./util/assertString":64}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -809,10 +815,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function escape(str) {
       (0, _assertString2.default)(str);
-      return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\//g, '&#x2F;').replace(/`/g, '&#96;');
+      return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\//g, '&#x2F;').replace(/\\/g, '&#x5C;').replace(/`/g, '&#96;');
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],9:[function(require,module,exports){
+},{"./util/assertString":64}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -831,7 +837,7 @@ var _toDate2 = _interopRequireDefault(_toDate);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function isAfter(str) {
-  var date = arguments.length <= 1 || arguments[1] === undefined ? String(new Date()) : arguments[1];
+  var date = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : String(new Date());
 
   (0, _assertString2.default)(str);
   var comparison = (0, _toDate2.default)(date);
@@ -839,7 +845,7 @@ function isAfter(str) {
   return !!(original && comparison && original > comparison);
 }
 module.exports = exports['default'];
-},{"./toDate":58,"./util/assertString":63}],10:[function(require,module,exports){
+},{"./toDate":59,"./util/assertString":64}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -856,7 +862,7 @@ var _alpha = require('./alpha');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function isAlpha(str) {
-  var locale = arguments.length <= 1 || arguments[1] === undefined ? 'en-US' : arguments[1];
+  var locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'en-US';
 
   (0, _assertString2.default)(str);
   if (locale in _alpha.alpha) {
@@ -865,7 +871,7 @@ function isAlpha(str) {
   throw new Error('Invalid locale \'' + locale + '\'');
 }
 module.exports = exports['default'];
-},{"./alpha":4,"./util/assertString":63}],11:[function(require,module,exports){
+},{"./alpha":4,"./util/assertString":64}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -882,7 +888,7 @@ var _alpha = require('./alpha');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function isAlphanumeric(str) {
-  var locale = arguments.length <= 1 || arguments[1] === undefined ? 'en-US' : arguments[1];
+  var locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'en-US';
 
   (0, _assertString2.default)(str);
   if (locale in _alpha.alphanumeric) {
@@ -891,7 +897,7 @@ function isAlphanumeric(str) {
   throw new Error('Invalid locale \'' + locale + '\'');
 }
 module.exports = exports['default'];
-},{"./alpha":4,"./util/assertString":63}],12:[function(require,module,exports){
+},{"./alpha":4,"./util/assertString":64}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -914,7 +920,7 @@ function isAscii(str) {
   return ascii.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],13:[function(require,module,exports){
+},{"./util/assertString":64}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -940,7 +946,7 @@ function isBase64(str) {
   return firstPaddingChar === -1 || firstPaddingChar === len - 1 || firstPaddingChar === len - 2 && str[len - 1] === '=';
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],14:[function(require,module,exports){
+},{"./util/assertString":64}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -959,7 +965,7 @@ var _toDate2 = _interopRequireDefault(_toDate);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function isBefore(str) {
-  var date = arguments.length <= 1 || arguments[1] === undefined ? String(new Date()) : arguments[1];
+  var date = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : String(new Date());
 
   (0, _assertString2.default)(str);
   var comparison = (0, _toDate2.default)(date);
@@ -967,7 +973,7 @@ function isBefore(str) {
   return !!(original && comparison && original < comparison);
 }
 module.exports = exports['default'];
-},{"./toDate":58,"./util/assertString":63}],15:[function(require,module,exports){
+},{"./toDate":59,"./util/assertString":64}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -986,14 +992,14 @@ function isBoolean(str) {
   return ['true', 'false', '1', '0'].indexOf(str) >= 0;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],16:[function(require,module,exports){
+},{"./util/assertString":64}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.default = isByteLength;
 
@@ -1020,7 +1026,7 @@ function isByteLength(str, options) {
   return len >= min && (typeof max === 'undefined' || len <= max);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],17:[function(require,module,exports){
+},{"./util/assertString":64}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1066,7 +1072,7 @@ function isCreditCard(str) {
   return !!(sum % 10 === 0 ? sanitized : false);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],18:[function(require,module,exports){
+},{"./util/assertString":64}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1155,7 +1161,7 @@ function isCurrency(str, options) {
   return currencyRegex(options).test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63,"./util/merge":64}],19:[function(require,module,exports){
+},{"./util/assertString":64,"./util/merge":65}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1176,7 +1182,7 @@ function isDataURI(str) {
   return dataURI.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],20:[function(require,module,exports){
+},{"./util/assertString":64}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1277,7 +1283,7 @@ function isDate(str) {
   return false;
 }
 module.exports = exports['default'];
-},{"./isISO8601":33,"./util/assertString":63}],21:[function(require,module,exports){
+},{"./isISO8601":34,"./util/assertString":64}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1298,7 +1304,7 @@ function isDecimal(str) {
   return str !== '' && decimal.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],22:[function(require,module,exports){
+},{"./util/assertString":64}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1321,7 +1327,7 @@ function isDivisibleBy(str, num) {
   return (0, _toFloat2.default)(str) % parseInt(num, 10) === 0;
 }
 module.exports = exports['default'];
-},{"./toFloat":59,"./util/assertString":63}],23:[function(require,module,exports){
+},{"./toFloat":60,"./util/assertString":64}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1408,7 +1414,26 @@ function isEmail(str, options) {
   return true;
 }
 module.exports = exports['default'];
-},{"./isByteLength":16,"./isFQDN":24,"./util/assertString":63,"./util/merge":64}],24:[function(require,module,exports){
+},{"./isByteLength":16,"./isFQDN":25,"./util/assertString":64,"./util/merge":65}],24:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = isEmpty;
+
+var _assertString = require('./util/assertString');
+
+var _assertString2 = _interopRequireDefault(_assertString);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function isEmpty(str) {
+  (0, _assertString2.default)(str);
+  return str.length === 0;
+}
+module.exports = exports['default'];
+},{"./util/assertString":64}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1466,7 +1491,7 @@ function isFDQN(str, options) {
   return true;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63,"./util/merge":64}],25:[function(require,module,exports){
+},{"./util/assertString":64,"./util/merge":65}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1488,10 +1513,10 @@ function isFloat(str, options) {
   if (str === '' || str === '.') {
     return false;
   }
-  return float.test(str) && (!options.hasOwnProperty('min') || str >= options.min) && (!options.hasOwnProperty('max') || str <= options.max);
+  return float.test(str) && (!options.hasOwnProperty('min') || str >= options.min) && (!options.hasOwnProperty('max') || str <= options.max) && (!options.hasOwnProperty('lt') || str < options.lt) && (!options.hasOwnProperty('gt') || str > options.gt);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],26:[function(require,module,exports){
+},{"./util/assertString":64}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1512,7 +1537,7 @@ function isFullWidth(str) {
   (0, _assertString2.default)(str);
   return fullWidth.test(str);
 }
-},{"./util/assertString":63}],27:[function(require,module,exports){
+},{"./util/assertString":64}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1533,7 +1558,7 @@ function isHalfWidth(str) {
   (0, _assertString2.default)(str);
   return halfWidth.test(str);
 }
-},{"./util/assertString":63}],28:[function(require,module,exports){
+},{"./util/assertString":64}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1554,7 +1579,7 @@ function isHexColor(str) {
   return hexcolor.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],29:[function(require,module,exports){
+},{"./util/assertString":64}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1575,7 +1600,7 @@ function isHexadecimal(str) {
   return hexadecimal.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],30:[function(require,module,exports){
+},{"./util/assertString":64}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1593,7 +1618,7 @@ var ipv4Maybe = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
 var ipv6Block = /^[0-9A-F]{1,4}$/i;
 
 function isIP(str) {
-  var version = arguments.length <= 1 || arguments[1] === undefined ? '' : arguments[1];
+  var version = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 
   (0, _assertString2.default)(str);
   version = String(version);
@@ -1657,7 +1682,7 @@ function isIP(str) {
   return false;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],31:[function(require,module,exports){
+},{"./util/assertString":64}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1676,7 +1701,7 @@ var isbn13Maybe = /^(?:[0-9]{13})$/;
 var factor = [1, 3];
 
 function isISBN(str) {
-  var version = arguments.length <= 1 || arguments[1] === undefined ? '' : arguments[1];
+  var version = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 
   (0, _assertString2.default)(str);
   version = String(version);
@@ -1715,7 +1740,7 @@ function isISBN(str) {
   return false;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],32:[function(require,module,exports){
+},{"./util/assertString":64}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1764,7 +1789,7 @@ function isISIN(str) {
   return parseInt(str.substr(str.length - 1), 10) === (10000 - sum) % 10;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],33:[function(require,module,exports){
+},{"./util/assertString":64}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1787,14 +1812,73 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // from http://goo.gl/0ejHHW
 var iso8601 = exports.iso8601 = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
 /* eslint-enable max-len */
-},{"./util/assertString":63}],34:[function(require,module,exports){
+},{"./util/assertString":64}],35:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = isISSN;
+
+var _assertString = require('./util/assertString');
+
+var _assertString2 = _interopRequireDefault(_assertString);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var issn = '^\\d{4}-?\\d{3}[\\dX]$';
+
+function isISSN(str) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  (0, _assertString2.default)(str);
+  var testIssn = issn;
+  testIssn = options.require_hyphen ? testIssn.replace('?', '') : testIssn;
+  testIssn = options.case_sensitive ? new RegExp(testIssn) : new RegExp(testIssn, 'i');
+  if (!testIssn.test(str)) {
+    return false;
+  }
+  var issnDigits = str.replace('-', '');
+  var position = 8;
+  var checksum = 0;
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = issnDigits[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var digit = _step.value;
+
+      var digitValue = digit.toUpperCase() === 'X' ? 10 : +digit;
+      checksum += digitValue * position;
+      --position;
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  return checksum % 11 === 0;
+}
+module.exports = exports['default'];
+},{"./util/assertString":64}],36:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.default = isIn;
 
@@ -1827,7 +1911,7 @@ function isIn(str, options) {
   return false;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63,"./util/toString":65}],35:[function(require,module,exports){
+},{"./util/assertString":64,"./util/toString":66}],37:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1850,7 +1934,7 @@ function isInt(str, options) {
 
   // Get the regex to use for testing, based on whether
   // leading zeroes are allowed or not.
-  var regex = options.hasOwnProperty('allow_leading_zeroes') && options.allow_leading_zeroes ? intLeadingZeroes : int;
+  var regex = options.hasOwnProperty('allow_leading_zeroes') && !options.allow_leading_zeroes ? int : intLeadingZeroes;
 
   // Check min/max
   var minCheckPassed = !options.hasOwnProperty('min') || str >= options.min;
@@ -1859,14 +1943,14 @@ function isInt(str, options) {
   return regex.test(str) && minCheckPassed && maxCheckPassed;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],36:[function(require,module,exports){
+},{"./util/assertString":64}],38:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.default = isJSON;
 
@@ -1885,14 +1969,14 @@ function isJSON(str) {
   return false;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],37:[function(require,module,exports){
+},{"./util/assertString":64}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.default = isLength;
 
@@ -1920,7 +2004,7 @@ function isLength(str, options) {
   return len >= min && (typeof max === 'undefined' || len <= max);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],38:[function(require,module,exports){
+},{"./util/assertString":64}],40:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1939,7 +2023,7 @@ function isLowercase(str) {
   return str === str.toLowerCase();
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],39:[function(require,module,exports){
+},{"./util/assertString":64}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1960,7 +2044,7 @@ function isMACAddress(str) {
   return macAddress.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],40:[function(require,module,exports){
+},{"./util/assertString":64}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1981,7 +2065,7 @@ function isMD5(str) {
   return md5.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],41:[function(require,module,exports){
+},{"./util/assertString":64}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2046,7 +2130,7 @@ function isMobilePhone(str, locale) {
   return false;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],42:[function(require,module,exports){
+},{"./util/assertString":64}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2069,7 +2153,7 @@ function isMongoId(str) {
   return (0, _isHexadecimal2.default)(str) && str.length === 24;
 }
 module.exports = exports['default'];
-},{"./isHexadecimal":29,"./util/assertString":63}],43:[function(require,module,exports){
+},{"./isHexadecimal":30,"./util/assertString":64}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2092,26 +2176,7 @@ function isMultibyte(str) {
   return multibyte.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],44:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = isNull;
-
-var _assertString = require('./util/assertString');
-
-var _assertString2 = _interopRequireDefault(_assertString);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function isNull(str) {
-  (0, _assertString2.default)(str);
-  return str.length === 0;
-}
-module.exports = exports['default'];
-},{"./util/assertString":63}],45:[function(require,module,exports){
+},{"./util/assertString":64}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2132,7 +2197,7 @@ function isNumeric(str) {
   return numeric.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],46:[function(require,module,exports){
+},{"./util/assertString":64}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2153,7 +2218,7 @@ function isSurrogatePair(str) {
   return surrogatePair.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],47:[function(require,module,exports){
+},{"./util/assertString":64}],48:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2296,7 +2361,7 @@ function isURL(url, options) {
   return true;
 }
 module.exports = exports['default'];
-},{"./isFQDN":24,"./isIP":30,"./util/assertString":63,"./util/merge":64}],48:[function(require,module,exports){
+},{"./isFQDN":25,"./isIP":31,"./util/assertString":64,"./util/merge":65}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2318,14 +2383,14 @@ var uuid = {
 };
 
 function isUUID(str) {
-  var version = arguments.length <= 1 || arguments[1] === undefined ? 'all' : arguments[1];
+  var version = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'all';
 
   (0, _assertString2.default)(str);
   var pattern = uuid[version];
   return pattern && pattern.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],49:[function(require,module,exports){
+},{"./util/assertString":64}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2344,7 +2409,7 @@ function isUppercase(str) {
   return str === str.toUpperCase();
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],50:[function(require,module,exports){
+},{"./util/assertString":64}],51:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2367,7 +2432,7 @@ function isVariableWidth(str) {
   return _isFullWidth.fullWidth.test(str) && _isHalfWidth.halfWidth.test(str);
 }
 module.exports = exports['default'];
-},{"./isFullWidth":26,"./isHalfWidth":27,"./util/assertString":63}],51:[function(require,module,exports){
+},{"./isFullWidth":27,"./isHalfWidth":28,"./util/assertString":64}],52:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2391,7 +2456,7 @@ function isWhitelisted(str, chars) {
   return true;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],52:[function(require,module,exports){
+},{"./util/assertString":64}],53:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2411,7 +2476,7 @@ function ltrim(str, chars) {
   return str.replace(pattern, '');
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],53:[function(require,module,exports){
+},{"./util/assertString":64}],54:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2433,7 +2498,7 @@ function matches(str, pattern, modifiers) {
   return pattern.test(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],54:[function(require,module,exports){
+},{"./util/assertString":64}],55:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2452,37 +2517,128 @@ var _merge2 = _interopRequireDefault(_merge);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var default_normalize_email_options = {
-  lowercase: true,
-  remove_dots: true,
-  remove_extension: true
+  // The following options apply to all email addresses
+  // Lowercases the local part of the email address.
+  // Please note this may violate RFC 5321 as per http://stackoverflow.com/a/9808332/192024).
+  // The domain is always lowercased, as per RFC 1035
+  all_lowercase: true,
+
+  // The following conversions are specific to GMail
+  // Lowercases the local part of the GMail address (known to be case-insensitive)
+  gmail_lowercase: true,
+  // Removes dots from the local part of the email address, as that's ignored by GMail
+  gmail_remove_dots: true,
+  // Removes the subaddress (e.g. "+foo") from the email address
+  gmail_remove_subaddress: true,
+  // Conversts the googlemail.com domain to gmail.com
+  gmail_convert_googlemaildotcom: true,
+
+  // The following conversions are specific to Outlook.com / Windows Live / Hotmail
+  // Lowercases the local part of the Outlook.com address (known to be case-insensitive)
+  outlookdotcom_lowercase: true,
+  // Removes the subaddress (e.g. "+foo") from the email address
+  outlookdotcom_remove_subaddress: true,
+
+  // The following conversions are specific to Yahoo
+  // Lowercases the local part of the Yahoo address (known to be case-insensitive)
+  yahoo_lowercase: true,
+  // Removes the subaddress (e.g. "-foo") from the email address
+  yahoo_remove_subaddress: true,
+
+  // The following conversions are specific to iCloud
+  // Lowercases the local part of the iCloud address (known to be case-insensitive)
+  icloud_lowercase: true,
+  // Removes the subaddress (e.g. "+foo") from the email address
+  icloud_remove_subaddress: true
 };
+
+// List of domains used by iCloud
+var icloud_domains = ['icloud.com', 'me.com'];
+
+// List of domains used by Outlook.com and its predecessors
+// This list is likely incomplete.
+// Partial reference:
+// https://blogs.office.com/2013/04/17/outlook-com-gets-two-step-verification-sign-in-by-alias-and-new-international-domains/
+var outlookdotcom_domains = ['hotmail.at', 'hotmail.be', 'hotmail.ca', 'hotmail.cl', 'hotmail.co.il', 'hotmail.co.nz', 'hotmail.co.th', 'hotmail.co.uk', 'hotmail.com', 'hotmail.com.ar', 'hotmail.com.au', 'hotmail.com.br', 'hotmail.com.gr', 'hotmail.com.mx', 'hotmail.com.pe', 'hotmail.com.tr', 'hotmail.com.vn', 'hotmail.cz', 'hotmail.de', 'hotmail.dk', 'hotmail.es', 'hotmail.fr', 'hotmail.hu', 'hotmail.id', 'hotmail.ie', 'hotmail.in', 'hotmail.it', 'hotmail.jp', 'hotmail.kr', 'hotmail.lv', 'hotmail.my', 'hotmail.ph', 'hotmail.pt', 'hotmail.sa', 'hotmail.sg', 'hotmail.sk', 'live.be', 'live.co.uk', 'live.com', 'live.com.ar', 'live.com.mx', 'live.de', 'live.es', 'live.eu', 'live.fr', 'live.it', 'live.nl', 'msn.com', 'outlook.at', 'outlook.be', 'outlook.cl', 'outlook.co.il', 'outlook.co.nz', 'outlook.co.th', 'outlook.com', 'outlook.com.ar', 'outlook.com.au', 'outlook.com.br', 'outlook.com.gr', 'outlook.com.pe', 'outlook.com.tr', 'outlook.com.vn', 'outlook.cz', 'outlook.de', 'outlook.dk', 'outlook.es', 'outlook.fr', 'outlook.hu', 'outlook.id', 'outlook.ie', 'outlook.in', 'outlook.it', 'outlook.jp', 'outlook.kr', 'outlook.lv', 'outlook.my', 'outlook.ph', 'outlook.pt', 'outlook.sa', 'outlook.sg', 'outlook.sk', 'passport.com'];
+
+// List of domains used by Yahoo Mail
+// This list is likely incomplete
+var yahoo_domains = ['rocketmail.com', 'yahoo.ca', 'yahoo.co.uk', 'yahoo.com', 'yahoo.de', 'yahoo.fr', 'yahoo.in', 'yahoo.it', 'ymail.com'];
 
 function normalizeEmail(email, options) {
   options = (0, _merge2.default)(options, default_normalize_email_options);
+
   if (!(0, _isEmail2.default)(email)) {
     return false;
   }
-  var parts = email.split('@', 2);
+
+  var raw_parts = email.split('@');
+  var domain = raw_parts.pop();
+  var user = raw_parts.join('@');
+  var parts = [user, domain];
+
+  // The domain is always lowercased, as it's case-insensitive per RFC 1035
   parts[1] = parts[1].toLowerCase();
+
   if (parts[1] === 'gmail.com' || parts[1] === 'googlemail.com') {
-    if (options.remove_extension) {
+    // Address is GMail
+    if (options.gmail_remove_subaddress) {
       parts[0] = parts[0].split('+')[0];
     }
-    if (options.remove_dots) {
+    if (options.gmail_remove_dots) {
       parts[0] = parts[0].replace(/\./g, '');
     }
     if (!parts[0].length) {
       return false;
     }
-    parts[0] = parts[0].toLowerCase();
-    parts[1] = 'gmail.com';
-  } else if (options.lowercase) {
-    parts[0] = parts[0].toLowerCase();
+    if (options.all_lowercase || options.gmail_lowercase) {
+      parts[0] = parts[0].toLowerCase();
+    }
+    parts[1] = options.gmail_convert_googlemaildotcom ? 'gmail.com' : parts[1];
+  } else if (~icloud_domains.indexOf(parts[1])) {
+    // Address is iCloud
+    if (options.icloud_remove_subaddress) {
+      parts[0] = parts[0].split('+')[0];
+    }
+    if (!parts[0].length) {
+      return false;
+    }
+    if (options.all_lowercase || options.icloud_lowercase) {
+      parts[0] = parts[0].toLowerCase();
+    }
+  } else if (~outlookdotcom_domains.indexOf(parts[1])) {
+    // Address is Outlook.com
+    if (options.outlookdotcom_remove_subaddress) {
+      parts[0] = parts[0].split('+')[0];
+    }
+    if (!parts[0].length) {
+      return false;
+    }
+    if (options.all_lowercase || options.outlookdotcom_lowercase) {
+      parts[0] = parts[0].toLowerCase();
+    }
+  } else if (~yahoo_domains.indexOf(parts[1])) {
+    // Address is Yahoo
+    if (options.yahoo_remove_subaddress) {
+      var components = parts[0].split('-');
+      parts[0] = components.length > 1 ? components.slice(0, -1).join('-') : components[0];
+    }
+    if (!parts[0].length) {
+      return false;
+    }
+    if (options.all_lowercase || options.yahoo_lowercase) {
+      parts[0] = parts[0].toLowerCase();
+    }
+  } else {
+    // Any other address
+    if (options.all_lowercase) {
+      parts[0] = parts[0].toLowerCase();
+    }
   }
   return parts.join('@');
 }
 module.exports = exports['default'];
-},{"./isEmail":23,"./util/merge":64}],55:[function(require,module,exports){
+},{"./isEmail":23,"./util/merge":65}],56:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2508,7 +2664,7 @@ function rtrim(str, chars) {
   return idx < str.length ? str.substr(0, idx + 1) : str;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],56:[function(require,module,exports){
+},{"./util/assertString":64}],57:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2532,7 +2688,7 @@ function stripLow(str, keep_new_lines) {
   return (0, _blacklist2.default)(str, chars);
 }
 module.exports = exports['default'];
-},{"./blacklist":5,"./util/assertString":63}],57:[function(require,module,exports){
+},{"./blacklist":5,"./util/assertString":64}],58:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2554,7 +2710,7 @@ function toBoolean(str, strict) {
   return str !== '0' && str !== 'false' && str !== '';
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],58:[function(require,module,exports){
+},{"./util/assertString":64}],59:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2574,7 +2730,7 @@ function toDate(date) {
   return !isNaN(date) ? new Date(date) : null;
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],59:[function(require,module,exports){
+},{"./util/assertString":64}],60:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2593,7 +2749,7 @@ function toFloat(str) {
   return parseFloat(str);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],60:[function(require,module,exports){
+},{"./util/assertString":64}],61:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2612,7 +2768,7 @@ function toInt(str, radix) {
   return parseInt(str, radix || 10);
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],61:[function(require,module,exports){
+},{"./util/assertString":64}],62:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2634,7 +2790,7 @@ function trim(str, chars) {
   return (0, _rtrim2.default)((0, _ltrim2.default)(str, chars), chars);
 }
 module.exports = exports['default'];
-},{"./ltrim":52,"./rtrim":55}],62:[function(require,module,exports){
+},{"./ltrim":53,"./rtrim":56}],63:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2653,7 +2809,7 @@ function unescape(str) {
       return str.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#x2F;/g, '/').replace(/&#96;/g, '`');
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],63:[function(require,module,exports){
+},{"./util/assertString":64}],64:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2666,7 +2822,7 @@ function assertString(input) {
   }
 }
 module.exports = exports['default'];
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2674,7 +2830,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = merge;
 function merge() {
-  var obj = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+  var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var defaults = arguments[1];
 
   for (var key in defaults) {
@@ -2685,14 +2841,14 @@ function merge() {
   return obj;
 }
 module.exports = exports['default'];
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.default = toString;
 function toString(input) {
@@ -2708,7 +2864,7 @@ function toString(input) {
   return String(input);
 }
 module.exports = exports['default'];
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2727,7 +2883,7 @@ function whitelist(str, chars) {
   return str.replace(new RegExp('[^' + chars + ']+', 'g'), '');
 }
 module.exports = exports['default'];
-},{"./util/assertString":63}],67:[function(require,module,exports){
+},{"./util/assertString":64}],68:[function(require,module,exports){
 'use strict';
 
 var settings = require('./settings/settings');
@@ -2783,7 +2939,7 @@ module.exports = function addValidator(name, validator) {
   settings.validators[name] = validator;
 };
 
-},{"./settings/settings":77}],68:[function(require,module,exports){
+},{"./settings/settings":79}],69:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2807,7 +2963,7 @@ var browser = {
 module.exports = browser;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 'use strict';
 
 var extend = require('extend');
@@ -2854,7 +3010,7 @@ module.exports = function (isPlain, map) {
   return newMap;
 };
 
-},{"./convertMapTo":70,"./log":73,"./utils":79,"extend":1}],70:[function(require,module,exports){
+},{"./convertMapTo":71,"./log":75,"./utils":81,"extend":1}],71:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2973,7 +3129,7 @@ module.exports = function (to, map) {
   }
 };
 
-},{"./log":73,"./utils":79}],71:[function(require,module,exports){
+},{"./log":75,"./utils":81}],72:[function(require,module,exports){
 'use strict';
 
 var extend = require('extend');
@@ -3017,7 +3173,45 @@ module.exports = function extendLocale(locale) {
   settings.msgs[locale.id] = extend(true, {}, settings.msgs[locale.id], locale.msgs);
 };
 
-},{"./settings/settings":77,"extend":1}],72:[function(require,module,exports){
+},{"./settings/settings":79,"extend":1}],73:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.jQuery = exports.validator = undefined;
+
+var _validator = require('validator');
+
+var _validator2 = _interopRequireDefault(_validator);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * window object.
+ * @external window
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Window}
+ */
+
+/**
+ * jQuery object.
+ * @external jQuery
+ * @see {@link http://api.jquery.com/jQuery/}
+ */
+
+/**
+ * The jQuery plugin namespace.
+ * @external "jQuery.fn"
+ * @see {@link http://docs.jquery.com/Plugins/Authoring The jQuery Plugin Guide}
+ */
+
+var jQuery = typeof window !== 'undefined' ? window.jQuery || window.$ : null;
+
+exports.validator = _validator2.default;
+exports.jQuery = jQuery;
+exports.default = { validator: _validator2.default, jQuery: jQuery };
+
+},{"validator":3}],74:[function(require,module,exports){
 'use strict';
 
 var lang = {
@@ -3059,7 +3253,7 @@ var lang = {
 
 module.exports = lang;
 
-},{}],73:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 'use strict';
 
 var Log = require('prhone-log');
@@ -3070,16 +3264,30 @@ module.exports = new Log('VulcanVal', {
   throwErrors: true
 });
 
-},{"prhone-log":2}],74:[function(require,module,exports){
+},{"prhone-log":2}],76:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var extend = require('extend');
-var validator = require('validator');
-var log = require('./log');
-var utils = require('./utils');
-var browser = require('./browser');
+var _extend = require('extend');
+
+var _extend2 = _interopRequireDefault(_extend);
+
+var _log = require('./log');
+
+var _log2 = _interopRequireDefault(_log);
+
+var _utils = require('./utils');
+
+var _utils2 = _interopRequireDefault(_utils);
+
+var _browser = require('./browser');
+
+var _browser2 = _interopRequireDefault(_browser);
+
+var _external = require('./external');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * rawValidation method.
@@ -3097,14 +3305,14 @@ module.exports = function (fieldName) {
     value: settings.context.get(fieldName)
   };
 
-  log.debug('validating field: ' + field.name + '="' + field.value + '"');
+  _log2.default.debug('validating field: ' + field.name + '="' + field.value + '"');
 
-  field.rules = utils.find(settings.fields, function (vals) {
+  field.rules = _utils2.default.find(settings.fields, function (vals) {
     return vals.name === field.name;
   });
 
   if (!field.rules) {
-    log.warn('field "' + field.name + '" to validate does not have validators');
+    _log2.default.warn('field "' + field.name + '" to validate does not have validators');
     return false;
   }
 
@@ -3122,7 +3330,7 @@ module.exports = function (fieldName) {
   }
 
   // used only in client side
-  if (browser.isNodejs && field.rules.onlyUI) {
+  if (_browser2.default.isNodejs && field.rules.onlyUI) {
     return false;
   }
 
@@ -3139,13 +3347,13 @@ module.exports = function (fieldName) {
     var value = field.value;
     var option = typeof opts === 'string' || typeof opts === 'number' ? opts : '';
     var options = (typeof opts === 'undefined' ? 'undefined' : _typeof(opts)) === 'object' ? opts : null;
-    var params = extend({}, { value: value, option: option }, options);
+    var params = (0, _extend2.default)({}, { value: value, option: option }, options);
 
     // If it is custom, the message can be by locales or can be universal.
     if (custom) {
-      return utils.format((typeof id === 'undefined' ? 'undefined' : _typeof(id)) === 'object' ? id[settings.locale] : id, params);
+      return _utils2.default.format((typeof id === 'undefined' ? 'undefined' : _typeof(id)) === 'object' ? id[settings.locale] : id, params);
     } else {
-      return utils.format(settings.getMsgTemplate(id), params);
+      return _utils2.default.format(settings.getMsgTemplate(id), params);
     }
   };
 
@@ -3168,7 +3376,7 @@ module.exports = function (fieldName) {
     }
   }
 
-  utils.everyInObject(field.rules.validators, function (val, valName) {
+  _utils2.default.everyInObject(field.rules.validators, function (val, valName) {
 
     // There is already an error.
     if (err) {
@@ -3188,7 +3396,7 @@ module.exports = function (fieldName) {
     // isLength validator.
     if (valName === 'isLength') {
       if (valType !== 'object' || !(typeof val.min === 'number' || val.max)) {
-        return log.error('fields validator "isLength" must be a plain object if defined');
+        return _log2.default.error('fields validator "isLength" must be a plain object if defined');
       }
       if (field.value.length < (valOpts.min || 0)) {
         err = getMsg(false, 'isLength.min', val);
@@ -3201,7 +3409,7 @@ module.exports = function (fieldName) {
     // matches validator (accepts a plain object and a regular expression)
     else if (valName === 'matches') {
         if (valType !== 'object') {
-          return log.error('fields validator "matches" must be a plain object or RegExp');
+          return _log2.default.error('fields validator "matches" must be a plain object or RegExp');
         }
         if (val instanceof RegExp) {
           pattern = val;
@@ -3210,9 +3418,9 @@ module.exports = function (fieldName) {
           pattern = val.pattern;
           hasMsg = val.msgs;
         } else {
-          return log.error('matches validator needs a RegExp');
+          return _log2.default.error('matches validator needs a RegExp');
         }
-        if (!validator.matches(field.value, pattern)) {
+        if (!_external.validator.matches(field.value, pattern)) {
           err = getMsg(hasMsg, hasMsg ? val.msgs : 'general', val);
         }
         return true;
@@ -3227,8 +3435,8 @@ module.exports = function (fieldName) {
         }
 
         // `validator` validator.
-        else if (validator[valName]) {
-            if (!validator[valName](field.value, valOpts)) {
+        else if (_external.validator[valName]) {
+            if (!_external.validator[valName](field.value, valOpts)) {
               err = getMsg(false, valName, val);
             }
             return true;
@@ -3236,18 +3444,18 @@ module.exports = function (fieldName) {
 
           // Not found.
           else {
-              return log.error('validator "' + valName + '" was not found');
+              return _log2.default.error('validator "' + valName + '" was not found');
             }
   });
 
   if (err) {
-    log.info('invalid field ' + field.name + '="' + field.value + '":', err);
+    _log2.default.info('invalid field ' + field.name + '="' + field.value + '":', err);
   }
 
   return !err ? false : err;
 };
 
-},{"./browser":68,"./log":73,"./utils":79,"extend":1,"validator":3}],75:[function(require,module,exports){
+},{"./browser":69,"./external":73,"./log":75,"./utils":81,"extend":1}],77:[function(require,module,exports){
 'use strict';
 
 var _extend = require('extend');
@@ -3567,7 +3775,7 @@ var fieldSettings = {
 
 module.exports = fieldSettings;
 
-},{"../utils":79,"extend":1}],76:[function(require,module,exports){
+},{"../utils":81,"extend":1}],78:[function(require,module,exports){
 'use strict';
 
 var _extend = require('extend');
@@ -3717,18 +3925,38 @@ var fieldsetSettings = {
 
 module.exports = fieldsetSettings;
 
-},{"../utils":79,"extend":1}],77:[function(require,module,exports){
+},{"../utils":81,"extend":1}],79:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var validator = require('validator');
-var _extend = require('extend');
-var log = require('../log');
-var utils = require('../utils');
-var fieldSettings = require('./fieldSettings');
-var fieldsetSettings = require('./fieldsetSettings');
-var utilityContext = require('./utilityContext');
+var _extend2 = require('extend');
+
+var _extend3 = _interopRequireDefault(_extend2);
+
+var _fieldSettings = require('./fieldSettings');
+
+var _fieldSettings2 = _interopRequireDefault(_fieldSettings);
+
+var _fieldsetSettings = require('./fieldsetSettings');
+
+var _fieldsetSettings2 = _interopRequireDefault(_fieldsetSettings);
+
+var _utilityContext = require('./utilityContext');
+
+var _utilityContext2 = _interopRequireDefault(_utilityContext);
+
+var _log = require('../log');
+
+var _log2 = _interopRequireDefault(_log);
+
+var _utils = require('../utils');
+
+var _utils2 = _interopRequireDefault(_utils);
+
+var _external = require('../external');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @namespace settings
@@ -4133,24 +4361,24 @@ var settings = {
     'use strict';
 
     if ((typeof custom === 'undefined' ? 'undefined' : _typeof(custom)) !== 'object') {
-      return log.error('a valid object is required to extend');
+      return _log2.default.error('a valid object is required to extend');
     }
 
-    custom = _extend(true, {}, custom);
+    custom = (0, _extend3.default)(true, {}, custom);
 
     var locales = [];
-    utils.walkObject(this.msgs, function (msgs, locale) {
+    _utils2.default.walkObject(this.msgs, function (msgs, locale) {
       if (locale !== 'defaults') locales.push(locale);
     });
 
     // Validate fields.
     if (!Array.isArray(custom.fields) || !custom.fields.length) {
-      log.error('there are no fields for validation');
+      _log2.default.error('there are no fields for validation');
     }
     if (custom.fields) {
       custom.fields.forEach(function (field) {
-        if (!utils.validateFieldName(field.name)) {
-          log.error('field name "' + field.name + '" must be a valid name');
+        if (!_utils2.default.validateFieldName(field.name)) {
+          _log2.default.error('field name "' + field.name + '" must be a valid name');
         }
       });
     }
@@ -4158,7 +4386,7 @@ var settings = {
     // Create context.
     // @NOTE: The .get() method the context has will be set on this object
     // when the instance on client or server side is made.
-    custom.context = utilityContext.extend();
+    custom.context = _utilityContext2.default.extend();
 
     // Process fieldsets.
     if (custom.fieldsets) {
@@ -4172,8 +4400,8 @@ var settings = {
           var fields = void 0,
               field = void 0;
 
-          if (typeof fieldset.name !== 'string' || !validator.isAlphanumeric(fieldset.name) || !fieldset.name.length) {
-            log.error('fieldset name "' + fieldset.name + '" is invalid');
+          if (typeof fieldset.name !== 'string' || !_external.validator.isAlphanumeric(fieldset.name) || !fieldset.name.length) {
+            _log2.default.error('fieldset name "' + fieldset.name + '" is invalid');
           }
 
           if (fieldset.fields instanceof RegExp) {
@@ -4187,20 +4415,20 @@ var settings = {
           } else if (Array.isArray(fieldset.fields)) {
             fields = [];
             fieldset.fields.forEach(function (fsfield) {
-              field = utils.find(fieldsNames, function (fn) {
+              field = _utils2.default.find(fieldsNames, function (fn) {
                 return fn === fsfield;
               });
-              if (field) fields.push(field);else log.error('fieldset field "' + fsfield + '" not found');
+              if (field) fields.push(field);else _log2.default.error('fieldset field "' + fsfield + '" not found');
             });
           }
 
           if (!fields || !fields.length) {
-            log.error('fieldset name "' + fieldset.name + '" fields not found');
+            _log2.default.error('fieldset name "' + fieldset.name + '" fields not found');
           }
 
           fieldset.fields = fields;
 
-          return fieldsetSettings.extend(fieldset);
+          return _fieldsetSettings2.default.extend(fieldset);
         });
       })();
     }
@@ -4216,7 +4444,7 @@ var settings = {
       if (field.value) {
         newField.value = field.value.bind(custom.context, field.$el);
       } else {
-        newField.value = fieldSettings.value.bind(custom.context, field.$el);
+        newField.value = _fieldSettings2.default.value.bind(custom.context, field.$el);
       }
 
       if (field.onlyIf) {
@@ -4229,18 +4457,18 @@ var settings = {
         })();
       }
 
-      var fromBaseSettings = utils.pick(settings, inheritFromSettings);
-      var fromSettings = utils.pick(custom, inheritFromSettings);
-      _extend(newField, fromBaseSettings, fromSettings);
+      var fromBaseSettings = _utils2.default.pick(settings, inheritFromSettings);
+      var fromSettings = _utils2.default.pick(custom, inheritFromSettings);
+      (0, _extend3.default)(newField, fromBaseSettings, fromSettings);
 
       if (custom.fieldsets) {
         custom.fieldsets.forEach(function (fieldset) {
-          if (utils.find(fieldset.fields, function (ff) {
+          if (_utils2.default.find(fieldset.fields, function (ff) {
             return ff === field.name;
           })) {
 
-            var fromFieldsetSettings = utils.pick(fieldset, inheritFromFieldsetSettings);
-            _extend(newField, fromFieldsetSettings);
+            var fromFieldsetSettings = _utils2.default.pick(fieldset, inheritFromFieldsetSettings);
+            (0, _extend3.default)(newField, fromFieldsetSettings);
 
             if (fieldset.onlyIf) {
               (function () {
@@ -4253,7 +4481,7 @@ var settings = {
               })();
             }
 
-            newField.validators = _extend(true, {}, newField.validators, fieldset.validators, field.validators);
+            newField.validators = (0, _extend3.default)(true, {}, newField.validators, fieldset.validators, field.validators);
           }
         });
       }
@@ -4265,19 +4493,19 @@ var settings = {
       delete field.onlyIf;
       delete field.value;
 
-      field = _extend(newField, field);
+      field = (0, _extend3.default)(newField, field);
 
       if (!field.validators) field.validators = validators;
       if (!field.onlyIf) field.onlyIf = onlyIf;
       if (!field.value) field.value = value;
 
-      return fieldSettings.extend(field);
+      return _fieldSettings2.default.extend(field);
     });
 
     // Validate locale.
     if (custom.locale) {
       if (!this.msgs[custom.locale]) {
-        log.error('locale "' + custom.locale + '" was not found');
+        _log2.default.error('locale "' + custom.locale + '" was not found');
       }
     }
 
@@ -4305,15 +4533,15 @@ var settings = {
           });
         };
 
-        utils.walkObject(msgs, function (messages, validatorName) {
+        _utils2.default.walkObject(msgs, function (messages, validatorName) {
 
           // Messages for properties in validator.
           // At the moment, only isLength works this way.
           if (validatorName === 'isLength') {
             var properties = messages;
-            utils.walkObject(properties, function (value, property) {
+            _utils2.default.walkObject(properties, function (value, property) {
               if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object') {
-                utils.walkObject(value, function (message, locale) {
+                _utils2.default.walkObject(value, function (message, locale) {
                   setMsgInLocale(locale, validatorName + '.' + property, message);
                 });
               } else {
@@ -4323,7 +4551,7 @@ var settings = {
           }
 
           if ((typeof messages === 'undefined' ? 'undefined' : _typeof(messages)) === 'object') {
-            utils.walkObject(messages, function (message, locale) {
+            _utils2.default.walkObject(messages, function (message, locale) {
               setMsgInLocale(locale, validatorName, message);
             });
           } else {
@@ -4335,16 +4563,16 @@ var settings = {
       })();
     }
 
-    return _extend(true, {}, this, custom);
+    return (0, _extend3.default)(true, {}, this, custom);
   }
 };
 
 module.exports = settings;
 
-},{"../log":73,"../utils":79,"./fieldSettings":75,"./fieldsetSettings":76,"./utilityContext":78,"extend":1,"validator":3}],78:[function(require,module,exports){
+},{"../external":73,"../log":75,"../utils":81,"./fieldSettings":77,"./fieldsetSettings":78,"./utilityContext":80,"extend":1}],80:[function(require,module,exports){
 'use strict';
 
-var validator = require('validator');
+var _external = require('../external');
 
 /**
  * @namespace utilityContext
@@ -4391,28 +4619,36 @@ var utilityContext = {
    */
   extend: function extend() {
     var F = function F() {};
-    F.prototype = validator;
-    F.prototype.validator = validator;
+    F.prototype = _external.validator;
+    F.prototype.validator = _external.validator;
     return new F();
   }
 };
 
 module.exports = utilityContext;
 
-},{"validator":3}],79:[function(require,module,exports){
+},{"../external":73}],81:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var extend = require('extend');
-var validator = require('validator');
-var browser = require('./browser');
+var _extend = require('extend');
+
+var _extend2 = _interopRequireDefault(_extend);
+
+var _browser = require('./browser');
+
+var _browser2 = _interopRequireDefault(_browser);
+
+var _external = require('./external');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var utils = {
 
-  extend: extend,
-  validator: validator,
-  browser: browser,
+  extend: _extend2.default,
+  validator: _external.validator,
+  browser: _browser2.default,
 
   walkObject: function walkObject(obj, callback, context) {
     'use strict';
@@ -4497,16 +4733,16 @@ var utils = {
         return a[id] === a1[id];
       });
       if (temp1) {
-        extend(true, temp1, a1);
+        (0, _extend2.default)(true, temp1, a1);
       }
 
       temp2 = utils.find(arr2, function (a2) {
         return a2[id] === a1[id];
       });
       if (temp1) {
-        extend(temp1, temp2);
+        (0, _extend2.default)(temp1, temp2);
       } else if (temp2) {
-        arr.push(extend(true, {}, a1, temp2));
+        arr.push((0, _extend2.default)(true, {}, a1, temp2));
       } else {
         arr.push(a1);
       }
@@ -4580,7 +4816,7 @@ var utils = {
   validateFieldName: function validateFieldName(name) {
     if (typeof name !== 'string') return false;
     return name.split('.').every(function (part) {
-      return (/^[-_a-zA-Z0-9]{1,}$/.test(part) && !validator.isInt(part.charAt(0)) && !!part.length
+      return (/^[-_a-zA-Z0-9]{1,}$/.test(part) && !_external.validator.isInt(part.charAt(0)) && !!part.length
       );
     });
   },
@@ -4591,7 +4827,7 @@ var utils = {
 
 module.exports = utils;
 
-},{"./browser":68,"extend":1,"validator":3}],80:[function(require,module,exports){
+},{"./browser":69,"./external":73,"extend":1}],82:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -4691,7 +4927,7 @@ module.exports = function (map) {
   }
 };
 
-},{"./convertMapTo":70,"./log":73,"./rawValidation":74}],81:[function(require,module,exports){
+},{"./convertMapTo":71,"./log":75,"./rawValidation":76}],83:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -4773,7 +5009,7 @@ module.exports = function (fieldName, map) {
   return this.rawValidation(fieldName);
 };
 
-},{"./convertMapTo":70,"./log":73,"./rawValidation":74,"./utils":79}],82:[function(require,module,exports){
+},{"./convertMapTo":71,"./log":75,"./rawValidation":76,"./utils":81}],84:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -4894,7 +5130,7 @@ module.exports = function (fieldsetName, map) {
   }
 };
 
-},{"./convertMapTo":70,"./log":73,"./rawValidation":74,"./utils":79}],83:[function(require,module,exports){
+},{"./convertMapTo":71,"./log":75,"./rawValidation":76,"./utils":81}],85:[function(require,module,exports){
 'use strict';
 
 /**
@@ -4913,7 +5149,7 @@ module.exports = function isAlphanumericText(value, locale) {
   return this.validator.isAlphanumeric(value, locale);
 };
 
-},{}],84:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4929,17 +5165,17 @@ module.exports = function isEqualToField(value, field) {
   return value === this.get(field);
 };
 
-},{}],85:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 'use strict';
 
-module.exports = '3.1.0';
+module.exports = '3.1.3';
 
-},{}],86:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 'use strict';
 
 var extend = require('extend');
-var validator = require('validator');
 
+var validator = require('./external').validator;
 var log = require('./log');
 var utils = require('./utils');
 var browser = require('./browser');
@@ -5110,4 +5346,4 @@ browser.install(function () {
 
 module.exports = vulcanval;
 
-},{"./addValidator":67,"./browser":68,"./cleanMap":69,"./convertMapTo":70,"./extendLocale":71,"./locale/en":72,"./log":73,"./rawValidation":74,"./settings/fieldSettings":75,"./settings/fieldsetSettings":76,"./settings/settings":77,"./settings/utilityContext":78,"./utils":79,"./validate":80,"./validateField":81,"./validateFieldset":82,"./validators/isAlphanumericText":83,"./validators/isEqualToField":84,"./version":85,"extend":1,"validator":3}]},{},[86]);
+},{"./addValidator":68,"./browser":69,"./cleanMap":70,"./convertMapTo":71,"./extendLocale":72,"./external":73,"./locale/en":74,"./log":75,"./rawValidation":76,"./settings/fieldSettings":77,"./settings/fieldsetSettings":78,"./settings/settings":79,"./settings/utilityContext":80,"./utils":81,"./validate":82,"./validateField":83,"./validateFieldset":84,"./validators/isAlphanumericText":85,"./validators/isEqualToField":86,"./version":87,"extend":1}]},{},[88]);
