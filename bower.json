@@ -1,0 +1,46 @@
+{
+  "name": "vulcanval",
+  "description": "Validate HTML form data universally seamlessly",
+  "authors": [
+    "Romel Pérez (romelperez.com)"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/vulcan-estudios/vulcanval",
+  "keywords": [
+    "validation",
+    "form",
+    "forms",
+    "jquery",
+    "plugin"
+  ],
+  "main": "dist/vulcanval.min.js",
+  "dependencies": {
+    "jquery": "*",
+    "validator-js": "*"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "lib",
+    "demo",
+    "doc",
+    "site",
+    "NOTES.md",
+    "gulpfile.js",
+    "karma-global.conf.js",
+    "karma-jquery.conf.js",
+    "karma-desktop.conf.js",
+    ".gitignore",
+    ".npmignore",
+    ".editorconfig",
+    ".jshintrc",
+    ".grunt",
+    ".lock-wscript",
+    ".travis.yml",
+    "server.js",
+    "index.html",
+    "update.sh"
+  ]
+}
