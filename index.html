@@ -195,14 +195,25 @@ require('vulcanval/bundle/js/jquery/intern');</code></pre>
          you install them first.</p>
       <pre><code class="language-bash">$ npm install --save validator jquery</code></pre>
 
-      <h4>CSS</h4>
+      <h4>SASS</h4>
       <p>To install the styles for the jQuery plugin with <a href="http://sass-lang.com">SASS</a>, include the following import path in the SASS compiler:</p>
       <pre><code class="language-none">./node_modules/vulcanval/src/scss/jquery</code></pre>
       <p>And import in your SASS code:</p>
       <pre><code class="language-css">@import &#39;vulcanval-jquery&#39;;</code></pre>
 
+      <h4>Bower</h4>
+      <p>You can use <a href="http://bower.io" target="_blank">bower</a> to install VulcanVal too:</p>
+      <pre><code class="language-bash">$ bower install --save vulcanval</code></pre>
+      <p>And you will have your files at:</p>
+      <ul>
+        <li><code><i>&lt;BOWER_FOLDER&gt;</i>/vulcanval/dist/vulcanval.min.js</code></li>
+        <li><code><i>&lt;BOWER_FOLDER&gt;</i>/vulcanval/dist/vulcanval-jquery.min.js</code></li>
+        <li><code><i>&lt;BOWER_FOLDER&gt;</i>/vulcanval/dist/vulcanval-jquery.min.css</code></li>
+      </ul>
+      <p><code>vulcanval.min.js</code> file will contain the validator.js v6.x included.</p>
+
       <h4>Built files</h4>
-      <p>You can download the latest browser built files version 3.x with <a href="https://www.npmjs.com/package/validator" target="_blank">validator.js</a> version 6.x from:</p>
+      <p>You can download the latest browser built files version 3.x with validator.js version 6.x included at:</p>
       <ul>
         <li><a href="https://raw.githubusercontent.com/vulcan-estudios/vulcanval/master/dist/vulcanval.min.js" download>vulcanval.min.js</a></li>
         <li><a href="https://raw.githubusercontent.com/vulcan-estudios/vulcanval/master/dist/vulcanval-jquery.min.js" download>vulcanval-jquery.min.js</a></li>
