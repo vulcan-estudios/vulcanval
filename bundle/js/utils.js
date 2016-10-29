@@ -2,15 +2,23 @@
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var extend = require('extend');
-var validator = require('validator');
-var browser = require('./browser');
+var _extend = require('extend');
+
+var _extend2 = _interopRequireDefault(_extend);
+
+var _browser = require('./browser');
+
+var _browser2 = _interopRequireDefault(_browser);
+
+var _external = require('./external');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var utils = {
 
-  extend: extend,
-  validator: validator,
-  browser: browser,
+  extend: _extend2.default,
+  validator: _external.validator,
+  browser: _browser2.default,
 
   walkObject: function walkObject(obj, callback, context) {
     'use strict';
@@ -95,16 +103,16 @@ var utils = {
         return a[id] === a1[id];
       });
       if (temp1) {
-        extend(true, temp1, a1);
+        (0, _extend2.default)(true, temp1, a1);
       }
 
       temp2 = utils.find(arr2, function (a2) {
         return a2[id] === a1[id];
       });
       if (temp1) {
-        extend(temp1, temp2);
+        (0, _extend2.default)(temp1, temp2);
       } else if (temp2) {
-        arr.push(extend(true, {}, a1, temp2));
+        arr.push((0, _extend2.default)(true, {}, a1, temp2));
       } else {
         arr.push(a1);
       }
@@ -178,7 +186,7 @@ var utils = {
   validateFieldName: function validateFieldName(name) {
     if (typeof name !== 'string') return false;
     return name.split('.').every(function (part) {
-      return (/^[-_a-zA-Z0-9]{1,}$/.test(part) && !validator.isInt(part.charAt(0)) && !!part.length
+      return (/^[-_a-zA-Z0-9]{1,}$/.test(part) && !_external.validator.isInt(part.charAt(0)) && !!part.length
       );
     });
   },

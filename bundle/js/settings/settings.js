@@ -2,13 +2,33 @@
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var validator = require('validator');
-var _extend = require('extend');
-var log = require('../log');
-var utils = require('../utils');
-var fieldSettings = require('./fieldSettings');
-var fieldsetSettings = require('./fieldsetSettings');
-var utilityContext = require('./utilityContext');
+var _extend2 = require('extend');
+
+var _extend3 = _interopRequireDefault(_extend2);
+
+var _fieldSettings = require('./fieldSettings');
+
+var _fieldSettings2 = _interopRequireDefault(_fieldSettings);
+
+var _fieldsetSettings = require('./fieldsetSettings');
+
+var _fieldsetSettings2 = _interopRequireDefault(_fieldsetSettings);
+
+var _utilityContext = require('./utilityContext');
+
+var _utilityContext2 = _interopRequireDefault(_utilityContext);
+
+var _log = require('../log');
+
+var _log2 = _interopRequireDefault(_log);
+
+var _utils = require('../utils');
+
+var _utils2 = _interopRequireDefault(_utils);
+
+var _external = require('../external');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @namespace settings
@@ -413,24 +433,24 @@ var settings = {
     'use strict';
 
     if ((typeof custom === 'undefined' ? 'undefined' : _typeof(custom)) !== 'object') {
-      return log.error('a valid object is required to extend');
+      return _log2.default.error('a valid object is required to extend');
     }
 
-    custom = _extend(true, {}, custom);
+    custom = (0, _extend3.default)(true, {}, custom);
 
     var locales = [];
-    utils.walkObject(this.msgs, function (msgs, locale) {
+    _utils2.default.walkObject(this.msgs, function (msgs, locale) {
       if (locale !== 'defaults') locales.push(locale);
     });
 
     // Validate fields.
     if (!Array.isArray(custom.fields) || !custom.fields.length) {
-      log.error('there are no fields for validation');
+      _log2.default.error('there are no fields for validation');
     }
     if (custom.fields) {
       custom.fields.forEach(function (field) {
-        if (!utils.validateFieldName(field.name)) {
-          log.error('field name "' + field.name + '" must be a valid name');
+        if (!_utils2.default.validateFieldName(field.name)) {
+          _log2.default.error('field name "' + field.name + '" must be a valid name');
         }
       });
     }
@@ -438,7 +458,7 @@ var settings = {
     // Create context.
     // @NOTE: The .get() method the context has will be set on this object
     // when the instance on client or server side is made.
-    custom.context = utilityContext.extend();
+    custom.context = _utilityContext2.default.extend();
 
     // Process fieldsets.
     if (custom.fieldsets) {
@@ -452,8 +472,8 @@ var settings = {
           var fields = void 0,
               field = void 0;
 
-          if (typeof fieldset.name !== 'string' || !validator.isAlphanumeric(fieldset.name) || !fieldset.name.length) {
-            log.error('fieldset name "' + fieldset.name + '" is invalid');
+          if (typeof fieldset.name !== 'string' || !_external.validator.isAlphanumeric(fieldset.name) || !fieldset.name.length) {
+            _log2.default.error('fieldset name "' + fieldset.name + '" is invalid');
           }
 
           if (fieldset.fields instanceof RegExp) {
@@ -467,20 +487,20 @@ var settings = {
           } else if (Array.isArray(fieldset.fields)) {
             fields = [];
             fieldset.fields.forEach(function (fsfield) {
-              field = utils.find(fieldsNames, function (fn) {
+              field = _utils2.default.find(fieldsNames, function (fn) {
                 return fn === fsfield;
               });
-              if (field) fields.push(field);else log.error('fieldset field "' + fsfield + '" not found');
+              if (field) fields.push(field);else _log2.default.error('fieldset field "' + fsfield + '" not found');
             });
           }
 
           if (!fields || !fields.length) {
-            log.error('fieldset name "' + fieldset.name + '" fields not found');
+            _log2.default.error('fieldset name "' + fieldset.name + '" fields not found');
           }
 
           fieldset.fields = fields;
 
-          return fieldsetSettings.extend(fieldset);
+          return _fieldsetSettings2.default.extend(fieldset);
         });
       })();
     }
@@ -496,7 +516,7 @@ var settings = {
       if (field.value) {
         newField.value = field.value.bind(custom.context, field.$el);
       } else {
-        newField.value = fieldSettings.value.bind(custom.context, field.$el);
+        newField.value = _fieldSettings2.default.value.bind(custom.context, field.$el);
       }
 
       if (field.onlyIf) {
@@ -509,18 +529,18 @@ var settings = {
         })();
       }
 
-      var fromBaseSettings = utils.pick(settings, inheritFromSettings);
-      var fromSettings = utils.pick(custom, inheritFromSettings);
-      _extend(newField, fromBaseSettings, fromSettings);
+      var fromBaseSettings = _utils2.default.pick(settings, inheritFromSettings);
+      var fromSettings = _utils2.default.pick(custom, inheritFromSettings);
+      (0, _extend3.default)(newField, fromBaseSettings, fromSettings);
 
       if (custom.fieldsets) {
         custom.fieldsets.forEach(function (fieldset) {
-          if (utils.find(fieldset.fields, function (ff) {
+          if (_utils2.default.find(fieldset.fields, function (ff) {
             return ff === field.name;
           })) {
 
-            var fromFieldsetSettings = utils.pick(fieldset, inheritFromFieldsetSettings);
-            _extend(newField, fromFieldsetSettings);
+            var fromFieldsetSettings = _utils2.default.pick(fieldset, inheritFromFieldsetSettings);
+            (0, _extend3.default)(newField, fromFieldsetSettings);
 
             if (fieldset.onlyIf) {
               (function () {
@@ -533,7 +553,7 @@ var settings = {
               })();
             }
 
-            newField.validators = _extend(true, {}, newField.validators, fieldset.validators, field.validators);
+            newField.validators = (0, _extend3.default)(true, {}, newField.validators, fieldset.validators, field.validators);
           }
         });
       }
@@ -545,19 +565,19 @@ var settings = {
       delete field.onlyIf;
       delete field.value;
 
-      field = _extend(newField, field);
+      field = (0, _extend3.default)(newField, field);
 
       if (!field.validators) field.validators = validators;
       if (!field.onlyIf) field.onlyIf = onlyIf;
       if (!field.value) field.value = value;
 
-      return fieldSettings.extend(field);
+      return _fieldSettings2.default.extend(field);
     });
 
     // Validate locale.
     if (custom.locale) {
       if (!this.msgs[custom.locale]) {
-        log.error('locale "' + custom.locale + '" was not found');
+        _log2.default.error('locale "' + custom.locale + '" was not found');
       }
     }
 
@@ -585,15 +605,15 @@ var settings = {
           });
         };
 
-        utils.walkObject(msgs, function (messages, validatorName) {
+        _utils2.default.walkObject(msgs, function (messages, validatorName) {
 
           // Messages for properties in validator.
           // At the moment, only isLength works this way.
           if (validatorName === 'isLength') {
             var properties = messages;
-            utils.walkObject(properties, function (value, property) {
+            _utils2.default.walkObject(properties, function (value, property) {
               if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object') {
-                utils.walkObject(value, function (message, locale) {
+                _utils2.default.walkObject(value, function (message, locale) {
                   setMsgInLocale(locale, validatorName + '.' + property, message);
                 });
               } else {
@@ -603,7 +623,7 @@ var settings = {
           }
 
           if ((typeof messages === 'undefined' ? 'undefined' : _typeof(messages)) === 'object') {
-            utils.walkObject(messages, function (message, locale) {
+            _utils2.default.walkObject(messages, function (message, locale) {
               setMsgInLocale(locale, validatorName, message);
             });
           } else {
@@ -615,7 +635,7 @@ var settings = {
       })();
     }
 
-    return _extend(true, {}, this, custom);
+    return (0, _extend3.default)(true, {}, this, custom);
   }
 };
 

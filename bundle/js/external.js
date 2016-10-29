@@ -1,4 +1,15 @@
-"use strict";
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.jQuery = exports.validator = undefined;
+
+var _validator = require('validator');
+
+var _validator2 = _interopRequireDefault(_validator);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * window object.
@@ -18,6 +29,8 @@
  * @see {@link http://docs.jquery.com/Plugins/Authoring The jQuery Plugin Guide}
  */
 
-module.exports = {
-  jQuery: window.jQuery || window.$
-};
+var jQuery = typeof window !== 'undefined' ? window.jQuery || window.$ : null;
+
+exports.validator = _validator2.default;
+exports.jQuery = jQuery;
+exports.default = { validator: _validator2.default, jQuery: jQuery };

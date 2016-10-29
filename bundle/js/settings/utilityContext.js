@@ -1,6 +1,6 @@
 'use strict';
 
-var validator = require('validator');
+var _external = require('../external');
 
 /**
  * @namespace utilityContext
@@ -47,8 +47,8 @@ var utilityContext = {
    */
   extend: function extend() {
     var F = function F() {};
-    F.prototype = validator;
-    F.prototype.validator = validator;
+    F.prototype = _external.validator;
+    F.prototype.validator = _external.validator;
     return new F();
   }
 };

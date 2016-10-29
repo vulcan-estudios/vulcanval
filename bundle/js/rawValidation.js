@@ -2,11 +2,25 @@
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var extend = require('extend');
-var validator = require('validator');
-var log = require('./log');
-var utils = require('./utils');
-var browser = require('./browser');
+var _extend = require('extend');
+
+var _extend2 = _interopRequireDefault(_extend);
+
+var _log = require('./log');
+
+var _log2 = _interopRequireDefault(_log);
+
+var _utils = require('./utils');
+
+var _utils2 = _interopRequireDefault(_utils);
+
+var _browser = require('./browser');
+
+var _browser2 = _interopRequireDefault(_browser);
+
+var _external = require('./external');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * rawValidation method.
@@ -24,14 +38,14 @@ module.exports = function (fieldName) {
     value: settings.context.get(fieldName)
   };
 
-  log.debug('validating field: ' + field.name + '="' + field.value + '"');
+  _log2.default.debug('validating field: ' + field.name + '="' + field.value + '"');
 
-  field.rules = utils.find(settings.fields, function (vals) {
+  field.rules = _utils2.default.find(settings.fields, function (vals) {
     return vals.name === field.name;
   });
 
   if (!field.rules) {
-    log.warn('field "' + field.name + '" to validate does not have validators');
+    _log2.default.warn('field "' + field.name + '" to validate does not have validators');
     return false;
   }
 
@@ -49,7 +63,7 @@ module.exports = function (fieldName) {
   }
 
   // used only in client side
-  if (browser.isNodejs && field.rules.onlyUI) {
+  if (_browser2.default.isNodejs && field.rules.onlyUI) {
     return false;
   }
 
@@ -66,13 +80,13 @@ module.exports = function (fieldName) {
     var value = field.value;
     var option = typeof opts === 'string' || typeof opts === 'number' ? opts : '';
     var options = (typeof opts === 'undefined' ? 'undefined' : _typeof(opts)) === 'object' ? opts : null;
-    var params = extend({}, { value: value, option: option }, options);
+    var params = (0, _extend2.default)({}, { value: value, option: option }, options);
 
     // If it is custom, the message can be by locales or can be universal.
     if (custom) {
-      return utils.format((typeof id === 'undefined' ? 'undefined' : _typeof(id)) === 'object' ? id[settings.locale] : id, params);
+      return _utils2.default.format((typeof id === 'undefined' ? 'undefined' : _typeof(id)) === 'object' ? id[settings.locale] : id, params);
     } else {
-      return utils.format(settings.getMsgTemplate(id), params);
+      return _utils2.default.format(settings.getMsgTemplate(id), params);
     }
   };
 
@@ -95,7 +109,7 @@ module.exports = function (fieldName) {
     }
   }
 
-  utils.everyInObject(field.rules.validators, function (val, valName) {
+  _utils2.default.everyInObject(field.rules.validators, function (val, valName) {
 
     // There is already an error.
     if (err) {
@@ -115,7 +129,7 @@ module.exports = function (fieldName) {
     // isLength validator.
     if (valName === 'isLength') {
       if (valType !== 'object' || !(typeof val.min === 'number' || val.max)) {
-        return log.error('fields validator "isLength" must be a plain object if defined');
+        return _log2.default.error('fields validator "isLength" must be a plain object if defined');
       }
       if (field.value.length < (valOpts.min || 0)) {
         err = getMsg(false, 'isLength.min', val);
@@ -128,7 +142,7 @@ module.exports = function (fieldName) {
     // matches validator (accepts a plain object and a regular expression)
     else if (valName === 'matches') {
         if (valType !== 'object') {
-          return log.error('fields validator "matches" must be a plain object or RegExp');
+          return _log2.default.error('fields validator "matches" must be a plain object or RegExp');
         }
         if (val instanceof RegExp) {
           pattern = val;
@@ -137,9 +151,9 @@ module.exports = function (fieldName) {
           pattern = val.pattern;
           hasMsg = val.msgs;
         } else {
-          return log.error('matches validator needs a RegExp');
+          return _log2.default.error('matches validator needs a RegExp');
         }
-        if (!validator.matches(field.value, pattern)) {
+        if (!_external.validator.matches(field.value, pattern)) {
           err = getMsg(hasMsg, hasMsg ? val.msgs : 'general', val);
         }
         return true;
@@ -154,8 +168,8 @@ module.exports = function (fieldName) {
         }
 
         // `validator` validator.
-        else if (validator[valName]) {
-            if (!validator[valName](field.value, valOpts)) {
+        else if (_external.validator[valName]) {
+            if (!_external.validator[valName](field.value, valOpts)) {
               err = getMsg(false, valName, val);
             }
             return true;
@@ -163,12 +177,12 @@ module.exports = function (fieldName) {
 
           // Not found.
           else {
-              return log.error('validator "' + valName + '" was not found');
+              return _log2.default.error('validator "' + valName + '" was not found');
             }
   });
 
   if (err) {
-    log.info('invalid field ' + field.name + '="' + field.value + '":', err);
+    _log2.default.info('invalid field ' + field.name + '="' + field.value + '":', err);
   }
 
   return !err ? false : err;

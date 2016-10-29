@@ -1,8 +1,8 @@
 'use strict';
 
 var extend = require('extend');
-var validator = require('validator');
 
+var validator = require('./external').validator;
 var log = require('./log');
 var utils = require('./utils');
 var browser = require('./browser');
