@@ -26,6 +26,7 @@
     "lib",
     "demo",
     "doc",
+    "docs",
     "site",
     "NOTES.md",
     "gulpfile.js",
