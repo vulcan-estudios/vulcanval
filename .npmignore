@@ -16,6 +16,7 @@ site
 
 NOTES.md
 gulpfile.js
+bower.json
 karma-global.conf.js
 karma-jquery.conf.js
 karma-desktop.conf.js
