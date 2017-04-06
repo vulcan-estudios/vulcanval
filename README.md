@@ -7,7 +7,7 @@
 
 > Vulcan Validator, validate HTML form data universally seamlessly
 
-<img src="/site/in-action.gif" alt="Vulcan Validator in action">
+<img src="http://vulcan-estudios.github.io/vulcanval/site/in-action.gif" alt="Vulcan Validator in action">
 
 A package to validate maps of data extracted from HTML forms in the client and server sides and a customizable jQuery plugin to validate forms as you type with ease.
 

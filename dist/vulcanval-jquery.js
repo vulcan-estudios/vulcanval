@@ -251,37 +251,68 @@ var _toString2 = _interopRequireDefault(_toString);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = '6.1.0';
+var version = '6.2.1';
 
 var validator = {
   version: version,
   toDate: _toDate2.default,
-  toFloat: _toFloat2.default, toInt: _toInt2.default,
+  toFloat: _toFloat2.default,
+  toInt: _toInt2.default,
   toBoolean: _toBoolean2.default,
-  equals: _equals2.default, contains: _contains2.default, matches: _matches2.default,
-  isEmail: _isEmail2.default, isURL: _isURL2.default, isMACAddress: _isMACAddress2.default, isIP: _isIP2.default, isFQDN: _isFQDN2.default,
+  equals: _equals2.default,
+  contains: _contains2.default,
+  matches: _matches2.default,
+  isEmail: _isEmail2.default,
+  isURL: _isURL2.default,
+  isMACAddress: _isMACAddress2.default,
+  isIP: _isIP2.default,
+  isFQDN: _isFQDN2.default,
   isBoolean: _isBoolean2.default,
-  isAlpha: _isAlpha2.default, isAlphanumeric: _isAlphanumeric2.default, isNumeric: _isNumeric2.default, isLowercase: _isLowercase2.default, isUppercase: _isUppercase2.default,
-  isAscii: _isAscii2.default, isFullWidth: _isFullWidth2.default, isHalfWidth: _isHalfWidth2.default, isVariableWidth: _isVariableWidth2.default,
-  isMultibyte: _isMultibyte2.default, isSurrogatePair: _isSurrogatePair2.default,
-  isInt: _isInt2.default, isFloat: _isFloat2.default, isDecimal: _isDecimal2.default, isHexadecimal: _isHexadecimal2.default, isDivisibleBy: _isDivisibleBy2.default,
+  isAlpha: _isAlpha2.default,
+  isAlphanumeric: _isAlphanumeric2.default,
+  isNumeric: _isNumeric2.default,
+  isLowercase: _isLowercase2.default,
+  isUppercase: _isUppercase2.default,
+  isAscii: _isAscii2.default,
+  isFullWidth: _isFullWidth2.default,
+  isHalfWidth: _isHalfWidth2.default,
+  isVariableWidth: _isVariableWidth2.default,
+  isMultibyte: _isMultibyte2.default,
+  isSurrogatePair: _isSurrogatePair2.default,
+  isInt: _isInt2.default,
+  isFloat: _isFloat2.default,
+  isDecimal: _isDecimal2.default,
+  isHexadecimal: _isHexadecimal2.default,
+  isDivisibleBy: _isDivisibleBy2.default,
   isHexColor: _isHexColor2.default,
   isMD5: _isMD2.default,
   isJSON: _isJSON2.default,
   isEmpty: _isEmpty2.default,
-  isLength: _isLength2.default, isByteLength: _isByteLength2.default,
-  isUUID: _isUUID2.default, isMongoId: _isMongoId2.default,
-  isDate: _isDate2.default, isAfter: _isAfter2.default, isBefore: _isBefore2.default,
+  isLength: _isLength2.default,
+  isByteLength: _isByteLength2.default,
+  isUUID: _isUUID2.default,
+  isMongoId: _isMongoId2.default,
+  isDate: _isDate2.default,
+  isAfter: _isAfter2.default,
+  isBefore: _isBefore2.default,
   isIn: _isIn2.default,
   isCreditCard: _isCreditCard2.default,
-  isISIN: _isISIN2.default, isISBN: _isISBN2.default, isISSN: _isISSN2.default,
+  isISIN: _isISIN2.default,
+  isISBN: _isISBN2.default,
+  isISSN: _isISSN2.default,
   isMobilePhone: _isMobilePhone2.default,
   isCurrency: _isCurrency2.default,
   isISO8601: _isISO2.default,
-  isBase64: _isBase2.default, isDataURI: _isDataURI2.default,
-  ltrim: _ltrim2.default, rtrim: _rtrim2.default, trim: _trim2.default,
-  escape: _escape2.default, unescape: _unescape2.default, stripLow: _stripLow2.default,
-  whitelist: _whitelist2.default, blacklist: _blacklist2.default,
+  isBase64: _isBase2.default,
+  isDataURI: _isDataURI2.default,
+  ltrim: _ltrim2.default,
+  rtrim: _rtrim2.default,
+  trim: _trim2.default,
+  escape: _escape2.default,
+  unescape: _unescape2.default,
+  stripLow: _stripLow2.default,
+  whitelist: _whitelist2.default,
+  blacklist: _blacklist2.default,
   isWhitelisted: _isWhitelisted2.default,
   normalizeEmail: _normalizeEmail2.default,
   toString: _toString2.default
@@ -298,6 +329,7 @@ Object.defineProperty(exports, "__esModule", {
 var alpha = exports.alpha = {
   'en-US': /^[A-Z]+$/i,
   'cs-CZ': /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]+$/i,
+  'da-DK': /^[A-ZÆØÅ]+$/i,
   'de-DE': /^[A-ZÄÖÜß]+$/i,
   'es-ES': /^[A-ZÁÉÍÑÓÚÜ]+$/i,
   'fr-FR': /^[A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ]+$/i,
@@ -316,6 +348,7 @@ var alpha = exports.alpha = {
 var alphanumeric = exports.alphanumeric = {
   'en-US': /^[0-9A-Z]+$/i,
   'cs-CZ': /^[0-9A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]+$/i,
+  'da-DK': /^[0-9A-ZÆØÅ]$/i,
   'de-DE': /^[0-9A-ZÄÖÜß]+$/i,
   'es-ES': /^[0-9A-ZÁÉÍÑÓÚÜ]+$/i,
   'fr-FR': /^[0-9A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ]+$/i,
@@ -967,6 +1000,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var default_email_options = {
   allow_display_name: false,
+  require_display_name: false,
   allow_utf8_local_part: true,
   require_tld: true
 };
@@ -985,10 +1019,12 @@ function isEmail(str, options) {
   (0, _assertString2.default)(str);
   options = (0, _merge2.default)(options, default_email_options);
 
-  if (options.allow_display_name) {
+  if (options.require_display_name || options.allow_display_name) {
     var display_email = str.match(displayName);
     if (display_email) {
       str = display_email[1];
+    } else if (options.require_display_name) {
+      return false;
     }
   }
 
@@ -1548,11 +1584,13 @@ function isInt(str, options) {
   // leading zeroes are allowed or not.
   var regex = options.hasOwnProperty('allow_leading_zeroes') && !options.allow_leading_zeroes ? int : intLeadingZeroes;
 
-  // Check min/max
+  // Check min/max/lt/gt
   var minCheckPassed = !options.hasOwnProperty('min') || str >= options.min;
   var maxCheckPassed = !options.hasOwnProperty('max') || str <= options.max;
+  var ltCheckPassed = !options.hasOwnProperty('lt') || str < options.lt;
+  var gtCheckPassed = !options.hasOwnProperty('gt') || str > options.gt;
 
-  return regex.test(str) && minCheckPassed && maxCheckPassed;
+  return regex.test(str) && minCheckPassed && maxCheckPassed && ltCheckPassed && gtCheckPassed;
 }
 module.exports = exports['default'];
 },{"./util/assertString":62}],36:[function(require,module,exports){
@@ -1711,6 +1749,7 @@ var phones = {
   'es-ES': /^(\+?34)?(6\d{1}|7[1234])\d{7}$/,
   'fi-FI': /^(\+?358|0)\s?(4(0|1|2|4|5)?|50)\s?(\d\s?){4,8}\d$/,
   'fr-FR': /^(\+?33|0)[67]\d{8}$/,
+  'he-IL': /^(\+972|0)([23489]|5[0248]|77)[1-9]\d{6}/,
   'hu-HU': /^(\+?36)(20|30|70)\d{7}$/,
   'it-IT': /^(\+?39)?\s?3\d{2} ?\d{6,7}$/,
   'ja-JP': /^(\+?81|0)\d{1,4}[ \-]?\d{1,4}[ \-]?\d{4}$/,
@@ -1885,7 +1924,7 @@ function checkHost(host, matches) {
 
 function isURL(url, options) {
   (0, _assertString2.default)(url);
-  if (!url || url.length >= 2083 || /\s/.test(url)) {
+  if (!url || url.length >= 2083 || /[\s<>]/.test(url)) {
     return false;
   }
   if (url.indexOf('mailto:') === 0) {
@@ -2241,11 +2280,9 @@ function normalizeEmail(email, options) {
     if (options.all_lowercase || options.yahoo_lowercase) {
       parts[0] = parts[0].toLowerCase();
     }
-  } else {
+  } else if (options.all_lowercase) {
     // Any other address
-    if (options.all_lowercase) {
-      parts[0] = parts[0].toLowerCase();
-    }
+    parts[0] = parts[0].toLowerCase();
   }
   return parts.join('@');
 }
