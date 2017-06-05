@@ -86,12 +86,6 @@ describe('Method cleanMap()', function () {
   });
 
   it('Clean a map with undefined properties', function () {
-    const map = {
-      name: 'string',
-      something: true,
-      email: null,
-      here: {},
-    };
     const vv = vulcanval({
       fields: [{
         name: 'name',
@@ -104,7 +98,12 @@ describe('Method cleanMap()', function () {
         required: true,
       }]
     });
-    const actual = vv.cleanMap(true, map);
+    const actual = vv.cleanMap(true, {
+      name: 'string',
+      something: true,
+      email: null,
+      here: {},
+    });
     const expected = {
       name: 'string',
       email: null,
@@ -113,12 +112,6 @@ describe('Method cleanMap()', function () {
   });
 
   it('By default it cleans a plain map', function () {
-    const map = {
-      name: 'string',
-      something: true,
-      email: null,
-      here: {},
-    };
     const vv = vulcanval({
       fields: [{
         name: 'name',
@@ -129,14 +122,26 @@ describe('Method cleanMap()', function () {
       }, {
         name: 'email',
         required: true,
+      }, {
+        name: 'hash',
+        required: true,
       }]
     });
-    const actual = vv.cleanMap(map);
+    const actual = vv.cleanMap({
+      name: 'string',
+      something: true,
+      email: null,
+      here: {},
+    });
     const expected = {
       name: 'string',
       email: null,
+      hash: void 0
     };
-    expect(actual).to.eql(expected);
+    expect(actual).to.have.property('name');
+    expect(actual).to.have.property('email');
+    expect(actual).to.not.have.property('surname');
+    expect(actual).to.not.have.property('hash');
   });
 
 });

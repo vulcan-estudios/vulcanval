@@ -36,9 +36,10 @@ module.exports = function (isPlain, map) {
   const newMap = {};
 
   this.settings.fields.forEach(field => {
-    if (field.disabled || field.onlyUI) return;
-    const value = map[field.name];
-    if (value !== void 0) {
+    if (field.disabled || field.onlyUI) {
+      return;
+    }
+    if (map.hasOwnProperty(field.name) && map[field.name] !== void 0) {
       newMap[field.name] = map[field.name];
     }
   });
