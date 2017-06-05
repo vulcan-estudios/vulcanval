@@ -24,6 +24,11 @@ const convertMapTo = require('./convertMapTo');
 module.exports = function (isPlain, map) {
   'use strict';
 
+  if (typeof isPlain !== 'boolean') {
+    map = isPlain;
+    isPlain = true;
+  }
+
   if (!isPlain) {
     map = convertMapTo('plain', map);
   }
@@ -32,7 +37,10 @@ module.exports = function (isPlain, map) {
 
   this.settings.fields.forEach(field => {
     if (field.disabled || field.onlyUI) return;
-    newMap[field.name] = map[field.name];
+    const value = map[field.name];
+    if (value !== void 0) {
+      newMap[field.name] = map[field.name];
+    }
   });
 
   if (!isPlain) {
