@@ -5,13 +5,10 @@ const expect = require('chai').expect;
 const vulcanval = require('../../src/js/vulcanval');
 
 
-var vv, map, converted, expected;
-
-
 describe('Method cleanMap()', function () {
 
   it('Cleaning a plain map (with disabled and ignored fields)', function () {
-    map = {
+    const map = {
       a: 1,
       b: true,
       c: 'str1',
@@ -24,12 +21,12 @@ describe('Method cleanMap()', function () {
         __private: ')/H=FSDM;S=D8C;5$%;C(W=#"%?":#$"¡#$O:!=()$UV;P")'
       }
     };
-    expected = {
+    const expected = {
       b: true,
       d: 'str2',
       'fieldset.field1': 'a random value'
     };
-    vv = vulcanval({
+    const vv = vulcanval({
       fields: [{
         name: 'a',
         onlyUI: true
@@ -44,12 +41,12 @@ describe('Method cleanMap()', function () {
         name: 'fieldset.field1'
       }]
     });
-    converted = vv.cleanMap(true, map);
+    const converted = vv.cleanMap(true, map);
     assert.deepEqual(converted, expected);
   });
 
   it('Cleaning a nested map (with disabled and ignored fields)', function () {
-    map = {
+    const map = {
       set1: {
         field1: 'str1',
         field2: 'str2'
@@ -64,7 +61,7 @@ describe('Method cleanMap()', function () {
         field5: 'str3'
       }
     };
-    expected = {
+    const expected = {
       set1: {
         field2: 'str2'
       },
@@ -75,7 +72,7 @@ describe('Method cleanMap()', function () {
         field5: 'str3'
       }
     };
-    vv = vulcanval({
+    const vv = vulcanval({
       fields: [
         { name: 'set1.field1', disabled: true },
         { name: 'set1.field2' },
@@ -84,7 +81,62 @@ describe('Method cleanMap()', function () {
         { name: 'set2.field5' }
       ]
     });
-    converted = vv.cleanMap(false, map);
+    const converted = vv.cleanMap(false, map);
     assert.deepEqual(converted, expected);
   });
+
+  it('Clean a map with undefined properties', function () {
+    const map = {
+      name: 'string',
+      something: true,
+      email: null,
+      here: {},
+    };
+    const vv = vulcanval({
+      fields: [{
+        name: 'name',
+        required: true,
+      }, {
+        name: 'surname',
+        required: true,
+      }, {
+        name: 'email',
+        required: true,
+      }]
+    });
+    const actual = vv.cleanMap(true, map);
+    const expected = {
+      name: 'string',
+      email: null,
+    };
+    expect(actual).to.eql(expected);
+  });
+
+  it('By default it cleans a plain map', function () {
+    const map = {
+      name: 'string',
+      something: true,
+      email: null,
+      here: {},
+    };
+    const vv = vulcanval({
+      fields: [{
+        name: 'name',
+        required: true,
+      }, {
+        name: 'surname',
+        required: true,
+      }, {
+        name: 'email',
+        required: true,
+      }]
+    });
+    const actual = vv.cleanMap(map);
+    const expected = {
+      name: 'string',
+      email: null,
+    };
+    expect(actual).to.eql(expected);
+  });
+
 });
