@@ -108,6 +108,16 @@ var vulcanval = function vulcanval(custom) {
   });
 };
 
+vulcanval.addMethod = function (name, method) {
+  if (typeof name !== 'string' || !name) {
+    log.error('A valid method name should be provided.');
+  }
+  if (typeof method !== 'function') {
+    log.error('A valid function should be provided as second parameter.');
+  }
+  vulcanvalProto[name] = method;
+};
+
 /**
  * @name log
  * @memberof module:vulcanval
