@@ -19,6 +19,7 @@ const addValidator =      require('./addValidator');
 const rawValidation =     require('./rawValidation');
 const validate =          require('./validate');
 const validateField =     require('./validateField');
+const validateFields =    require('./validateFields');
 const validateFieldset =  require('./validateFieldset');
 
 const isEqualToField =      require('./validators/isEqualToField');
@@ -50,6 +51,7 @@ const vulcanvalProto = {
   rawValidation,
   validate,
   validateFieldset,
+  validateFields,
   validateField
 };
 
