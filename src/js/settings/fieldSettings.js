@@ -122,6 +122,17 @@ const fieldSettings = {
   //listenTo: null,
 
   /**
+   * A function to convert the field value.
+   * Currently it is only used for the validation methods, not client-side.
+   *
+   * @name to
+   * @memberof fieldSettings
+   * @type {String|Array}
+   * @default Inherited from {@link settings}
+   */
+  //to: null,
+
+  /**
    * The validators list. This is an object with keys as the validators names and
    * values as their configuration. If the value is simply a boolean `true`,
    * the validator will be invoked without options. It it is string, number or

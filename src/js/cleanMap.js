@@ -41,6 +41,10 @@ module.exports = function (isPlain, map) {
     }
     if (map.hasOwnProperty(field.name) && map[field.name] !== void 0) {
       newMap[field.name] = map[field.name];
+
+      if (newMap[field.name] !== null && field.to) {
+        newMap[field.name] = field.to(newMap[field.name]);
+      }
     }
   });
 
