@@ -144,4 +144,89 @@ describe('Method cleanMap()', function () {
     expect(actual).to.not.have.property('hash');
   });
 
+  it('By default data types are conserved', function () {
+    const vv = vulcanval({
+      fields: [
+        { name: 'f0' },
+        { name: 'f1' },
+        { name: 'f2' },
+        { name: 'f3' },
+        { name: 'f4' },
+        { name: 'f5' },
+        { name: 'f6' },
+        { name: 'f7' },
+        { name: 'f8' },
+        { name: 'f9' },
+        { name: 'f10' },
+        { name: 'f11' },
+      ]
+    });
+    const map = {
+      //f0: void 0,
+      //f1: void 0,
+      f2: null,
+      f3: true,
+      f4: '',
+      f5: -10.57,
+      f6: '-10.57',
+      f7: 'my-string',
+      f8: [],
+      f9: {},
+      f10: NaN,
+      f11: /abc/,
+    };
+    const actual = vv.cleanMap(map);
+    expect(actual).to.eql(map);
+  });
+
+  it('Fields with provided converted are converted', function () {
+    const vv = vulcanval({
+      fields: [
+        { name: 'f0', to: Boolean },
+        { name: 'f1', to: Number },
+        { name: 'f2', to: String },
+        { name: 'f3', to: val => +val * 100 },
+      ]
+    });
+    const map = {
+      f0: '',
+      f1: '-10.57',
+      f2: -10.57,
+      f3: '57',
+    };
+    const actual = vv.cleanMap(map);
+    const expected = {
+      f0: false,
+      f1: -10.57,
+      f2: '-10.57',
+      f3: 5700,
+    };
+    expect(actual).to.eql(expected);
+  });
+
+  it('null and undefined values are excepted from converters', function () {
+    const vv = vulcanval({
+      fields: [
+        { name: 'f0', to: Boolean },
+        { name: 'f1', to: Number },
+        { name: 'f2', to: String },
+        { name: 'f3', to: val => +val * 100 },
+      ]
+    });
+    const map = {
+      //f0: void 0,
+      f1: void 0,
+      f2: null,
+      f3: null,
+    };
+    const actual = vv.cleanMap(map);
+    const expected = {
+      //f0: void 0,
+      //f1: void 0,
+      f2: null,
+      f3: null,
+    };
+    expect(actual).to.eql(expected);
+  });
+
 });
