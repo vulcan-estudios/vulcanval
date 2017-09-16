@@ -63,7 +63,7 @@ module.exports = function (fieldName, map) {
   }
 
   this.settings.context.get = function (name) {
-    if (map[name] !== undefined) {
+    if (map[name] !== void 0) {
       return map[name];
     } else {
       log.warn(`field "${name}" not found in map`);
