@@ -1,7 +1,8 @@
 const utils = require('./utils');
 
 /**
- * Validate the fields provided and their affected fields.
+ * Validate the fields provided and their affected fields set by their `listenTo`
+ * properties.
  *
  * This method is not available for the jQuery plugin currently.
  *
@@ -18,6 +19,23 @@ const utils = require('./utils');
  * is enabled. Use the {@link vulcanval.convertMapTo} method if needed.
  *
  * @example
+ * const vv = vulcanval({
+ *   fields: [
+ *     { name: 'married', required: true },
+ *     { name: 'height', required: true },
+ *     { name: 'age', required: true, listenTo: 'height' },
+ *     { name: 'weight', required: true, listenTo: ['height', 'age'] }
+ *   ]
+ * });
+ * const map = { married: false, height: '', age: '23', weight: '' };
+ *
+ * console.log(vv.validateFields('height', map));
+ * // { height: 'Err message.', age: false, weight: 'Err message' }
+ * // Height is validated and age and weight which are listening.
+ *
+ * console.log(vv.validateFields(['married', 'age'], map));
+ * // { married: 'Err message', age: false, weight: 'Err message' }
+ * // Married and age are validated and weight which is listening.
  */
 module.exports = function (namesList, map) {
 

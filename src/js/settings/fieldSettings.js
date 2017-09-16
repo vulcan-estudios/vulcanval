@@ -110,6 +110,18 @@ const fieldSettings = {
   //validationEvents: null,
 
   /**
+   * The name of the field or the array of the fields this one is listening to.
+   * When the provided fields are validated, this one is also validated.
+   * Currently it is only used for the validation methods, not client-side.
+   *
+   * @name listenTo
+   * @memberof fieldSettings
+   * @type {String|Array}
+   * @default Inherited from {@link settings}
+   */
+  //listenTo: null,
+
+  /**
    * The validators list. This is an object with keys as the validators names and
    * values as their configuration. If the value is simply a boolean `true`,
    * the validator will be invoked without options. It it is string, number or
