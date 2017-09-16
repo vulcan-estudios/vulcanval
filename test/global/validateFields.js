@@ -139,17 +139,24 @@ describe('Method validateFields()', function () {
     const vv = vulcanval({
       locale: 'en',
       fields: [
-        { name: 'f0', required: true },
-        { name: 'f1', required: true },
-        { name: 'f2', required: true, listenTo: 'f1' }
+        { name: 'f0', required: true, listenTo: 's0.f1' },
+        { name: 's0.f1', required: true, listenTo: 'f0' },
+        { name: 's0.f2', required: true },
+        { name: 's1.f3', required: true },
+        { name: 's1.f4', required: true, listenTo: ['s0.f1', 's1.f3'] }
       ]
     });
-    const map = { f0: '', f1: '1', f2: '1', f3: '', f4: '' };
-    const actual = vv.validateFields(['f0', 'f1'], map);
+    const map = {
+      f0: '1',
+      s0: { f1: '', f2: '' },
+      s1: { f3: '', f4: '' }
+    };
+    const actual = vv.validateFields(['s0.f1', 's0.f2'], map);
     expect(actual).to.eql({
-      f0: 'Please fill out this field.',
-      f1: false,
-      f2: false,
+      'f0': false,
+      's0.f1': 'Please fill out this field.',
+      's0.f2': 'Please fill out this field.',
+      's1.f4': 'Please fill out this field.',
     });
   });
 
