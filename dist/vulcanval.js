@@ -3029,6 +3029,11 @@ var convertMapTo = require('./convertMapTo');
 module.exports = function (isPlain, map) {
   'use strict';
 
+  if (typeof isPlain !== 'boolean') {
+    map = isPlain;
+    isPlain = true;
+  }
+
   if (!isPlain) {
     map = convertMapTo('plain', map);
   }
@@ -3036,8 +3041,16 @@ module.exports = function (isPlain, map) {
   var newMap = {};
 
   this.settings.fields.forEach(function (field) {
-    if (field.disabled || field.onlyUI) return;
-    newMap[field.name] = map[field.name];
+    if (field.disabled || field.onlyUI) {
+      return;
+    }
+    if (map.hasOwnProperty(field.name) && map[field.name] !== void 0) {
+      newMap[field.name] = map[field.name];
+
+      if (newMap[field.name] !== null && field.to) {
+        newMap[field.name] = field.to(newMap[field.name]);
+      }
+    }
   });
 
   if (!isPlain) {
@@ -3605,6 +3618,29 @@ var fieldSettings = {
    * @default Inherited from {@link settings}
    */
   //validationEvents: null,
+
+  /**
+   * The name of the field or the array of the fields this one is listening to.
+   * When the provided fields are validated, this one is also validated.
+   * Currently it is only used for the validation methods, not client-side.
+   *
+   * @name listenTo
+   * @memberof fieldSettings
+   * @type {String|Array}
+   * @default Inherited from {@link settings}
+   */
+  //listenTo: null,
+
+  /**
+   * A function to convert the field value.
+   * Currently it is only used for the validation methods, not client-side.
+   *
+   * @name to
+   * @memberof fieldSettings
+   * @type {String|Array}
+   * @default Inherited from {@link settings}
+   */
+  //to: null,
 
   /**
    * The validators list. This is an object with keys as the validators names and
@@ -5036,7 +5072,7 @@ module.exports = function (fieldName, map) {
   }
 
   this.settings.context.get = function (name) {
-    if (map[name] !== undefined) {
+    if (map[name] !== void 0) {
       return map[name];
     } else {
       log.warn('field "' + name + '" not found in map');
@@ -5047,6 +5083,84 @@ module.exports = function (fieldName, map) {
 };
 
 },{"./convertMapTo":71,"./log":75,"./rawValidation":76,"./utils":81}],84:[function(require,module,exports){
+'use strict';
+
+var utils = require('./utils');
+
+/**
+ * Validate the fields provided and their affected fields set by their `listenTo`
+ * properties.
+ *
+ * This method is not available for the jQuery plugin currently.
+ *
+ * @static
+ * @method validator.validateFields
+ *
+ * @param  {String|Array} namesList - An array with the names of the fields to validate
+ * or just one field name.
+ * @param  {Object} map - The map to validate.
+ *
+ * @return {Boolean|Object} - If the fields are valid, returns false.
+ * Otherwise there will be an object describing each field error as a plain map with its
+ * keys as the fields names even if the property {@link settings.enableNestedMaps}
+ * is enabled. Use the {@link vulcanval.convertMapTo} method if needed.
+ *
+ * @example
+ * const vv = vulcanval({
+ *   fields: [
+ *     { name: 'married', required: true },
+ *     { name: 'height', required: true },
+ *     { name: 'age', required: true, listenTo: 'height' },
+ *     { name: 'weight', required: true, listenTo: ['height', 'age'] }
+ *   ]
+ * });
+ * const map = { married: false, height: '', age: '23', weight: '' };
+ *
+ * console.log(vv.validateFields('height', map));
+ * // { height: 'Err message.', age: false, weight: 'Err message' }
+ * // Height is validated and age and weight which are listening.
+ *
+ * console.log(vv.validateFields(['married', 'age'], map));
+ * // { married: 'Err message', age: false, weight: 'Err message' }
+ * // Married and age are validated and weight which is listening.
+ */
+module.exports = function (namesList, map) {
+  var _this = this;
+
+  var errors = {};
+  var names = Array.isArray(namesList) ? namesList : [namesList];
+
+  // Extra validation is performed by the validateField() method.
+  var setMessage = function setMessage(name) {
+    var message = _this.validateField(name, map);
+    errors[name] = message;
+  };
+
+  // Validate fields recursively.
+  var validate = function validate(name) {
+    setMessage(name);
+
+    _this.settings.fields.forEach(function (field) {
+
+      var listenTo = field.listenTo || [];
+      listenTo = Array.isArray(listenTo) ? listenTo : [listenTo];
+      var isListener = utils.find(listenTo, function (el) {
+        return el === name;
+      });
+      var wasValidated = errors.hasOwnProperty(field.name);
+
+      if (isListener && !wasValidated) {
+        validate(field.name);
+      }
+    });
+  };
+
+  names.forEach(validate);
+
+  return Object.keys(errors).length ? errors : false;
+};
+
+},{"./utils":81}],85:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -5167,7 +5281,7 @@ module.exports = function (fieldsetName, map) {
   }
 };
 
-},{"./convertMapTo":71,"./log":75,"./rawValidation":76,"./utils":81}],85:[function(require,module,exports){
+},{"./convertMapTo":71,"./log":75,"./rawValidation":76,"./utils":81}],86:[function(require,module,exports){
 'use strict';
 
 /**
@@ -5186,7 +5300,7 @@ module.exports = function isAlphanumericText(value, locale) {
   return this.validator.isAlphanumeric(value, locale);
 };
 
-},{}],86:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5202,12 +5316,12 @@ module.exports = function isEqualToField(value, field) {
   return value === this.get(field);
 };
 
-},{}],87:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 'use strict';
 
-module.exports = '3.1.3';
+module.exports = '3.4.0';
 
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 'use strict';
 
 var extend = require('extend');
@@ -5231,6 +5345,7 @@ var addValidator = require('./addValidator');
 var rawValidation = require('./rawValidation');
 var validate = require('./validate');
 var validateField = require('./validateField');
+var validateFields = require('./validateFields');
 var validateFieldset = require('./validateFieldset');
 
 var isEqualToField = require('./validators/isEqualToField');
@@ -5262,6 +5377,7 @@ var vulcanvalProto = {
   rawValidation: rawValidation,
   validate: validate,
   validateFieldset: validateFieldset,
+  validateFields: validateFields,
   validateField: validateField
 };
 
@@ -5316,6 +5432,16 @@ var vulcanval = function vulcanval(custom) {
   return extend(Object.create(vulcanvalProto), {
     settings: settings.extend(custom)
   });
+};
+
+vulcanval.addMethod = function (name, method) {
+  if (typeof name !== 'string' || !name) {
+    log.error('A valid method name should be provided.');
+  }
+  if (typeof method !== 'function') {
+    log.error('A valid function should be provided as second parameter.');
+  }
+  vulcanvalProto[name] = method;
 };
 
 /**
@@ -5383,4 +5509,4 @@ browser.install(function () {
 
 module.exports = vulcanval;
 
-},{"./addValidator":68,"./browser":69,"./cleanMap":70,"./convertMapTo":71,"./extendLocale":72,"./external":73,"./locale/en":74,"./log":75,"./rawValidation":76,"./settings/fieldSettings":77,"./settings/fieldsetSettings":78,"./settings/settings":79,"./settings/utilityContext":80,"./utils":81,"./validate":82,"./validateField":83,"./validateFieldset":84,"./validators/isAlphanumericText":85,"./validators/isEqualToField":86,"./version":87,"extend":1}]},{},[88]);
+},{"./addValidator":68,"./browser":69,"./cleanMap":70,"./convertMapTo":71,"./extendLocale":72,"./external":73,"./locale/en":74,"./log":75,"./rawValidation":76,"./settings/fieldSettings":77,"./settings/fieldsetSettings":78,"./settings/settings":79,"./settings/utilityContext":80,"./utils":81,"./validate":82,"./validateField":83,"./validateFields":84,"./validateFieldset":85,"./validators/isAlphanumericText":86,"./validators/isEqualToField":87,"./version":88,"extend":1}]},{},[89]);
