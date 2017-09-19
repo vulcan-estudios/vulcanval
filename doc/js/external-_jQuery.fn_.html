@@ -169,7 +169,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(getMap)</h4>
+    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(inspectField [, fieldName])</h4>
     
     
 </dt>
@@ -177,12 +177,8 @@
 
     
     <div class="description">
-        <p>Get the data <a href="map.html">map</a> extracted from the <code>&lt;form&gt;</code>.</p>
-<p>If the instance was configured with the setting <a href="settings.html#.enableNestedMaps">settings.enableNestedMaps</a>
-as <code>true</code>, the <a href="map.html">map</a> returned will be nested. Otherwise it will be plain.</p>
-<p>This method can also be used over <code>&lt;form&gt;</code> elements without being instantiated
-and will return a plain data map with all its inputs, selects and textareas
-values.</p>
+        <p><strong><em>Invoke over instantiated elements.</em></strong></p>
+<p>Inspect the validation status of an specific field in <code>&lt;form&gt;</code>.</p>
     </div>
     
 
@@ -205,6 +201,8 @@ values.</p>
         <th>Type</th>
 
         
+        <th>Argument</th>
+        
 
         
 
@@ -217,7 +215,7 @@ values.</p>
 
         <tr>
             
-                <td class="name"><code>getMap</code></td>
+                <td class="name"><code>inspectField</code></td>
             
 
             <td class="type">
@@ -231,10 +229,52 @@ values.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>With value <code>'getMap'</code>.</p></td>
+            <td class="description last"><p>With value <code>'inspectField'</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fieldName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The field name to inspect.</p></td>
         </tr>
 
     
@@ -298,7 +338,8 @@ values.</p>
     
             
 <div class="param-desc">
-    <p>The data <a href="map.html">map</a>.</p>
+    <p>It will return an error message if field is invalid,
+otherwise <code>false</code>.</p>
 </div>
 
 
@@ -309,7 +350,10 @@ values.</p>
     </dt>
     <dd>
         
-<span class="param-type"><a href="map.html">map</a></span>
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Boolean</span>
 
 
 
@@ -499,6 +543,163 @@ to learn how to implement this method.</li>
             
 <hr>
 <dt>
+    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(getMap)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Get the data <a href="map.html">map</a> extracted from the <code>&lt;form&gt;</code>.</p>
+<p>If the instance was configured with the setting <a href="settings.html#.enableNestedMaps">settings.enableNestedMaps</a>
+as <code>true</code>, the <a href="map.html">map</a> returned will be nested. Otherwise it will be plain.</p>
+<p>This method can also be used over <code>&lt;form&gt;</code> elements without being instantiated
+and will return a plain data map with all its inputs, selects and textareas
+values.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>getMap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>With value <code>'getMap'</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The data <a href="map.html">map</a>.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="map.html">map</a></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
     <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(validateFieldset, fieldsetName)</h4>
     
     
@@ -585,6 +786,183 @@ to learn how to implement this method.</li>
             
 
             <td class="description last"><p>The fieldset name to validate.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The same jQuery object.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-jQuery.html">external:jQuery</a></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(validateField, fieldName)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p><strong><em>Invoke over instantiated elements.</em></strong></p>
+<p>Validate visually an specific field in <code>&lt;form&gt;</code>.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>validateField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>With value <code>'validateField'</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fieldName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The field name to validate.</p></td>
         </tr>
 
     
@@ -1007,184 +1385,6 @@ in those fields.</p>
             
 <hr>
 <dt>
-    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(resetField, fieldName)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p><strong><em>Invoke over instantiated elements.</em></strong></p>
-<p>Reset specific field validation state. This removes all current error states
-from field.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>resetField</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>With value <code>'resetField'</code>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>fieldName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The name of the field.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>The same jQuery object.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="external-jQuery.html">external:jQuery</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
     <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(inspect)</h4>
     
     
@@ -1329,336 +1529,6 @@ error messages if they have. If form is valid, <code>false</code> will be return
 |
 
 <span class="param-type">Boolean</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(reset)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p><strong><em>Invoke over instantiated elements.</em></strong></p>
-<p>Reset the <code>&lt;form&gt;</code> validation state. This removes all current error states.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>reset</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>With value <code>'reset'</code>.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>The same jQuery object.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="external-jQuery.html">external:jQuery</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(validateField, fieldName)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p><strong><em>Invoke over instantiated elements.</em></strong></p>
-<p>Validate visually an specific field in <code>&lt;form&gt;</code>.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>validateField</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>With value <code>'validateField'</code>.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>fieldName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The field name to validate.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>The same jQuery object.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="external-jQuery.html">external:jQuery</a></span>
 
 
 
@@ -1859,7 +1729,7 @@ error messages if they have. If fieldset is valid, <code>false</code> will be re
             
 <hr>
 <dt>
-    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(inspectField [, fieldName])</h4>
+    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(resetField, fieldName)</h4>
     
     
 </dt>
@@ -1868,7 +1738,8 @@ error messages if they have. If fieldset is valid, <code>false</code> will be re
     
     <div class="description">
         <p><strong><em>Invoke over instantiated elements.</em></strong></p>
-<p>Inspect the validation status of an specific field in <code>&lt;form&gt;</code>.</p>
+<p>Reset specific field validation state. This removes all current error states
+from field.</p>
     </div>
     
 
@@ -1891,8 +1762,6 @@ error messages if they have. If fieldset is valid, <code>false</code> will be re
         <th>Type</th>
 
         
-        <th>Argument</th>
-        
 
         
 
@@ -1905,7 +1774,7 @@ error messages if they have. If fieldset is valid, <code>false</code> will be re
 
         <tr>
             
-                <td class="name"><code>inspectField</code></td>
+                <td class="name"><code>resetField</code></td>
             
 
             <td class="type">
@@ -1919,18 +1788,10 @@ error messages if they have. If fieldset is valid, <code>false</code> will be re
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>With value <code>'inspectField'</code>.</p></td>
+            <td class="description last"><p>With value <code>'resetField'</code>.</p></td>
         </tr>
 
     
@@ -1951,20 +1812,10 @@ error messages if they have. If fieldset is valid, <code>false</code> will be re
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>The field name to inspect.</p></td>
+            <td class="description last"><p>The name of the field.</p></td>
         </tr>
 
     
@@ -2028,8 +1879,7 @@ error messages if they have. If fieldset is valid, <code>false</code> will be re
     
             
 <div class="param-desc">
-    <p>It will return an error message if field is invalid,
-otherwise <code>false</code>.</p>
+    <p>The same jQuery object.</p>
 </div>
 
 
@@ -2040,10 +1890,160 @@ otherwise <code>false</code>.</p>
     </dt>
     <dd>
         
-<span class="param-type">String</span>
-|
+<span class="param-type"><a href="external-jQuery.html">external:jQuery</a></span>
 
-<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".vulcanval"><span class="type-signature">&lt;static> </span>vulcanval(reset)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p><strong><em>Invoke over instantiated elements.</em></strong></p>
+<p>Reset the <code>&lt;form&gt;</code> validation state. This removes all current error states.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>reset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>With value <code>'reset'</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The same jQuery object.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-jQuery.html">external:jQuery</a></span>
 
 
 
@@ -2108,7 +2108,7 @@ otherwise <code>false</code>.</p>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2017-04-05T23:28:52-05:00
+		on 2017-09-18T22:14:54-05:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
